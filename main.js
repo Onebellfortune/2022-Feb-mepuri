@@ -55,7 +55,7 @@ let character = {
     mercEars: true,
     illiumEars: false,
     highFloraEars: false,
-    zoom: 1,
+    zoom: 3,
     name: "",
     flipX: false,
     includeBackground: true,
@@ -255,11 +255,35 @@ function main() {
 
             document.getElementById("character_area").src =
                 generateAvatarLink(character);
-
+            setSelectedItemInfo(character);
             // console.log(FaceAccessory);
             // console.log(EyeDecoration);
         }
     );
+    function setSelectedItemInfo(character) {
+        document.getElementById("character_FaceAccessory").innerText =
+            character.selectedItems.FaceAccessory.name;
+        document.getElementById("character_EyeDecoration").innerText =
+            character.selectedItems.EyeDecoration.name;
+        document.getElementById("character_Hat").innerText =
+            character.selectedItems.Hat.name;
+        document.getElementById("character_Top").innerText =
+            character.selectedItems.Top.name;
+        document.getElementById("character_Bottom").innerText =
+            character.selectedItems.Bottom.name;
+        document.getElementById("character_Face").innerText =
+            character.selectedItems.Face.name;
+        document.getElementById("character_Glove").innerText =
+            character.selectedItems.Glove.name;
+        document.getElementById("character_Hair").innerText =
+            character.selectedItems.Hair.name;
+        document.getElementById("character_Overall").innerText =
+            character.selectedItems.Overall.name;
+        document.getElementById("character_Shoes").innerText =
+            character.selectedItems.Shoes.name;
+        document.getElementById("character_Cape").innerText =
+            character.selectedItems.Cape.name;
+    }
     // callAPI(`${apiUrl}/${locale}/${version}/item/1190000`);
 }
 // main();
