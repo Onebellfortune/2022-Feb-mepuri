@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Simple setInterval clock</title>
+    <style>
+      p {
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+      <p class="stopwatch">00:00:00</p>
+      <button class="start">Start</button>
+      <button class="stop">Stop</button>
+      <button class="reset">Reset</button>
+      
+    <p class="clock"></p>
+    <script>
+        var timeSum=0;
+        var startTime;
+        var interval;
+        var stopwatchInterval;
+
+        var startBtn=document.querySelector(".start");
+        var stopBtn=document.querySelector(".stop");
+        var resetBtn=document.querySelector(".reset");
+      function Start(){
+         timeSum+=1;
+         var hour=Math.floor((timeSum/60)/60);
+         var min=Math.floor((timeSum/60)%60);
+         var sec=(timeSum%60);
+         
+         if(hour<10){
+             hour="0"+hour.toString();
+         }if(min<10){
+             min="0"+min.toString();
+         }if(sec<10){
+             sec="0"+sec.toString();
+         }
+         var timeString=hour+":"+min+":"+sec;
+         document.querySelector('.stopwatch').textContent=timeString;
+      }
+      
+      function Stop(){
+
+      }
+      
+      //console.log(startbtn);
+      startBtn.addEventListener('click',function(){
+        startBtn.disabled=true;
+        startTime=Date.now();
+        interval=startTime+1000-Date.now();
+        
+        stopwatchInterval=setInterval(Start,interval);
+      });
+
+      stopBtn.addEventListener('click',function(){
+          clearInterval(stopwatchInterval);
+          startBtn.disabled=false;
+      })
+
+      resetBtn.addEventListener('click',function(){
+          clearInterval(stopwatchInterval);
+          timeSum=0;
+          document.querySelector('.stopwatch').textContent="00:00:00";
+          startBtn.disabled=false;
+      })
+
+
+    </script>
+  </body>
+</html>

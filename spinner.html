@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>My test page</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div>몰?루</div>
+    <script>
+        const spinner=document.querySelector('div');
+        const body=document.querySelector('body');
+        let rotateCount=0;
+        let startTime=null;
+        let rAF;
+        body.addEventListener('click',function(){
+            if(rAF!==0){
+                cancelAnimationFrame(rAF);
+                rAF=0;
+            }else{
+                draw();
+            }
+           
+            
+            
+        })
+        function draw(timestamp){
+            if(!startTime){
+                startTime=timestamp;
+            }
+            rotateCount=(timestamp-startTime)/10;
+
+            if(rotateCount>359){
+                rotateCount%=360;
+            }
+            spinner.style.transform='rotate('+rotateCount+'deg)';
+            rAF=requestAnimationFrame(draw);
+        }
+
+
+        
+    </script>
+  </body>
+</html>
