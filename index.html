@@ -4,7 +4,7 @@
         <script src="main.js"></script>
     </head>
     <body>
-        <div id="character_wrapper">
+        <div id="character_wrapper" style="display:flex">
             <img id="character_area" class="character_area" style="width:50%; float:left"/>
             <div id="character_info" style="width:50%; float:right; height:100%">
                 <div id="character_FaceAccessory">-</div>
@@ -20,6 +20,34 @@
                 <div id="character_Cape">-</div>
             </div>
         </div>
+        <div id="menu_wrapper" >
+            <div id="top_menu" style="width:100%;height:30px;background-color: cornflowerblue">
+                <button>외형</button>
+                <button>악세</button>
+                <button>장비</button>
+            </div>
+            <div id="sub_menu" style="width:100%;height:30px;background-color:blueviolet">
+                <button onclick="showList('Hair')">헤어</button>
+                <button onclick="showList('Face')">성형</button>
+                <button onclick="showList('FaceAccessory')">얼장</button>
+                <button onclick="showList('EyeDecoration')">눈장</button>
+                <button onclick="showList('Earrings')">귀장</button>
+                <button onclick="showList('Hat')">모자</button>
+                <button onclick="showList('Overall')">한벌</button>
+                <button onclick="showList('Top')">상의</button>
+                <button onclick="showList('Bottom')">하의</button>
+                <button onclick="showList('Glove')">장갑</button>
+                <button onclick="showList('Shoes')">신발</button>
+                <button onclick="showList('Cape')">망토</button>
+                <button onclick="showList('weapon')">anrl</button>
+            </div>    
+            <div id="item_list_wrapper" style="width:100%;height:30%;background-color:darkkhaki">
+                <select id="item_list" onchange="setSelectedItem(this.options[this.selectedIndex].value)">
+
+                </select>
+            </div>
+        </div>
+        
     </body>
     
 </html>

@@ -252,14 +252,182 @@ function main() {
             character.selectedItems.Overall = Overall[0];
             character.selectedItems.Shoes = Shoes[0];
             character.selectedItems.Cape = Cape[0];
-
-            document.getElementById("character_area").src =
-                generateAvatarLink(character);
-            setSelectedItemInfo(character);
+            refresh();
             // console.log(FaceAccessory);
             // console.log(EyeDecoration);
         }
     );
+    window.showList = (category) => {
+        const list_wrapper = document.getElementById("item_list");
+        list_wrapper.innerHTML = "";
+        switch (category) {
+            // case "hair":
+            //     Hair.forEach((item) => {
+            //         const list = document.createElement("option");
+            //         list.innerText = item.name;
+            //         list.value = item.id;
+            //         list_wrapper.appendChild(list);
+            //     });
+            //     break;
+            case "FaceAccessory":
+                FaceAccessory.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "EyeDecoration":
+                EyeDecoration.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Earrings":
+                Earrings.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Hat":
+                Hat.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Top":
+                Top.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Bottom":
+                Bottom.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Face":
+                Face.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Glove":
+                Glove.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Hair":
+                Hair.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Overall":
+                Overall.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Shoes":
+                Shoes.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "Cape":
+                Cape.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            case "weapon":
+                weapon.forEach((item) => {
+                    const list = document.createElement("option");
+                    list.innerText = item.name;
+                    list.value = item.id;
+                    list_wrapper.appendChild(list);
+                });
+                break;
+            default:
+                break;
+        }
+    };
+    window.setSelectedItem = function (id) {
+        console.log(id);
+        callAPI(`${apiUrl}/${locale}/${version}/item/${id}`).then((element) => {
+            switch (element.typeInfo.subCategory) {
+                case "Face Accessory":
+                    character.selectedItems.FaceAccessory.id = id;
+                    break;
+                case "Eye Decoration":
+                    character.selectedItems.EyeDecoration.id = id;
+                    break;
+                case "Earrings":
+                    character.selectedItems.Earrings.id = id;
+                    break;
+                case "Hat":
+                    character.selectedItems.Hat.id = id;
+                    break;
+                case "Top":
+                    character.selectedItems.Top.id = id;
+                    break;
+                case "Bottom":
+                    character.selectedItems.Bottom.id = id;
+                    break;
+                case "Face":
+                    character.selectedItems.Face.id = id;
+                    break;
+                case "Glove":
+                    character.selectedItems.Glove.id = id;
+                    break;
+                case "Hair":
+                    character.selectedItems.Hair.id = id;
+                    break;
+                case "Overall":
+                    character.selectedItems.Overall.id = id;
+                    break;
+                case "Shoes":
+                    character.selectedItems.Shoes.id = id;
+                    break;
+                case "Cape":
+                    character.selectedItems.Cape.id = id;
+                    break;
+                default:
+                    break;
+            }
+            refresh();
+        });
+    };
+    function refresh() {
+        document.getElementById("character_area").src =
+            generateAvatarLink(character);
+        setSelectedItemInfo(character);
+    }
     function setSelectedItemInfo(character) {
         document.getElementById("character_FaceAccessory").innerText =
             character.selectedItems.FaceAccessory.name;
