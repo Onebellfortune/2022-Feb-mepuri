@@ -26,7 +26,7 @@ const skinList = [{ category: "Skin", name: "크림", id: EAR_TYPE.GENERAL }];
 
 let selectedCategoryFlag = "";
 let cashItem;
-
+let spinner;
 let Accessory;
 let FaceAccessory = [];
 let EyeDecoration = [];
@@ -42,35 +42,6 @@ let Shoes = [];
 let Cape = [];
 let weapon = [];
 let etc = [];
-function callAPI(url) {
-    return $.ajax({
-        url,
-        type: "GET",
-        success: function (res) {
-            console.log(res);
-            // cashItem = res.Cash;
-        },
-        error: function () {},
-        complete: function () {},
-    });
-}
-
-//   action: "stand1"
-// emotion: "default"
-// fhSnap: true
-// flipX: false
-// frame: 0
-// id: 1645079875155
-// illiumEars: false
-// includeBackground: true
-// mercEars: false
-// name: ""
-// position: {x: -166, y: -191}
-// selectedItems: {Body: {…}, Head: {…}}
-// skin: 2000
-// type: "character"
-// visible: true
-// zoom: 1
 let character = {
     animating: undefined,
     action: "stand1",
@@ -78,7 +49,7 @@ let character = {
     mercEars: true,
     illiumEars: false,
     highFloraEars: false,
-    zoom: 3,
+    zoom: 1,
     name: "",
     flipX: false,
     includeBackground: true,
@@ -115,10 +86,6 @@ let character = {
     },
 };
 
-function getAllCashItems() {
-    const sampleUrl = `${apiUrl}/${locale}/${version}/item/count`;
-    return callAPI(sampleUrl);
-}
 function generateAvatarLink(character, linkType) {
     let itemEntries = getCharacterItemEntries(character);
 
@@ -205,35 +172,34 @@ window.addEventListener("DOMContentLoaded", (event) => {
         length: 38, // The length of each line
         width: 17, // The line thickness
         radius: 45, // The radius of the inner circle
-        scale: 1, // Scales overall size of the spinner
+        scale: 0.3, // Scales overall size of the spinner
         corners: 1, // Corner roundness (0..1)
         speed: 1, // Rounds per second
         rotate: 0, // The rotation offset
         animation: "spinner-line-fade-quick", // The CSS animation name for the lines
         direction: 1, // 1: clockwise, -1: counterclockwise
-        color: "#ffffff", // CSS color or array of colors
+        color: "#0f0f0f", // CSS color or array of colors
         fadeColor: "transparent", // CSS color or array of colors
-        top: "50%", // Top position relative to parent
-        left: "50%", // Left position relative to parent
+        top: "10%", // Top position relative to parent
+        left: "-50%", // Left position relative to parent
         shadow: "1 1 2px transparent", // Box-shadow for the lines
         zIndex: 2000000000, // The z-index (defaults to 2e9)
         className: "spinner", // The CSS class to assign to the spinner
         position: "relative", // Element positioning
     };
-    var target = document.getElementById("character_area_wrapper");
-    var spinner = new Spinner(opts).spin();
+    var target = document.getElementById("character_area_wrapper_wrapper");
+    spinner = new Spinner(opts).spin();
     target.appendChild(spinner.el);
-
+    spinner.stop();
     main();
 });
 function main() {
-    // const sampleUrl = `${apiUrl}/${locale}/${version}/item/01213018/iconRaw`;
-
     const overallCategory = ["Equip"];
-    getAllCashItems().then(function () {});
-    // callAPI(`${apiUrl}/${locale}/${version}/item/list`);
+    spinner.spin();
+
     callAPI(`${apiUrl}/${locale}/${version}/item/category/Equip`).then(
         (res) => {
+            spinner.stop();
             const allList = res;
             allList.forEach((element) => {
                 element.region = locale;
@@ -320,6 +286,7 @@ function main() {
     function createEarListButton(item) {
         const list = document.createElement("li");
         const listBtn = document.createElement("button");
+        listBtn.setAttribute("class", "general_btn");
         listBtn.innerText = item.name;
         listBtn.value = item.id;
         listBtn.addEventListener("click", (event) => {
@@ -333,74 +300,112 @@ function main() {
         refresh();
     };
     window.showList = (category) => {
-        // const list_wrapper = document.getElementById("item_list");
         const list_wrapper = document.getElementById("item_list");
         list_wrapper.innerHTML = "";
         selectedCategoryFlag = category;
         switch (category) {
             case "FaceAccessory":
                 FaceAccessory.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "EyeDecoration":
                 EyeDecoration.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Earrings":
                 Earrings.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Hat":
                 Hat.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Top":
                 Top.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Bottom":
                 Bottom.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Face":
                 Face.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Glove":
                 Glove.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Hair":
                 Hair.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Overall":
                 Overall.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Shoes":
                 Shoes.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Cape":
                 Cape.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "weapon":
                 weapon.forEach((item) => {
-                    list_wrapper.appendChild(createItemListButton(item));
+                    list_wrapper.insertBefore(
+                        createItemListButton(item),
+                        list_wrapper.children[0]
+                    );
                 });
                 break;
             case "Ear":
@@ -413,7 +418,6 @@ function main() {
         }
     };
     function setSelectedItem(id) {
-        console.log(id);
         callAPI(`${apiUrl}/${locale}/${version}/item/${id}`).then((element) => {
             const subCategoryTrim = element.typeInfo.subCategory.replace(
                 / /gi,
@@ -426,39 +430,61 @@ function main() {
             switch (subCategoryTrim) {
                 case "FaceAccessory":
                     character.selectedItems.FaceAccessory.id = id;
+                    character.selectedItems.FaceAccessory.name =
+                        element.description.name;
                     break;
                 case "EyeDecoration":
                     character.selectedItems.EyeDecoration.id = id;
+                    character.selectedItems.EyeDecoration.name =
+                        element.description.name;
                     break;
                 case "Earrings":
                     character.selectedItems.Earrings.id = id;
+                    character.selectedItems.Earrings.name =
+                        element.description.name;
                     break;
                 case "Hat":
                     character.selectedItems.Hat.id = id;
+                    character.selectedItems.Hat.name = element.description.name;
                     break;
                 case "Top":
                     character.selectedItems.Top.id = id;
+                    character.selectedItems.Top.name = element.description.name;
                     break;
                 case "Bottom":
                     character.selectedItems.Bottom.id = id;
+                    character.selectedItems.Bottom.name =
+                        element.description.name;
                     break;
                 case "Face":
                     character.selectedItems.Face.id = id;
+                    character.selectedItems.Face.name =
+                        element.description.name;
                     break;
                 case "Glove":
                     character.selectedItems.Glove.id = id;
+                    character.selectedItems.Glove.name =
+                        element.description.name;
                     break;
                 case "Hair":
                     character.selectedItems.Hair.id = id;
+                    character.selectedItems.Hair.name =
+                        element.description.name;
                     break;
                 case "Overall":
                     character.selectedItems.Overall.id = id;
+                    character.selectedItems.Overall.name =
+                        element.description.name;
                     break;
                 case "Shoes":
                     character.selectedItems.Shoes.id = id;
+                    character.selectedItems.Shoes.name =
+                        element.description.name;
                     break;
                 case "Cape":
                     character.selectedItems.Cape.id = id;
+                    character.selectedItems.Cape.name =
+                        element.description.name;
                     break;
                 default:
                     break;

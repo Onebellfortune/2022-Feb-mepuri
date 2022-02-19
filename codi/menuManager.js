@@ -16,9 +16,13 @@ window.myfilter = function () {
     }
     ul.style.display = "";
 };
+function clearList() {
+    document.getElementById("item_list").innerHTML = "";
+}
 
 window.filterSelection = function (c) {
     var x, i;
+    clearList();
     x = document.getElementsByClassName("sub_menu_btn");
     if (c == "all") c = "";
     for (i = 0; i < x.length; i++) {
