@@ -1,7 +1,13 @@
-.character_area {
-    width:60%; 
+.character_area_wrapper_wrapper {
+    width:50%; 
     float:left;
-
+}
+.character_area_wrapper {
+    width:100%;
+    height:100%;
+}
+.character_area {
+    position:absolute;
 }
 .text_area {
     font-size: 40px;
@@ -11,3 +17,32 @@
     width:100%;height:30%;background-color:darkkhaki;
     overflow: scroll;
 }
+.top_menu {
+    width:100%;height:30px;background-color: cornflowerblue
+}
+.top_menu_btn {
+    font-size: 40px;
+    float: left;
+}
+.sub_menu {
+    height:90px;background-color:blueviolet;
+    width: 150%;
+    overflow-x:scroll;
+    overflow-y: hidden;
+}
+.sub_menu_btn {
+    font-size: 40px;
+    float: left;
+    display:none;
+}
+.show {
+    display: block;
+  }
+  .input_search{
+      font-size: 40px;
+      width:50%;
+  }
+  .general_btn {
+    font-size: 40px;
+
+  }

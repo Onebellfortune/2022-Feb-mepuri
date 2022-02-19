@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="../common/spin.css">
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
+        <script src="../common/spin.js"></script>
+        <script src="./menuManager.js"></script>
+        <script src="./main.js"></script>
+    </head>
+    <body>
+        <div id="character_wrapper" style="display:flex">
+            <div id="character_area_wrapper_wrapper" class="character_area_wrapper_wrapper">
+                <div id="character_area_wrapper" class="character_area_wrapper">
+                <img id="character_area" class="character_area"/>
+            </div>
+            </div>
+            <div id="character_info" class="text_area">
+                <div id="character_FaceAccessory">-</div>
+                <div id="character_EyeDecoration">-</div>
+                <div id="character_Hat">-</div>
+                <div id="character_Top">-</div>
+                <div id="character_Bottom">-</div>
+                <div id="character_Face">-</div>
+                <div id="character_Glove">-</div>
+                <div id="character_Hair">-</div>
+                <div id="character_Overall">-</div>
+                <div id="character_Shoes">-</div>
+                <div id="character_Cape">-</div>
+            </div>
+        </div>
+        <div id="menu_wrapper" >
+            <div id="top_menu" class="top_menu">
+                <button class="top_menu_btn" onclick="filterSelection('body')">외형</button>
+                <button class="top_menu_btn" onclick="filterSelection('accessory')">악세</button>
+                <button class="top_menu_btn" onclick="filterSelection('cloth')">장비</button>
+            </div>
+                     <div id="sub_menu" class="sub_menu">
+                <button class="sub_menu_btn  body" onclick="showList('Hair')">헤어</button>
+                <!-- <button onclick="showList('Hair')">피부</button> -->
+                <button class="sub_menu_btn  body"  onclick="showList('Face')">성형</button>
+                <button class="sub_menu_btn  body" onclick="showList('Ear')">귀</button>
+                <button class="sub_menu_btn  accessory" onclick="showList('FaceAccessory')">얼장</button>
+                <button class="sub_menu_btn  accessory" onclick="showList('EyeDecoration')">눈장</button>
+                <button class="sub_menu_btn  accessory" onclick="showList('Earrings')">귀장</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('Hat')">모자</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('Overall')">한벌</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('Top')">상의</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('Bottom')">하의</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('Glove')">장갑</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('Shoes')">신발</button>
+                <button class="sub_menu_btn  cloth"  onclick="showList('Cape')">망토</button>
+                <button class="sub_menu_btn  cloth" onclick="showList('weapon')">무기</button>
+            </div>    
+            <div id="item_list_wrapper" class="item_list_wrapper" >
+                <input class="input_search" type="text" id="myInput" onkeyup="myfilter()" placeholder="Search for names..">
+                <button id="btn_transparent" class="general_btn" onclick="setTransparent()">투명</button>
+                <ul id="item_list"></ul>
+            </div>
+        </div>
+        
+    </body>
+    
+</html>
