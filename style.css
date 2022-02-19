@@ -1,5 +1,13 @@
 .character_area {
-    width: 80%;
-    height: 300px;
+    width:60%; 
+    float:left;
 
+}
+.text_area {
+    font-size: 40px;
+    width:auto; float:right; height:100%
+}
+.item_list_wrapper {
+    width:100%;height:30%;background-color:darkkhaki;
+    overflow: scroll;
 }

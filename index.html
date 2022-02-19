@@ -1,12 +1,14 @@
 <html>
     <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
         <script src="main.js"></script>
     </head>
     <body>
         <div id="character_wrapper" style="display:flex">
-            <img id="character_area" class="character_area" style="width:50%; float:left"/>
-            <div id="character_info" style="width:50%; float:right; height:100%">
+            <img id="character_area" class="character_area"/>
+            <div id="character_info" class="text_area">
                 <div id="character_FaceAccessory">-</div>
                 <div id="character_EyeDecoration">-</div>
                 <div id="character_Hat">-</div>
@@ -26,9 +28,11 @@
                 <button>악세</button>
                 <button>장비</button>
             </div>
-            <div id="sub_menu" style="width:100%;height:30px;background-color:blueviolet">
+                     <div id="sub_menu" style="width:100%;height:30px;background-color:blueviolet">
                 <button onclick="showList('Hair')">헤어</button>
+                <!-- <button onclick="showList('Hair')">피부</button> -->
                 <button onclick="showList('Face')">성형</button>
+                <button onclick="showList('Ear')">귀</button>
                 <button onclick="showList('FaceAccessory')">얼장</button>
                 <button onclick="showList('EyeDecoration')">눈장</button>
                 <button onclick="showList('Earrings')">귀장</button>
@@ -39,12 +43,13 @@
                 <button onclick="showList('Glove')">장갑</button>
                 <button onclick="showList('Shoes')">신발</button>
                 <button onclick="showList('Cape')">망토</button>
-                <button onclick="showList('weapon')">anrl</button>
+                <button onclick="showList('weapon')">무기</button>
             </div>    
-            <div id="item_list_wrapper" style="width:100%;height:30%;background-color:darkkhaki">
-                <select id="item_list" onchange="setSelectedItem(this.options[this.selectedIndex].value)">
-
-                </select>
+            <div id="item_list_wrapper" class="item_list_wrapper" >
+            
+                <input type="text" id="myInput" onkeyup="filter()" placeholder="Search for names.." title="Type in a name">
+                <button id="btn_transparent" onclick="setTransparent()">투명</button>
+                <ul id="item_list"></ul>
             </div>
         </div>
         
