@@ -22,10 +22,7 @@ const earList = [
     { category: "Ear", name: "일리움", id: EAR_TYPE.ILLIUM },
 ];
 
-const skinList = [
-    { category: "Skin", name: "크림", id: EAR_TYPE.GENERAL },
-
-]
+const skinList = [{ category: "Skin", name: "크림", id: EAR_TYPE.GENERAL }];
 
 let selectedCategoryFlag = "";
 let cashItem;
@@ -283,11 +280,11 @@ function main() {
             // console.log(EyeDecoration);
         }
     );
-    window.filter = function () {
+    window.myfilter = function () {
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        ul = document.getElementById("item_list_test");
+        ul = document.getElementById("item_list");
         li = ul.getElementsByTagName("li");
         for (i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName("button")[0];
