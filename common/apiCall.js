@@ -4,6 +4,7 @@ function callAPI(url) {
         type: "GET",
         success: function (res) {
             console.log(res);
+            return res;
         },
         error: function () {},
         complete: function () {},

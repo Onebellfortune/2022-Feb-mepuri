@@ -38,7 +38,6 @@ export default {
                 subCategory: "Head",
             },
         },
-        Shoes: {},
         Hair: {
             requiredJobs: ["Beginner"],
             isCash: true,
