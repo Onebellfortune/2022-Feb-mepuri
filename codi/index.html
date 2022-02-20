@@ -2,14 +2,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="./style.css">
         <link rel="stylesheet" href="../common/spin.css">
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
         <script src="../common/apiCall.js"></script>
         <script src="../common/spin.js"></script>
         <script src="./menuManager.js"></script>
-        <script src="./main.js"></script>
+        <script type="module" src="./main.js"></script>
     </head>
     <body>
         <div id="canvas_wraper" class="canvas_wrapper" >
@@ -40,7 +40,7 @@
             </div>
             <div id="sub_menu" class="sub_menu">
                 <button class="sub_menu_btn  body" onclick="showList('Hair')">헤어</button>
-                <!-- <button onclick="showList('Hair')">피부</button> -->
+                <button class="sub_menu_btn  body" onclick="showList('Skin')">피부</button>
                 <button class="sub_menu_btn  body"  onclick="showList('Face')">성형</button>
                 <button class="sub_menu_btn  body" onclick="showList('Ear')">귀</button>
                 <button class="sub_menu_btn  accessory" onclick="showList('FaceAccessory')">얼장</button>
