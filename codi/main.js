@@ -147,10 +147,18 @@ window.setTransparent = () => {
     delete character.selectedItems[selectedCategoryFlag];
     refresh();
 };
-window.showList = (category) => {
+
+window.showList = (event, category) => {
     const list_wrapper = document.getElementById("item_list");
     list_wrapper.innerHTML = "";
     selectedCategoryFlag = category;
+
+    let menuBtns = document.getElementsByClassName("sub_menu_btn");
+    for (let i = 0; i < menuBtns.length; i++) {
+        menuBtns[i].className = menuBtns[i].className.replace(" active", "");
+    }
+    event.currentTarget.className += " active";
+
     switch (category) {
         case "FaceAccessory":
             FaceAccessory.forEach((item) => {
@@ -231,6 +239,7 @@ window.showList = (category) => {
             break;
     }
 };
+
 function setSelectedItem(id) {
     callAPI(`${apiUrl}/${locale}/${version}/item/${id}`).then((element) => {
         const subCategoryTrim = element.typeInfo.subCategory.replace(/ /gi, "");

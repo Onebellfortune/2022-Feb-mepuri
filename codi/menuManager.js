@@ -1,3 +1,5 @@
+import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
+
 window.myfilter = function () {
     var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("myInput");
@@ -20,9 +22,16 @@ function clearList() {
     document.getElementById("item_list").innerHTML = "";
 }
 
-window.filterSelection = function (c) {
+window.filterSelection = function (event, c) {
     var x, i;
     clearList();
+
+    let menuBtns = document.getElementsByClassName("top_menu_btn");
+    for (i = 0; i < menuBtns.length; i++) {
+        menuBtns[i].className = menuBtns[i].className.replace(" active", "");
+    }
+    event.currentTarget.className += " active";
+
     x = document.getElementsByClassName("sub_menu_btn");
     if (c == "all") c = "";
     for (i = 0; i < x.length; i++) {
