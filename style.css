@@ -1,76 +1,17 @@
-:root {
-    --basic-font-size: 13px;
-    --basic-btn-font-size: 20px;
-    --menu-height:30px;
-}
+
 body{
     margin:0;
-}
-input{
-    margin:0;
-    border:0;
-}
-.canvas_wrapper {
-    display:flex;
-    width:100%;
-}
-.character_area_wrapper_wrapper {
-    display:flex;
-    float:left;
-    width:60%;
-}
-.character_area_wrapper {
-    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.character_area {
-    position:absolute;
-}
-.text_area {
-    font-size: var(--basic-font-size);
-    width:auto; 
-    float:right; 
-}
-.item_list_wrapper {
-    width:100%;
-    height:30%;
-    background-color:darkkhaki;
-    overflow: scroll;
-}
-.top_menu {
-    width:100%;
-    height:var(--menu-height);
-    background-color: cornflowerblue
-}
-.top_menu_btn {
-    font-size: var(--basic-btn-font-size);
-    float: left;
-}
-.sub_menu {
-    height:var(--menu-height);
-    background-color:blueviolet;
-    width: 150%;
-    overflow-x:scroll;
-    overflow-y: hidden;
-}
-.sub_menu_btn {
-    font-size: var(--basic-btn-font-size);
-    float: left;
-    display:none;
-}
-.show {
-    display: block;
-  }
-  .input_search{
-      font-size: var(--basic-btn-font-size);
-      width:30%;
-  }
-  .general_btn {
-    font-size: var(--basic-btn-font-size);
 
-  }
-  .item_list{
-      padding-left:0px;
-  }
+button{
+    width: 150px;
+    height: 150px;
+    font-size: 50px;
+    float:left;
+    border: 0px;
+    margin: 5px;
+    color: white;
+}

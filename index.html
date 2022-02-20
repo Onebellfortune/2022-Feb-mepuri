@@ -1,14 +1,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
+        <link rel="stylesheet" href="./style.css">
+
     </head>
     <body>
-        <a href="codi/index.html">코디</a>
-        <a href="itemSetting/index.html">템세팅</a>
-        
+        <button id="btn_1" onclick="location.href='codi/index.html'">코디</a>
+        <button id="btn_2" onclick="location.href='itemSetting/index.html'">템세팅</a>
+            <script>
+                const buttons = [...document.getElementsByTagName('button')];
+                buttons.forEach(element => {
+                    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+                    element.style.backgroundColor = `#${randomColor}`;
+                });
+            </script>
     </body>
     
 </html>
