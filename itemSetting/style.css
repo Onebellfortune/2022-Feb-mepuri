@@ -1,11 +1,18 @@
+div{
+    display: block;
+    font-size:10px;
+}
 .item-box{
     border:1px solid;
     width:360px;
     height:430px;
-   
     position: relative;
 }
-
+.select-area{
+    width:360px;
+    height:430px;
+    position:absolute;
+}
 .column{
     width:80px;
     height:400px;
