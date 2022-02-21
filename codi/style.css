@@ -82,8 +82,8 @@ input{
 .filter_menu {
     height:45px;
     width: 100%;
-    background-color:blueviolet;
     display:inline-flex;
+    justify-content: space-evenly;
 }
 .sub_menu_btn {
     font-size: var(--basic-btn-font-size);
@@ -121,11 +121,11 @@ input{
   .item_list_wrapper {
     padding: 5px 5px 0 5px;
     background-color:darksalmon;
-    height:100%;
+    height: 100%;
 }
 .scroll_area{
     overflow: scroll;
-    height:100%;
+    height:calc(100% - var(--menu-height));;
 }
   .item_list{
       padding-left:0px;
@@ -133,4 +133,8 @@ input{
   button {
       border:0px;
       padding: 14px;
+  }
+  button:hover {
+    background-color: #cdcdcd;
+
   }

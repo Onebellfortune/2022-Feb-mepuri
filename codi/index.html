@@ -63,13 +63,13 @@
                     <button class="sub_menu_btn cloth" onclick="showList(event, 'Glove')">장갑</button>
                     <button class="sub_menu_btn cloth" onclick="showList(event, 'Shoes')">신발</button>
                     <button class="sub_menu_btn cloth"  onclick="showList(event, 'Cape')">망토</button>
-                    <button class="sub_menu_btn cloth" onclick="showList(event, 'weapon')">무기</button>
+                    <button class="sub_menu_btn cloth" onclick="showList(event, 'Cash')">무기</button>
                 </div>    
                 <div id="item_list_wrapper" class="item_list_wrapper" >
                     <div id="filter_menu" class="filter_menu" >
                         <input class="input_search" type="text" id="myInput" onkeyup="myfilter()" placeholder="검색">
                         <button id="btn_transparent" class="additional_btn" onclick="setTransparent()">투명</button>
-                        <button id="btn_transparent" class="additional_btn" >맨위로</button>
+                        <button id="btn_transparent" class="additional_btn" onclick="scrollToTop()" >맨위로</button>
                     </div>
                     <div id="scroll_area" class="scroll_area">
                         <ul id="item_list" class="item_list"></ul>

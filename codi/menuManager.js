@@ -81,7 +81,7 @@ export function createItemListButton(item, setSelectedItem) {
     const list = document.createElement("li");
     const listBtn = document.createElement("button");
     listBtn.setAttribute("class", "general_btn");
-    listBtn.innerText = item.name;
+    listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ""}`;
     listBtn.value = item.id;
     listBtn.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${item.id}/icon")`;
     listBtn.addEventListener("click", (event) => {

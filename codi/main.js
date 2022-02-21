@@ -14,12 +14,13 @@ let Hat = [];
 let Top = [];
 let Bottom = [];
 let Face = [];
+let FaceName = [];
 let Glove = [];
 let Hair = [];
 let Overall = [];
 let Shoes = [];
 let Cape = [];
-let weapon = [];
+let Cash = [];
 let etc = [];
 
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -49,7 +50,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
     // spinner.stop();
     main();
 });
-
+window.scrollToTop = () => {
+    document.getElementById("scroll_area").scroll(0, 0);
+};
 window.setZoom = (value) => {
     character.zoom = value;
     refresh();
@@ -132,8 +135,8 @@ window.showList = (event, category) => {
                 list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
-        case "weapon":
-            weapon.forEach((item) => {
+        case "Cash":
+            Cash.forEach((item) => {
                 list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
@@ -216,7 +219,10 @@ function setSelectedItem(target) {
             character.selectedItems.Cape.id = target.value;
             character.selectedItems.Cape.name = target.textContent;
             break;
-
+        case "Cash":
+            character.selectedItems.Cash.id = target.value;
+            character.selectedItems.Cash.name = target.textContent;
+            break;
         default:
             break;
     }
@@ -314,7 +320,10 @@ function getAllItemList() {
                     Bottom.push(element);
                     break;
                 case "Face":
-                    Face.push(element);
+                    if (FaceName.indexOf(element.name) < 0) {
+                        Face.push(element);
+                        FaceName.push(element.name);
+                    }
                     break;
                 case "Glove":
                     Glove.push(element);
@@ -334,13 +343,12 @@ function getAllItemList() {
                     Cape.push(element);
                     break;
                 case "Cash":
-                    break;
                 default:
                     if (
                         element.typeInfo.category === "Two-Handed Weapon" ||
                         element.typeInfo.category === "One-Handed Weapon"
                     )
-                        weapon.push(element);
+                        Cash.push(element);
                     else etc.push(element);
                     break;
             }
@@ -353,17 +361,24 @@ function main() {
     spinner.spin();
     getAllItemList().then(() => {
         // spinner.stop();
-        character.selectedItems.FaceAccessory.id = "1011006";
-        character.selectedItems.EyeDecoration.id = "1022285";
         // character.selectedItems.Hat = Hat[0];
         // character.selectedItems.Top = Top[0];
         // character.selectedItems.Bottom = Bottom[0];
-        character.selectedItems.Face.id = 26079;
         // character.selectedItems.Glove = Glove[0];
-        character.selectedItems.Hair.id = "61370";
-        character.selectedItems.Overall.id = "1053828";
         // character.selectedItems.Shoes = Shoes[0];
+        character.selectedItems.Face = Face[0];
+        character.selectedItems.Hair = Hair[0];
+        character.selectedItems.Overall.id = "1053828";
+        character.selectedItems.Cash = Cash[0];
         // character.selectedItems.Cape = Cape[0];
+
+        // cha tete
+        // character.selectedItems.FaceAccessory.id = "1011006";
+        // character.selectedItems.EyeDecoration.id = "1022285";
+        // character.selectedItems.Face.id = 26079;
+        // character.selectedItems.Hair.id = "61370";
+        // character.selectedItems.Overall.id = "1053828";
+
         refresh();
     });
 }
