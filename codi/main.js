@@ -1,9 +1,9 @@
 import character from "./default_character.js";
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
-
-const apiUrl = "https://maplestory.io/api";
-const locale = "KMS";
-const version = "360";
+import { generateAvatarLink } from "./avatarManager.js";
+import { apiUrl, version, locale } from "../common/apiInfo.js";
+import { createItemListButton, createEarListButton, createSkinListButton } from "./menuManager.js";
+import { callAPI } from "../common/apiCall.js";
 
 let selectedCategoryFlag = "";
 let spinner;
@@ -22,62 +22,6 @@ let Cape = [];
 let weapon = [];
 let etc = [];
 
-function generateAvatarLink(character, linkType) {
-    let itemEntries = getCharacterItemEntries(character);
-
-    let backgroundColor = JSON.parse(localStorage["backgroundColor"] || false) || {
-        hsl: { h: 0, s: 0, l: 0, a: 0 },
-        hex: "transparent",
-        rgb: { r: 0, g: 0, b: 0, a: 0 },
-        hsv: { h: 0, s: 0, v: 0, a: 0 },
-        oldHue: 0,
-        source: "rgb",
-    };
-    const bgColorText = `${backgroundColor.rgb.r},${backgroundColor.rgb.g},${backgroundColor.rgb.b},${backgroundColor.rgb.a}`;
-
-    let itemEntriesPayload = JSON.stringify(itemEntries);
-    itemEntriesPayload = encodeURIComponent(itemEntriesPayload.substr(1, itemEntriesPayload.length - 2));
-
-    let { animating, action, frame, mercEars, illiumEars, highFloraEars, zoom, name, flipX, includeBackground } = character;
-
-    return (
-        `${apiUrl}/character/${itemEntriesPayload}/${
-            linkType ? linkType : `${action}/${animating ? "animated" : frame}`
-        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&name=${encodeURI(
-            name || ""
-        )}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "")
-    );
-}
-function getCharacterItemEntries(character) {
-    return Object.values(character.selectedItems)
-        .filter((item) => item.id && (item.visible === undefined || item.visible))
-        .map((item) => {
-            let itemEntry = {
-                itemId: Number(item.id),
-            };
-
-            if ((item.id >= 20000 && item.id < 30000) || (item.id >= 1010000 && item.id < 1020000))
-                itemEntry.animationName = character.emotion;
-            if (item.region && item.region.toLowerCase() !== "gms") itemEntry.region = item.region;
-            if (item.version && item.version.toLowerCase() !== "latest") itemEntry.version = item.version;
-            if (item.hue) itemEntry.hue = item.hue;
-            if (item.saturation !== 1) itemEntry.saturation = item.saturation;
-            if (item.contrast !== 1) itemEntry.contrast = item.contrast;
-            if (item.brightness !== 1) itemEntry.brightness = item.brightness;
-            if (item.alpha !== 1) itemEntry.alpha = item.alpha;
-            if (item.islot) itemEntry.islot = item.islot;
-            if (item.vslot) itemEntry.vslot = item.vslot;
-            if (item.equipFrame) itemEntry.equipFrame = item.equipFrame;
-            if (item.disableEffect) itemEntry.disableEffect = item.disableEffect;
-            if (item.glow) itemEntry.glow = item.glow;
-            if (item.grayscale) itemEntry.grayscale = item.grayscale;
-            if (item.invert) itemEntry.invert = item.invert;
-            if (item.oilPaint) itemEntry.oilPaint = item.oilPaint;
-            if (item.sepia) itemEntry.sepia = item.sepia;
-
-            return itemEntry;
-        });
-}
 window.addEventListener("DOMContentLoaded", (event) => {
     var opts = {
         lines: 13, // The number of lines to draw
@@ -106,44 +50,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
     main();
 });
 
-function createItemListButton(item) {
-    const list = document.createElement("li");
-    const listBtn = document.createElement("button");
-    listBtn.setAttribute("class", "general_btn");
-    listBtn.innerText = item.name;
-    listBtn.value = item.id;
-    listBtn.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${item.id}/icon")`;
-    listBtn.style.backgroundRepeat = "no-repeat";
-    listBtn.addEventListener("click", (event) => {
-        setSelectedItem(event.target);
-    });
-    list.appendChild(listBtn);
-    return list;
-}
-function createEarListButton(item) {
-    const list = document.createElement("li");
-    const listBtn = document.createElement("button");
-    listBtn.setAttribute("class", "general_btn");
-    listBtn.innerText = item.name;
-    listBtn.value = item.id;
-    listBtn.addEventListener("click", (event) => {
-        setCharacterEar(event.target.value);
-    });
-    list.appendChild(listBtn);
-    return list;
-}
-function createSkinListButton(item) {
-    const list = document.createElement("li");
-    const listBtn = document.createElement("button");
-    listBtn.setAttribute("class", "general_btn");
-    listBtn.innerText = item.name;
-    listBtn.value = item.id;
-    listBtn.addEventListener("click", (event) => {
-        setCharacterSkin(event.target.value);
-    });
-    list.appendChild(listBtn);
-    return list;
-}
+window.setZoom = (value) => {
+    character.zoom = value;
+    refresh();
+};
 
 window.setTransparent = () => {
     delete character.selectedItems[selectedCategoryFlag];
@@ -164,77 +74,77 @@ window.showList = (event, category) => {
     switch (category) {
         case "FaceAccessory":
             FaceAccessory.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "EyeDecoration":
             EyeDecoration.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Earrings":
             Earrings.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Hat":
             Hat.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Top":
             Top.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Bottom":
             Bottom.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Face":
             Face.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Glove":
             Glove.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Hair":
             Hair.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Overall":
             Overall.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Shoes":
             Shoes.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Cape":
             Cape.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "weapon":
             weapon.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item), list_wrapper.children[0]);
+                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Ear":
             earList.forEach((item) => {
-                list_wrapper.appendChild(createEarListButton(item));
+                list_wrapper.appendChild(createEarListButton(item, setCharacterEar));
             });
             break;
         case "Skin":
             skinList.forEach((item) => {
-                list_wrapper.appendChild(createSkinListButton(item));
+                list_wrapper.appendChild(createSkinListButton(item, setCharacterSkin));
             });
             break;
         default:
@@ -260,7 +170,7 @@ function setSelectedItem(target) {
             break;
         case "EyeDecoration":
             character.selectedItems.EyeDecoration.id = target.value;
-            character.selectedItems.EyeDecoration.name = target.textContent
+            character.selectedItems.EyeDecoration.name = target.textContent;
             break;
         case "Earrings":
             character.selectedItems.Earrings.id = target.value;
@@ -271,10 +181,12 @@ function setSelectedItem(target) {
             character.selectedItems.Hat.name = target.textContent;
             break;
         case "Top":
+            delete character.selectedItems.Overall;
             character.selectedItems.Top.id = target.value;
             character.selectedItems.Top.name = target.textContent;
             break;
         case "Bottom":
+            delete character.selectedItems.Overall;
             character.selectedItems.Bottom.id = target.value;
             character.selectedItems.Bottom.name = target.textContent;
             break;
@@ -291,6 +203,8 @@ function setSelectedItem(target) {
             character.selectedItems.Hair.name = target.textContent;
             break;
         case "Overall":
+            delete character.selectedItems.Top;
+            delete character.selectedItems.Bottom;
             character.selectedItems.Overall.id = target.value;
             character.selectedItems.Overall.name = target.textContent;
             break;
@@ -302,6 +216,7 @@ function setSelectedItem(target) {
             character.selectedItems.Cape.id = target.value;
             character.selectedItems.Cape.name = target.textContent;
             break;
+
         default:
             break;
     }

@@ -1,4 +1,5 @@
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
+import { apiUrl, locale, version } from "../common/apiInfo.js";
 
 window.myfilter = function () {
     var input, filter, ul, li, a, i, txtValue;
@@ -22,9 +23,10 @@ function clearList() {
     document.getElementById("item_list").innerHTML = "";
 }
 
-window.filterSelection = function (event, c) {
+window.filterSelection = function (event, selectedFilter) {
     var x, i;
     clearList();
+    let once = false;
 
     let menuBtns = document.getElementsByClassName("top_menu_btn");
     for (i = 0; i < menuBtns.length; i++) {
@@ -33,12 +35,24 @@ window.filterSelection = function (event, c) {
     event.currentTarget.className += " active";
 
     x = document.getElementsByClassName("sub_menu_btn");
-    if (c == "all") c = "";
+    if (selectedFilter == "all") selectedFilter = "";
     for (i = 0; i < x.length; i++) {
         w3RemoveClass(x[i], "show");
-        if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+        if (x[i].className.indexOf(selectedFilter) > -1) {
+            if (!once) {
+                triggerClickEvent(x[i]);
+                once = true;
+            }
+            w3AddClass(x[i], "show");
+        }
     }
 };
+
+function triggerClickEvent(element) {
+    let event = document.createEvent("MouseEvents");
+    event.initEvent("click", false, true);
+    element.dispatchEvent(event);
+}
 
 function w3AddClass(element, name) {
     var i, arr1, arr2;
@@ -61,4 +75,42 @@ function w3RemoveClass(element, name) {
         }
     }
     element.className = arr1.join(" ");
+}
+
+export function createItemListButton(item, setSelectedItem) {
+    const list = document.createElement("li");
+    const listBtn = document.createElement("button");
+    listBtn.setAttribute("class", "general_btn");
+    listBtn.innerText = item.name;
+    listBtn.value = item.id;
+    listBtn.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${item.id}/icon")`;
+    listBtn.addEventListener("click", (event) => {
+        setSelectedItem(event.target);
+    });
+    list.appendChild(listBtn);
+    return list;
+}
+export function createEarListButton(item, setCharacterEar) {
+    const list = document.createElement("li");
+    const listBtn = document.createElement("button");
+    listBtn.setAttribute("class", "general_btn");
+    listBtn.innerText = item.name;
+    listBtn.value = item.id;
+    listBtn.addEventListener("click", (event) => {
+        setCharacterEar(event.target.value);
+    });
+    list.appendChild(listBtn);
+    return list;
+}
+export function createSkinListButton(item, setCharacterSkin) {
+    const list = document.createElement("li");
+    const listBtn = document.createElement("button");
+    listBtn.setAttribute("class", "general_btn");
+    listBtn.innerText = item.name;
+    listBtn.value = item.id;
+    listBtn.addEventListener("click", (event) => {
+        setCharacterSkin(event.target.value);
+    });
+    list.appendChild(listBtn);
+    return list;
 }

@@ -6,10 +6,9 @@
         <link rel="stylesheet" href="../common/spin.css">
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
-        <script src="../common/apiCall.js"></script>
         <script src="../common/spin.js"></script>
         <script type="module" src="./main.js"></script>
-        <script type="module" src="./menuManager.js"></script>
+        <!-- <script type="module" src="./menuManager.js"></script> -->
 
     </head>
     <body>
@@ -17,21 +16,29 @@
         <div id="canvas_wraper" class="canvas_wrapper" >
             <div id="character_area_wrapper_wrapper" class="character_area_wrapper_wrapper">
                 <div id="character_area_wrapper" class="character_area_wrapper">
-                    <img id="character_area" class="character_area"/>
+                    <img id="character_area" alt="Loading..." class="character_area"/>
+                </div>
+                <div id="character_area_bottom" class="character_area_bottom">
+                    <button onclick="setZoom(1)">1</button>
+                    <button onclick="setZoom(2)">2</button>
+                    <button onclick="setZoom(3)">3</button>
                 </div>
             </div>
             <div id="character_info" class="text_area">
+                <div id="character_Hair">-</div>
+                <div id="character_Skin">-</div>
+                <div id="character_Face">-</div>
                 <div id="character_FaceAccessory">-</div>
                 <div id="character_EyeDecoration">-</div>
+                <div id="character_Earrings">-</div>
                 <div id="character_Hat">-</div>
+                <div id="character_Overall">-</div>
                 <div id="character_Top">-</div>
                 <div id="character_Bottom">-</div>
-                <div id="character_Face">-</div>
                 <div id="character_Glove">-</div>
-                <div id="character_Hair">-</div>
-                <div id="character_Overall">-</div>
                 <div id="character_Shoes">-</div>
                 <div id="character_Cape">-</div>
+                <div id="character_weapon">-</div>
             </div>
         </div>
         <div id="menu_wrapper" class="menu_wrapper" >

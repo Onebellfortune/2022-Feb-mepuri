@@ -1,4 +1,4 @@
-function callAPI(url) {
+export function callAPI(url) {
     return $.ajax({
         url,
         type: "GET",

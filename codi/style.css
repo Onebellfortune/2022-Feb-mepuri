@@ -1,6 +1,6 @@
 :root {
     --basic-font-size: 13px;
-    --basic-btn-font-size: 20px;
+    --basic-btn-font-size: 16px;
     --menu-height:50px;
     --btn-height:70px;
 }
@@ -17,7 +17,7 @@ input{
     height:10%;
 }
 .canvas_wrapper {
-    display:flex;
+    display: flex;
     width:100%;
     height:30%;
 }
@@ -27,23 +27,30 @@ input{
 }
 
 .character_area_wrapper_wrapper {
-    display:flex;
-    float:left;
-    width:60%;
+    width: 70%;
 }
 .character_area_wrapper {
-    margin: auto;
+    background-color:lemonchiffon;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    height: calc(100% - 50px);
 }
 .character_area {
-    position:absolute;
+    /* max-width: 60%; */
+    /* max-height: 30%; */
+}
+.character_area_bottom {
+    text-align: center;
+    padding-bottom: 10px;
 }
 .text_area {
     font-size: var(--basic-font-size);
-    width:auto; 
-    float:right; 
+    text-align: center;
+    width:30%; 
+    background-color: antiquewhite;
+    padding: 15px;
 }
 
 .top_menu {
@@ -63,6 +70,7 @@ input{
 .sub_menu_wrapper {
     padding: 5px 5px 0 5px;
     background-color: cornflowerblue;
+    border-radius: 0 10px 10px 10px;
 }
 .sub_menu {
     height:var(--menu-height);
@@ -72,7 +80,8 @@ input{
     display:-webkit-box;
 }
 .filter_menu {
-    height:70px;
+    height:45px;
+    width: 100%;
     background-color:blueviolet;
     display:inline-flex;
 }
@@ -83,6 +92,7 @@ input{
     border-radius: 10px 10px 0 0;
     width: 70px;
 }
+
 .sub_menu_btn.active {
     background-color:darksalmon;
 }
@@ -99,8 +109,14 @@ input{
   }
   .general_btn {
     font-size: var(--basic-btn-font-size);
-    border: 0px;
     width:100%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 10px;
+    background-size: 50px;
+  }
+  .general_btn:hover{
+      background-color: #cdcdcd;
   }
   .item_list_wrapper {
     padding: 5px 5px 0 5px;
