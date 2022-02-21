@@ -12,16 +12,16 @@
 
     </head>
     <body>
-        <div id="top_area" class="top_area"></div>
+        <div id="top_area" class="top_area"> M E P U R I</div>
         <div id="canvas_wraper" class="canvas_wrapper" >
             <div id="character_area_wrapper_wrapper" class="character_area_wrapper_wrapper">
                 <div id="character_area_wrapper" class="character_area_wrapper">
                     <img id="character_area" alt="Loading..." class="character_area"/>
                 </div>
                 <div id="character_area_bottom" class="character_area_bottom">
-                    <button onclick="setZoom(1)">1</button>
-                    <button onclick="setZoom(2)">2</button>
-                    <button onclick="setZoom(3)">3</button>
+                    <button class="zoom_btn" onclick="setZoom(1)">1</button>
+                    <button class="zoom_btn" onclick="setZoom(2)">2</button>
+                    <button class="zoom_btn" onclick="setZoom(3)">3</button>
                 </div>
             </div>
             <div id="character_info" class="text_area">
@@ -68,8 +68,8 @@
                 <div id="item_list_wrapper" class="item_list_wrapper" >
                     <div id="filter_menu" class="filter_menu" >
                         <input class="input_search" type="text" id="myInput" onkeyup="myfilter()" placeholder="검색">
-                        <button id="btn_transparent" class="additional_btn" onclick="setTransparent()">투명</button>
-                        <button id="btn_transparent" class="additional_btn" onclick="scrollToTop()" >맨위로</button>
+                        <button id="btn_transparent" class="general_btn additional_btn" onclick="setTransparent()">투명</button>
+                        <button id="btn_transparent" class="general_btn additional_btn" onclick="scrollToTop()" >맨위로</button>
                     </div>
                     <div id="scroll_area" class="scroll_area">
                         <ul id="item_list" class="item_list"></ul>
@@ -78,6 +78,7 @@
             </div>
             
         </div>
+        <div id="footer" class="footer">@copyright MEPURI</div>
         
     </body>
     

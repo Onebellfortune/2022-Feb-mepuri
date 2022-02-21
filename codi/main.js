@@ -254,6 +254,15 @@ function setCharacterSkin(id) {
     character.selectedItems.Head.id = parseInt(id, 10) + 10000;
     refresh();
 }
+function getCharacterSkinName(id) {
+    let skinName = "-";
+    skinList.forEach((skin) => {
+        if (skin.id === id) {
+            skinName = skin.name;
+        }
+    });
+    return skinName;
+}
 
 function refresh() {
     document.getElementById("character_area").src = generateAvatarLink(character);
@@ -293,6 +302,11 @@ function setSelectedItemInfo(character) {
     document.getElementById("character_Cape").innerText = character.selectedItems.Cape
         ? character.selectedItems.Cape.name
         : "-";
+    document.getElementById("character_weapon").innerText = character.selectedItems.Cash
+        ? character.selectedItems.Cash.name
+        : "-";
+    document.getElementById("character_Skin").innerText = getCharacterSkinName(character.selectedItems.Body.id);
+    console.log(getCharacterSkinName(character.selectedItems.Body.id));
 }
 function getAllItemList() {
     return callAPI(`${apiUrl}/${locale}/${version}/item/category/Equip`).then((res) => {
@@ -326,7 +340,7 @@ function getAllItemList() {
                     }
                     break;
                 case "Glove":
-                    Glove.push(element);
+                    if (element.isCash) Glove.push(element);
                     break;
                 case "Hair":
                     if (element.name.indexOf("검은색") === 0) {
@@ -337,10 +351,10 @@ function getAllItemList() {
                     Overall.push(element);
                     break;
                 case "Shoes":
-                    Shoes.push(element);
+                    if (element.isCash) Shoes.push(element);
                     break;
                 case "Cape":
-                    Cape.push(element);
+                    if (element.isCash) Cape.push(element);
                     break;
                 case "Cash":
                 default:

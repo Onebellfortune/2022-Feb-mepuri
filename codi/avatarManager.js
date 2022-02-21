@@ -6,7 +6,7 @@ export function generateAvatarLink(character, linkType) {
     let backgroundColor = JSON.parse(localStorage["backgroundColor"] || false) || {
         hsl: { h: 0, s: 0, l: 0, a: 0 },
         hex: "transparent",
-        rgb: { r: 255, g: 250, b: 205, a: 255 },
+        rgb: { r: 248, g: 242, b: 255, a: 0.966 },
         hsv: { h: 0, s: 0, v: 0, a: 0 },
         oldHue: 0,
         source: "rgb",

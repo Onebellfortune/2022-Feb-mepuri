@@ -80,7 +80,11 @@ function w3RemoveClass(element, name) {
 export function createItemListButton(item, setSelectedItem) {
     const list = document.createElement("li");
     const listBtn = document.createElement("button");
-    listBtn.setAttribute("class", "general_btn");
+
+    if (item.typeInfo.subCategory === "Hair" || item.typeInfo.subCategory === "Face")
+        listBtn.setAttribute("class", "general_list_btn");
+    else listBtn.setAttribute("class", "general_list_btn height_fit");
+
     listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ""}`;
     listBtn.value = item.id;
     listBtn.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${item.id}/icon")`;
@@ -93,7 +97,7 @@ export function createItemListButton(item, setSelectedItem) {
 export function createEarListButton(item, setCharacterEar) {
     const list = document.createElement("li");
     const listBtn = document.createElement("button");
-    listBtn.setAttribute("class", "general_btn");
+    listBtn.setAttribute("class", "general_list_btn");
     listBtn.innerText = item.name;
     listBtn.value = item.id;
     listBtn.addEventListener("click", (event) => {
@@ -105,7 +109,7 @@ export function createEarListButton(item, setCharacterEar) {
 export function createSkinListButton(item, setCharacterSkin) {
     const list = document.createElement("li");
     const listBtn = document.createElement("button");
-    listBtn.setAttribute("class", "general_btn");
+    listBtn.setAttribute("class", "general_list_btn");
     listBtn.innerText = item.name;
     listBtn.value = item.id;
     listBtn.addEventListener("click", (event) => {
