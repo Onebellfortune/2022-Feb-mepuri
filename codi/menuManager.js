@@ -1,5 +1,5 @@
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
-import { apiUrl, locale, version } from "../common/apiInfo.js";
+import { apiUrl  } from "../common/apiInfo.js";
 
 window.myfilter = function () {
     var input, filter, ul, li, a, i, txtValue;
@@ -22,10 +22,13 @@ window.myfilter = function () {
 function clearList() {
     document.getElementById("item_list").innerHTML = "";
 }
-
+export function clearFilterInput() {
+    document.getElementById("myInput").value = "";
+}
 window.filterSelection = function (event, selectedFilter) {
     var x, i;
     clearList();
+    clearFilterInput();
     let once = false;
 
     let menuBtns = document.getElementsByClassName("top_menu_btn");
@@ -38,8 +41,13 @@ window.filterSelection = function (event, selectedFilter) {
     if (selectedFilter == "all") selectedFilter = "";
     for (i = 0; i < x.length; i++) {
         w3RemoveClass(x[i], "show");
-        if (x[i].className.indexOf(selectedFilter) > -1) {
+        if (selectedFilter === "") {
+            hiddenSubMenuPanel();
+            showSettingPanel();
+        } else if (x[i].className.indexOf(selectedFilter) > -1) {
             if (!once) {
+                hiddenSettingPanel();
+                showSubMenuPanel();
                 triggerClickEvent(x[i]);
                 once = true;
             }
@@ -48,7 +56,25 @@ window.filterSelection = function (event, selectedFilter) {
     }
 };
 
-function triggerClickEvent(element) {
+function showSettingPanel() {
+    document.getElementById("setting").style.display = "";
+}
+function hiddenSettingPanel() {
+    document.getElementById("setting").style.display = "none";
+}
+function hiddenSubMenuPanel() {
+    document.getElementById("item_list_wrapper").style.display = "none";
+}
+function showSubMenuPanel() {
+    document.getElementById("item_list_wrapper").style.display = "";
+}
+function createPanel(id, className) {
+    const panel = document.createElement("div");
+    panel.setAttribute("id", id);
+    panel.setAttribute("class", className);
+    return panel;
+}
+export function triggerClickEvent(element) {
     let event = document.createEvent("MouseEvents");
     event.initEvent("click", false, true);
     element.dispatchEvent(event);
@@ -87,7 +113,7 @@ export function createItemListButton(item, setSelectedItem) {
 
     listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ""}`;
     listBtn.value = item.id;
-    listBtn.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${item.id}/icon")`;
+    listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
     listBtn.addEventListener("click", (event) => {
         setSelectedItem(event.target);
     });

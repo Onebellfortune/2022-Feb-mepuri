@@ -3,8 +3,9 @@
     --basic-btn-font-size: 14px;
     --menu-height:50px;
     --btn-height:70px;
+    --menu-btn-width: 70px;
     --main-color: rgb(176, 165, 238);
-    --unselected-btn-color: rgba(209, 202, 214, 0.568);
+    --unselected-btn-color: rgba(211, 206, 214, 0.568);
     --selected-btn-color: rgb(191, 185, 226);
     --font-color: rgb(68, 59, 116);
     --selected-panel-1:  rgba(136, 122, 218, 0.925);
@@ -74,11 +75,14 @@ input{
     height:var(--menu-height);
 }
 .top_menu_btn {
-    width: 80px;
+    width: var(--menu-btn-width);
     font-size: var(--basic-btn-font-size);
     float: left;
     height: 100%;
     border-radius: 10px 10px 0 0;
+}
+.setting_btn{
+    color: white;
 }
 .top_menu_btn.active {
     background-color: var(--selected-panel-1);
@@ -92,7 +96,7 @@ input{
     height:var(--menu-height);
     background-color:var(--selected-panel-1);
     margin-left: 0;
-    overflow-x: scroll;
+    overflow-x: auto;
     display:-webkit-box;
 }
 .filter_menu {
@@ -100,13 +104,14 @@ input{
     width: 100%;
     display:inline-flex;
     justify-content: space-evenly;
+    padding-bottom: 5px;
 }
 .sub_menu_btn {
+    width: var(--menu-btn-width);
     font-size: var(--basic-btn-font-size);
     float: left;
     display:none;
     border-radius: 10px 10px 0 0;
-    width: 70px;
 }
 
 .sub_menu_btn.active {
@@ -119,6 +124,8 @@ input{
   .input_search{
       font-size: var(--basic-btn-font-size);
       width:60%;
+      border-radius: 10px;
+      padding: 10px;
   }
   .additional_btn {
     font-size: var(--basic-btn-font-size);
@@ -130,10 +137,10 @@ input{
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 10px;
-    background-size: 50px;
+    background-size: 44px;
   }
   .height_fit {
-    background-size: 44px;
+    background-size: 40px;
 
   }
   .general_list_btn:hover{
@@ -146,8 +153,8 @@ input{
     border-radius: 0px 0px 10px 10px;
 }
 .scroll_area{
-    overflow: scroll;
-    height:calc(100% - var(--menu-height));;
+    overflow: auto;
+    height:calc(100% - var(--menu-height) - 5px);
 }
   .item_list{
       padding-left:0px;
@@ -169,14 +176,32 @@ input{
   }
   .zoom_btn {
       border-radius: 20px;
-      width: 30px;
-      height: 30px;
+      width: 10px;
+      height: 10px;
       font-size: 10px;
-      line-height: 0px;;
-      text-align: center;
-      background-color: var(--unselected-btn-color);
+      background-color: rgb(221, 205, 252);
+  }
+  .setting_panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
   }
   .footer {
     font-size: var(--basic-font-size);
     color: var(--font-color);
+  }
+  .round_border {
+      border-radius: 10px;
+  }
+  .radio_style {
+      width: 20px;
+      height: 20px;
+      margin: 10px;
+  }
+  .radio_label_style {
+    color: rgb(194, 194, 194);
+    font-size: var(--basic-btn-font-size);
+    width: 70px;
   }

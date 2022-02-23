@@ -3,7 +3,6 @@ export function callAPI(url) {
         url,
         type: "GET",
         success: function (res) {
-            console.log(res);
             return res;
         },
         error: function () {},

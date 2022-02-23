@@ -19,9 +19,9 @@
                     <img id="character_area" alt="Loading..." class="character_area"/>
                 </div>
                 <div id="character_area_bottom" class="character_area_bottom">
-                    <button class="zoom_btn" onclick="setZoom(1)">1</button>
-                    <button class="zoom_btn" onclick="setZoom(2)">2</button>
-                    <button class="zoom_btn" onclick="setZoom(3)">3</button>
+                    <button class="zoom_btn" onclick="setZoom(1)"></button>
+                    <button class="zoom_btn" onclick="setZoom(2)"></button>
+                    <button class="zoom_btn" onclick="setZoom(3)"></button>
                 </div>
             </div>
             <div id="character_info" class="text_area">
@@ -46,6 +46,8 @@
                 <button class="top_menu_btn active" onclick="filterSelection(event, 'body')">외형</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'accessory')">악세</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'cloth')">장비</button>
+                <button class="top_menu_btn setting_btn" onclick="filterSelection(event, '')">설정</button>
+                <button class="general_btn additional_btn" onclick="initializeCharacter()" style="float:right; height:45px">초기화</button>
             </div>
             <div id="sub_menu_wrapper" class="sub_menu_wrapper">
                 <div id="sub_menu" class="sub_menu">
@@ -75,10 +77,17 @@
                         <ul id="item_list" class="item_list"></ul>
                     </div>
                 </div>
+                <div id="setting" class="item_list_wrapper round_border setting_panel"  style="display:none">
+                    <input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true" onclick="setAPIVersion('KMS')">
+                        <label for="KMS" class="radio_label_style" >본섭</label></input>
+                    <input id="KMST" class="radio_style" type="radio" name="server" value="KMST"onclick="setAPIVersion('KMST')">
+                        <label for="KMS" class="radio_label_style" >테섭</label></input>
+                </input>
+                </div>
             </div>
             
         </div>
-        <div id="footer" class="footer">@copyright MEPURI</div>
+        <div id="footer" class="footer">@copyright MEPURI V 0.5</div>
         
     </body>
     

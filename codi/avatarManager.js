@@ -6,7 +6,7 @@ export function generateAvatarLink(character, linkType) {
     let backgroundColor = JSON.parse(localStorage["backgroundColor"] || false) || {
         hsl: { h: 0, s: 0, l: 0, a: 0 },
         hex: "transparent",
-        rgb: { r: 248, g: 242, b: 255, a: 0.966 },
+        rgb: { r: 248, g: 242, b: 255, a: 255 },
         hsv: { h: 0, s: 0, v: 0, a: 0 },
         oldHue: 0,
         source: "rgb",
@@ -24,14 +24,16 @@ export function generateAvatarLink(character, linkType) {
         }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&name=${encodeURI(
             name || ""
         )}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
-    console.log(avatarLink);
 
     return avatarLink;
 }
 
 function getCharacterItemEntries(character) {
     return Object.values(character.selectedItems)
-        .filter((item) => item.id && (item.visible === undefined || item.visible))
+        .filter((item) => {
+            console.log(item);
+            return item.id && (item.visible === undefined || item.visible);
+        })
         .map((item) => {
             let itemEntry = {
                 itemId: Number(item.id),
