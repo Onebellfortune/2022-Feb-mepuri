@@ -31,7 +31,6 @@ export function generateAvatarLink(character, linkType) {
 function getCharacterItemEntries(character) {
     return Object.values(character.selectedItems)
         .filter((item) => {
-            console.log(item);
             return item.id && (item.visible === undefined || item.visible);
         })
         .map((item) => {

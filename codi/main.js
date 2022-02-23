@@ -366,7 +366,6 @@ function setSelectedItemInfo(character) {
         ? character.selectedItems.Cash.name
         : "-";
     document.getElementById("character_Skin").innerText = getCharacterSkinName(character.selectedItems.Body.id);
-    console.log(getCharacterSkinName(character.selectedItems.Body.id));
 }
 function getAllItemList() {
     let FaceName = [];
@@ -400,7 +399,9 @@ function getAllItemList() {
                     Bottom.push(element);
                     break;
                 case "Face":
-                    const tempName = `${element.name}${element.requiredGender === 0 ? "(남)" : element.requiredGender === 1 ? "(여)" : ""}`;
+                    const tempName = `${element.name}${
+                        element.requiredGender === 0 ? "(남)" : element.requiredGender === 1 ? "(여)" : ""
+                    }`;
                     if (FaceName.indexOf(tempName) < 0) {
                         Face.push(element);
                         FaceName.push(tempName);
@@ -446,6 +447,20 @@ function main() {
     spinner.spin();
     getAllItemList().then(() => {
         initializeCharacter();
+        console.log(`얼장: ${FaceAccessory.length}
+        눈장: ${EyeDecoration.length}
+        귀장: ${Earrings.length}
+        모자: ${Hat.length}
+        탑: ${Top.length}
+        하의: ${Bottom.length}
+        얼굴: ${Face.length}
+        장갑: ${Glove.length}
+        머리: ${Hair.length}
+        한벌: ${Overall.length}
+        신발: ${Shoes.length}
+        망토: ${Cape.length}
+        무기: ${Cash.length}
+        ${etc.length}`);
         triggerClickEvent(document.getElementsByClassName("sub_menu_btn")[0]);
         // cha tete
         // character.selectedItems.FaceAccessory.id = "1011006";

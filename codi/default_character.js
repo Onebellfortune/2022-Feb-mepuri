@@ -1,5 +1,5 @@
 export const character = {
-    animating: false,
+    animating: true,
     action: "stand1",
     frame: 0,
     mercEars: false,
@@ -13,7 +13,7 @@ export const character = {
         Body: {
             name: "Body",
             noIcon: true,
-            id: 2000,
+            id: 2016,
             region: "KMS",
             version: "360",
             typeInfo: {
@@ -27,7 +27,7 @@ export const character = {
         Head: {
             name: "Head",
             noIcon: true,
-            id: 12000,
+            id: 12016,
             region: "KMS",
             version: "360",
             typeInfo: {
