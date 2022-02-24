@@ -12,7 +12,7 @@ export const character = {
     selectedItems: {
         Body: {
             name: "Body",
-            noIcon: true,
+            noIcon: false,
             id: 2016,
             region: "KMS",
             version: "360",

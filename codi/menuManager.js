@@ -70,12 +70,6 @@ function hiddenSubMenuPanel() {
 function showSubMenuPanel() {
     document.getElementById("item_list_wrapper").style.display = "";
 }
-function createPanel(id, className) {
-    const panel = document.createElement("div");
-    panel.setAttribute("id", id);
-    panel.setAttribute("class", className);
-    return panel;
-}
 export function triggerClickEvent(element) {
     let event = document.createEvent("MouseEvents");
     event.initEvent("click", false, true);
@@ -116,7 +110,8 @@ export function createItemListButton(item, setSelectedItem) {
     listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ""}`;
     listBtn.value = item.id;
     listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
-    
+   
+
     // const iconUrl = `${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon`;
     // // errorURLList404.push(e);
     // if (errorURLList404.indexOf(iconUrl) < 0) {

@@ -132,6 +132,9 @@ window.showList = (event, category) => {
         menuBtns[i].className = menuBtns[i].className.replace(" active", "");
     }
     event.currentTarget.className += " active";
+    document.body.addEventListener("onload", (event) => {
+        console.log(`${event}`);
+    });
 
     switch (category) {
         case "FaceAccessory":
@@ -215,9 +218,9 @@ window.showList = (event, category) => {
 };
 
 function setSelectedItem(target) {
-    callAPI(`${apiUrl}/${_locale}/${_version}/item/${target.value}`).then((element) => {
-        console.log(element);
-    });
+    // callAPI(`${apiUrl}/${_locale}/${_version}/item/${target.value}`).then((element) => {
+    // console.log(element);
+    // });
     //     const subCategoryTrim = element.typeInfo.subCategory.replace(/ /gi, "");
     //     if (!character.selectedItems[subCategoryTrim]) {
     //         character.selectedItems[subCategoryTrim] = eval(subCategoryTrim)[0];
@@ -325,7 +328,9 @@ function getCharacterSkinName(id) {
 }
 
 function refresh() {
-    document.getElementById("character_area").setAttribute("src", generateAvatarLink(_character));
+    // document.getElementById("character_area").setAttribute("src", generateAvatarLink(_character));
+    fetch(generateAvatarLink(_character));
+    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(_character)}')`;
     setSelectedItemInfo(_character);
 }
 function setSelectedItemInfo(character) {
