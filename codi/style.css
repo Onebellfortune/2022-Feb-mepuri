@@ -141,7 +141,7 @@ input{
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 10px;
-    background-size: 44px;
+    background-size: 35px;
   }
   .height_fit {
     background-size: 40px;
@@ -190,7 +190,7 @@ input{
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
   }
   .footer {
     font-size: var(--basic-font-size);

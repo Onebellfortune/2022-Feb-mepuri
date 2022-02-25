@@ -39,3 +39,10 @@ export const skinList = [
     { category: "Skin", sub_category: "special", name: "스피넬", id: 2028, head_id: 12028 },
     { category: "Skin", sub_category: "special", name: "아메지스트", id: 2029, head_id: 12029 },
 ];
+
+export const HAIR_COLOR = {
+    BLACK: 0
+}
+export const LENS_COLOR = {
+    BLACK: 0
+}

@@ -22,7 +22,7 @@
                 <div id="character_area_bottom" class="character_area_bottom">
                     <button class="zoom_btn" onclick="setZoom(1)"></button>
                     <button class="zoom_btn" onclick="setZoom(2)"></button>
-                    <button class="zoom_btn" onclick="setZoom(3)"></button>
+                    <!-- <button class="zoom_btn" onclick="setZoom(3)"></button> -->
                 </div>
             </div>
             <div id="character_info" class="text_area">
@@ -48,7 +48,6 @@
                 <button class="top_menu_btn" onclick="filterSelection(event, 'accessory')">악세</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'cloth')">장비</button>
                 <button class="top_menu_btn setting_btn" onclick="filterSelection(event, '')">설정</button>
-                <button class="general_btn additional_btn" onclick="initializeCharacter()" style="float:right; height:45px">초기화</button>
             </div>
             <div id="sub_menu_wrapper" class="sub_menu_wrapper">
                 <div id="sub_menu" class="sub_menu">
@@ -71,18 +70,42 @@
                 <div id="item_list_wrapper" class="item_list_wrapper" >
                     <div id="filter_menu" class="filter_menu" >
                         <input class="input_search" type="text" id="myInput" onkeyup="myfilter()" placeholder="검색">
-                        <button id="btn_transparent" class="general_btn additional_btn" onclick="setTransparent()">투명</button>
                         <button id="btn_transparent" class="general_btn additional_btn" onclick="scrollToTop()" >맨위로</button>
+                        <button id="btn_transparent" class="general_btn additional_btn" onclick="setTransparent()">투명</button>
                     </div>
                     <div id="scroll_area" class="scroll_area">
                         <ul id="item_list" class="item_list"></ul>
                     </div>
                 </div>
                 <div id="setting" class="item_list_wrapper round_border setting_panel"  style="display:none">
-                    <input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true" onclick="setAPIVersion('KMS')">
+                    <button class="general_btn additional_btn" onclick="initializeCharacter()">캐릭터 초기화</button>
+                    <div>
+                        <button id="H0" style="background-color:black" onclick="setHairColor(0)"></button>
+                        <button id="H0" style="background-color:red" onclick="setHairColor(1)"></button>
+                        <button id="H0" style="background-color:orange" onclick="setHairColor(2)"></button>
+                        <button id="H0" style="background-color:yellow" onclick="setHairColor(3)"></button>
+                        <button id="H0" style="background-color:green" onclick="setHairColor(4)"></button>
+                        <button id="H0" style="background-color:blue" onclick="setHairColor(5)"></button>
+                        <button id="H0" style="background-color:purple" onclick="setHairColor(6)"></button>
+                        <button id="H0" style="background-color:chocolate" onclick="setHairColor(7)"></button>
+                    </div>
+                    <div>
+                        <button id="F0" style="background-color:black" onclick="setLensColor(0)"></button>
+                        <button id="F0" style="background-color:blue" onclick="setLensColor(1)"></button>
+                        <button id="F0" style="background-color:red" onclick="setLensColor(2)"></button>
+                        <button id="F0" style="background-color:green" onclick="setLensColor(3)"></button>
+                        <button id="F0" style="background-color:chocolate" onclick="setLensColor(4)"></button>
+                        <button id="F0" style="background-color:lightseagreen" onclick="setLensColor(5)"></button>
+                        <button id="F0" style="background-color:purple" onclick="setLensColor(6)"></button>
+                        <button id="F0" style="background-color:deeppink" onclick="setLensColor(7)"></button>
+                    </div>
+                   <div><div><input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true" onclick="setAPIVersion('KMS')">
                         <label for="KMS" class="radio_label_style" >본섭</label></input>
-                    <input id="KMST" class="radio_style" type="radio" name="server" value="KMST"onclick="setAPIVersion('KMST')">
+                        </div>
+                    <div><input id="KMST" class="radio_style" type="radio" name="server" value="KMST"onclick="setAPIVersion('KMST')">
                         <label for="KMS" class="radio_label_style" >테섭</label></input>
+                        </div>
+                        </div>
                 </input>
                 </div>
             </div>

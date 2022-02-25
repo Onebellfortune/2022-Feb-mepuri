@@ -107,10 +107,13 @@ export function createItemListButton(item, setSelectedItem) {
         listBtn.setAttribute("class", "general_list_btn");
     else listBtn.setAttribute("class", "general_list_btn height_fit");
 
-    listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ""}`;
+    if (item.typeInfo.subCategory === "Hair") {
+        listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
+    } else {
+        listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
+    }
     listBtn.value = item.id;
     listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
-   
 
     // const iconUrl = `${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon`;
     // // errorURLList404.push(e);

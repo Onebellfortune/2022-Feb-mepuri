@@ -15,7 +15,10 @@ let _version = version;
 let _locale = locale;
 let characterString = JSON.stringify(character);
 let _character = JSON.parse(characterString); // to deep copy
+
 let selectedCategoryFlag = "";
+let selectedHairColor = 0;
+let selectedLensColor = 0;
 let spinner;
 let FaceAccessory = [];
 let EyeDecoration = [];
@@ -91,6 +94,22 @@ window.initializeCharacter = () => {
     setCharacterAPIVersion(_locale, _version);
     refresh();
 };
+window.setHairColor = function (num) {
+    selectedHairColor = num;
+    _character.selectedItems.Hair.id = getHairIdAsColor(_character.selectedItems.Hair.id, num);
+    refresh();
+};
+window.setLensColor = function (num) {
+    selectedLensColor = num;
+    _character.selectedItems.Face.id = getFaceIdAsColor(_character.selectedItems.Face.id.toString(), num);
+    refresh();
+};
+function getHairIdAsColor(id, num) {
+    return `${parseInt(parseInt(id, 10) / 10, 10)}${num}`;
+}
+function getFaceIdAsColor(id, num) {
+    return `${id.slice(0, 2)}${num}${id.slice(3)}`;
+}
 function setCharacterAPIVersion(_locale, _version) {
     if (_locale === "KMS") {
         delete _character.selectedItems.Hat;
@@ -257,7 +276,7 @@ function setSelectedItem(target) {
             _character.selectedItems.Bottom.name = target.textContent;
             break;
         case "Face":
-            _character.selectedItems.Face.id = target.value;
+            _character.selectedItems.Face.id = getFaceIdAsColor(target.value.toString(), selectedLensColor);
             _character.selectedItems.Face.name = target.textContent;
             break;
         case "Glove":
@@ -265,7 +284,7 @@ function setSelectedItem(target) {
             _character.selectedItems.Glove.name = target.textContent;
             break;
         case "Hair":
-            _character.selectedItems.Hair.id = target.value;
+            _character.selectedItems.Hair.id = getHairIdAsColor(target.value, selectedHairColor);
             _character.selectedItems.Hair.name = target.textContent;
             break;
         case "Overall":
@@ -329,8 +348,12 @@ function getCharacterSkinName(id) {
 
 function refresh() {
     // document.getElementById("character_area").setAttribute("src", generateAvatarLink(_character));
-    fetch(generateAvatarLink(_character));
-    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(_character)}')`;
+    // fetch(generateAvatarLink(_character));
+    const _characterNotanimated = JSON.parse(JSON.stringify(_character));
+    _characterNotanimated.animating = false;
+    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(
+        _character
+    )}'), url('${generateAvatarLink(_characterNotanimated)}')`;
     setSelectedItemInfo(_character);
 }
 function setSelectedItemInfo(character) {
@@ -404,12 +427,10 @@ function getAllItemList() {
                     Bottom.push(element);
                     break;
                 case "Face":
-                    const tempName = `${element.name}${
-                        element.requiredGender === 0 ? "(남)" : element.requiredGender === 1 ? "(여)" : ""
-                    }`;
-                    if (FaceName.indexOf(tempName) < 0) {
+                    const numOfId = parseInt(element.id, 10);
+                    const thirdNum = parseInt((numOfId / 100) % 10, 10);
+                    if (thirdNum === 0) {
                         Face.push(element);
-                        FaceName.push(tempName);
                     }
                     break;
                 case "Glove":
@@ -417,7 +438,7 @@ function getAllItemList() {
                     break;
                 case "Hair":
                     if (element.name.indexOf("검은색 ") === 0) {
-                        element.name.replace("검은색", "");
+                        element.name = element.name.slice(4);
                         Hair.push(element);
                     }
                     break;
