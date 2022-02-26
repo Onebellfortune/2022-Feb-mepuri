@@ -78,40 +78,40 @@
                     </div>
                 </div>
                 <div id="setting" class="item_list_wrapper round_border setting_panel"  style="display:none">
-                    <button class="general_btn additional_btn" onclick="initializeCharacter()">캐릭터 초기화</button>
-                    <div>
-                        <button id="H0" style="background-color:black" onclick="setHairColor(0)"></button>
-                        <button id="H0" style="background-color:red" onclick="setHairColor(1)"></button>
-                        <button id="H0" style="background-color:orange" onclick="setHairColor(2)"></button>
-                        <button id="H0" style="background-color:yellow" onclick="setHairColor(3)"></button>
-                        <button id="H0" style="background-color:green" onclick="setHairColor(4)"></button>
-                        <button id="H0" style="background-color:blue" onclick="setHairColor(5)"></button>
-                        <button id="H0" style="background-color:purple" onclick="setHairColor(6)"></button>
-                        <button id="H0" style="background-color:chocolate" onclick="setHairColor(7)"></button>
+                    <button class="general_btn additional_btn" style="height:50px;width:100px" onclick="initializeCharacter()">캐릭터 초기화</button>
+                    <div id="hair_color_chips" class="setting_option_wrapper">
+                        <label class="radio_label_style">헤어</label>
+                        <button id="H0" class="color_chip active" style="background-color:black" onclick="setHairColor(event, 0)"></button>
+                        <button id="H1" class="color_chip" style="background-color:rgb(206, 2, 2)" onclick="setHairColor(event, 1)"></button>
+                        <button id="H2" class="color_chip" style="background-color:orangered" onclick="setHairColor(event, 2)"></button>
+                        <button id="H3" class="color_chip" style="background-color:rgb(255, 196, 0)" onclick="setHairColor(event, 3)"></button>
+                        <button id="H4" class="color_chip" style="background-color:green" onclick="setHairColor(event, 4)"></button>
+                        <button id="H5" class="color_chip" style="background-color:rgb(0, 47, 255)" onclick="setHairColor(event, 5)"></button>
+                        <button id="H6" class="color_chip" style="background-color:rgb(77, 0, 128)" onclick="setHairColor(event, 6)"></button>
+                        <button id="H7" class="color_chip" style="background-color:rgb(126, 52, 0)" onclick="setHairColor(event, 7)"></button>
                     </div>
-                    <div>
-                        <button id="F0" style="background-color:black" onclick="setLensColor(0)"></button>
-                        <button id="F0" style="background-color:blue" onclick="setLensColor(1)"></button>
-                        <button id="F0" style="background-color:red" onclick="setLensColor(2)"></button>
-                        <button id="F0" style="background-color:green" onclick="setLensColor(3)"></button>
-                        <button id="F0" style="background-color:chocolate" onclick="setLensColor(4)"></button>
-                        <button id="F0" style="background-color:lightseagreen" onclick="setLensColor(5)"></button>
-                        <button id="F0" style="background-color:purple" onclick="setLensColor(6)"></button>
-                        <button id="F0" style="background-color:deeppink" onclick="setLensColor(7)"></button>
+                    <div id="face_color_chips" class="setting_option_wrapper">
+                        <label class="radio_label_style">렌즈</label>
+                        <button id="F0" class="color_chip active" style="background-color:black" onclick="setLensColor(0)"></button>
+                        <button id="F1" class="color_chip" style="background-color:blue" onclick="setLensColor(1)"></button>
+                        <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)" onclick="setLensColor(2)"></button>
+                        <button id="F3" class="color_chip" style="background-color:green" onclick="setLensColor(3)"></button>
+                        <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)" onclick="setLensColor(4)"></button>
+                        <button id="F5" class="color_chip" style="background-color:lightseagreen" onclick="setLensColor(5)"></button>
+                        <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)" onclick="setLensColor(6)"></button>
+                        <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)" onclick="setLensColor(7)"></button>
                     </div>
-                   <div><div><input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true" onclick="setAPIVersion('KMS')">
+                   <div class="setting_option_wrapper">
+                        <input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true" onclick="setAPIVersion('KMS')">
                         <label for="KMS" class="radio_label_style" >본섭</label></input>
-                        </div>
-                    <div><input id="KMST" class="radio_style" type="radio" name="server" value="KMST"onclick="setAPIVersion('KMST')">
+                        <input id="KMST" class="radio_style" type="radio" name="server" value="KMST" onclick="setAPIVersion('KMST')">
                         <label for="KMS" class="radio_label_style" >테섭</label></input>
-                        </div>
-                        </div>
-                </input>
+                    </div>
                 </div>
             </div>
             
         </div>
-        <div id="footer" class="footer">@copyright MEPURI V 0.51</div>
+        <div id="footer" class="footer">@copyright MEPURI V 0.52</div>
         
     </body>
     

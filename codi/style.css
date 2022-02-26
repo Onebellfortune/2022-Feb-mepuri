@@ -209,3 +209,21 @@ input{
     font-size: var(--basic-btn-font-size);
     width: 70px;
   }
+  .color_chip {
+    border-radius: 5px;
+    box-shadow: inset 0px 0px 0px 1px var(--canvas-color);
+    margin-left: 3px;
+  }
+  .color_chip.active {
+    box-shadow: inset 0px 0px 0px 3px var(--canvas-color);
+  }
+  .setting_option_wrapper {
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px;
+    box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.295);
+
+      height: 40px;
+      display: flex;
+    align-items: center;
+  }

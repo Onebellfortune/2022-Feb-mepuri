@@ -94,12 +94,24 @@ window.initializeCharacter = () => {
     setCharacterAPIVersion(_locale, _version);
     refresh();
 };
-window.setHairColor = function (num) {
+window.setHairColor = function (event, num) {
+    let colorBtns = document.getElementById("hair_color_chips").children;
+    for (let i = 0; i < colorBtns.length; i++) {
+        colorBtns[i].className = colorBtns[i].className.replace(" active", "");
+    }
+    event.currentTarget.className += " active";
+
     selectedHairColor = num;
     _character.selectedItems.Hair.id = getHairIdAsColor(_character.selectedItems.Hair.id, num);
     refresh();
 };
 window.setLensColor = function (num) {
+    let colorBtns = document.getElementById("face_color_chips").children;
+    for (let i = 0; i < colorBtns.length; i++) {
+        colorBtns[i].className = colorBtns[i].className.replace(" active", "");
+    }
+    event.currentTarget.className += " active";
+
     selectedLensColor = num;
     _character.selectedItems.Face.id = getFaceIdAsColor(_character.selectedItems.Face.id.toString(), num);
     refresh();
