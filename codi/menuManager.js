@@ -46,8 +46,10 @@ window.filterSelection = function (event, selectedFilter) {
         if (selectedFilter === "") {
             hiddenSubMenuPanel();
             showSettingPanel();
+            document.getElementById("sub_menu_wrapper").className = "sub_menu_wrapper right";
         } else if (x[i].className.indexOf(selectedFilter) > -1) {
             if (!once) {
+                document.getElementById("sub_menu_wrapper").className = "sub_menu_wrapper";
                 hiddenSettingPanel();
                 showSubMenuPanel();
                 triggerClickEvent(x[i]);

@@ -1,7 +1,7 @@
 :root {
     --basic-font-size: 13px;
     --basic-btn-font-size: 14px;
-    --menu-height:50px;
+    --menu-height:45px;
     --btn-height:70px;
     --menu-btn-width: 70px;
     --main-color: rgb(176, 165, 238);
@@ -10,7 +10,7 @@
     --font-color: rgb(68, 59, 116);
     --selected-panel-1:  rgba(136, 122, 218, 0.925);
     --selected-panel-2:  rgb(86, 77, 138);
-    --canvas-color:rgba(248, 242, 255, 0.966);
+    --canvas-color:rgba(248, 242, 255, 1);
 }
 body{
     margin:10px 10px 50px 10px;
@@ -20,12 +20,16 @@ input{
     margin:0;
     border:0;
 }
+ul{
+    margin:0;
+}
 /* out-line */
 .top_area {
     width:100%;
     height:10%;
-    text-align: center;
-    line-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--font-color)
 }
 .canvas_wrapper {
@@ -67,11 +71,13 @@ input{
 }
 .text_area {
     font-size: var(--basic-font-size);
-    text-align: center;
+    text-align: left;
     width:30%; 
     /* background-color: antiquewhite; */
     padding: 15px;
-    color: var(--font-color)
+    color: var(--font-color);
+    overflow: auto;
+    white-space: nowrap;
 }
 
 .top_menu {
@@ -95,6 +101,9 @@ input{
     padding: 5px 5px 5px 5px;
     background-color: var(--selected-panel-1);
     border-radius: 0 10px 10px 10px;
+}
+.sub_menu_wrapper.right {
+    border-radius: 10px 0px 10px 10px;
 }
 .sub_menu {
     height:var(--menu-height);
@@ -144,7 +153,7 @@ input{
     background-size: 35px;
   }
   .height_fit {
-    background-size: 40px;
+    background-size: 30px;
 
   }
   .general_list_btn:hover{
@@ -158,7 +167,7 @@ input{
 }
 .scroll_area{
     overflow: auto;
-    height:calc(100% - var(--menu-height) - 5px);
+    height:calc(100% - var(--menu-height) - 10px);
 }
   .item_list{
       padding-left:0px;
@@ -184,13 +193,15 @@ input{
       height: 10px;
       font-size: 10px;
       background-color: rgb(221, 205, 252);
+      background-repeat: no-repeat;
+      background-position: 50%;
   }
   .setting_panel {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
     flex-direction: column;
+    overflow: scroll;
   }
   .footer {
     font-size: var(--basic-font-size);

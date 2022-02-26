@@ -10,6 +10,7 @@ import {
     createSkinListButton,
 } from "./menuManager.js";
 import { callAPI } from "../common/apiCall.js";
+import { FaceAccessoryVisibleData } from "./data/face_accessory.js";
 
 let _version = version;
 let _locale = locale;
@@ -249,9 +250,6 @@ window.showList = (event, category) => {
 };
 
 function setSelectedItem(target) {
-    // callAPI(`${apiUrl}/${_locale}/${_version}/item/${target.value}`).then((element) => {
-    // console.log(element);
-    // });
     //     const subCategoryTrim = element.typeInfo.subCategory.replace(/ /gi, "");
     //     if (!character.selectedItems[subCategoryTrim]) {
     //         character.selectedItems[subCategoryTrim] = eval(subCategoryTrim)[0];
@@ -260,62 +258,72 @@ function setSelectedItem(target) {
         _character.selectedItems[selectedCategoryFlag] = eval(selectedCategoryFlag)[0];
     }
 
+    function findVisibleData(id) {
+        let value = true;
+        FaceAccessoryVisibleData.find((object) => {
+            if (object.id === id) {
+                value = object.isVisibleFace;
+            }
+        });
+        return value;
+    }
     switch (selectedCategoryFlag) {
         case "FaceAccessory":
             _character.selectedItems.FaceAccessory.id = target.value;
-            _character.selectedItems.FaceAccessory.name = target.textContent;
+            _character.selectedItems.FaceAccessory.name = "🤡 " + target.textContent;
+            _character.selectedItems.Face.visible = findVisibleData(target.value);
             break;
         case "EyeDecoration":
             _character.selectedItems.EyeDecoration.id = target.value;
-            _character.selectedItems.EyeDecoration.name = target.textContent;
+            _character.selectedItems.EyeDecoration.name = "👓 " + target.textContent;
             break;
         case "Earrings":
             _character.selectedItems.Earrings.id = target.value;
-            _character.selectedItems.Earrings.name = target.textContent;
+            _character.selectedItems.Earrings.name = "👂 " + target.textContent;
             break;
         case "Hat":
             _character.selectedItems.Hat.id = target.value;
-            _character.selectedItems.Hat.name = target.textContent;
+            _character.selectedItems.Hat.name = "🧢 " + target.textContent;
             break;
         case "Top":
             delete _character.selectedItems.Overall;
             _character.selectedItems.Top.id = target.value;
-            _character.selectedItems.Top.name = target.textContent;
+            _character.selectedItems.Top.name = "👕 " + target.textContent;
             break;
         case "Bottom":
             delete _character.selectedItems.Overall;
             _character.selectedItems.Bottom.id = target.value;
-            _character.selectedItems.Bottom.name = target.textContent;
+            _character.selectedItems.Bottom.name = "👖 " + target.textContent;
             break;
         case "Face":
             _character.selectedItems.Face.id = getFaceIdAsColor(target.value.toString(), selectedLensColor);
-            _character.selectedItems.Face.name = target.textContent;
+            _character.selectedItems.Face.name = "👀 " + target.textContent;
             break;
         case "Glove":
             _character.selectedItems.Glove.id = target.value;
-            _character.selectedItems.Glove.name = target.textContent;
+            _character.selectedItems.Glove.name = "🧤 " + target.textContent;
             break;
         case "Hair":
             _character.selectedItems.Hair.id = getHairIdAsColor(target.value, selectedHairColor);
-            _character.selectedItems.Hair.name = target.textContent;
+            _character.selectedItems.Hair.name = "💇🏻‍♀ " + target.textContent;
             break;
         case "Overall":
             delete _character.selectedItems.Top;
             delete _character.selectedItems.Bottom;
             _character.selectedItems.Overall.id = target.value;
-            _character.selectedItems.Overall.name = target.textContent;
+            _character.selectedItems.Overall.name = "👗 " + target.textContent;
             break;
         case "Shoes":
             _character.selectedItems.Shoes.id = target.value;
-            _character.selectedItems.Shoes.name = target.textContent;
+            _character.selectedItems.Shoes.name = "👟 " + target.textContent;
             break;
         case "Cape":
             _character.selectedItems.Cape.id = target.value;
-            _character.selectedItems.Cape.name = target.textContent;
+            _character.selectedItems.Cape.name = "🎒 " + target.textContent;
             break;
         case "Cash":
             _character.selectedItems.Cash.id = target.value;
-            _character.selectedItems.Cash.name = target.textContent;
+            _character.selectedItems.Cash.name = "🔫 " + target.textContent;
             break;
         default:
             break;
@@ -405,6 +413,9 @@ function setSelectedItemInfo(character) {
     document.getElementById("character_weapon").innerText = character.selectedItems.Cash
         ? character.selectedItems.Cash.name
         : "-";
+    document.getElementById("character_Earrings").innerText = character.selectedItems.Earrings
+        ? character.selectedItems.Earrings.name
+        : "-";
     document.getElementById("character_Skin").innerText = getCharacterSkinName(character.selectedItems.Body.id);
 }
 function getAllItemList() {
@@ -421,6 +432,8 @@ function getAllItemList() {
                     if (FaceAccName.indexOf(element.name) < 0) {
                         FaceAccessory.push(element);
                         FaceAccName.push(element.name);
+                    } else {
+                        console.log(element.name);
                     }
                     break;
                 case "Eye Decoration":

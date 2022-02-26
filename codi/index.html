@@ -20,8 +20,8 @@
                     <!-- <img id="character_area" alt="Loading..." class="character_area"/> -->
                 </div>
                 <div id="character_area_bottom" class="character_area_bottom">
-                    <button class="zoom_btn" onclick="setZoom(1)"></button>
-                    <button class="zoom_btn" onclick="setZoom(2)"></button>
+                    <button class="zoom_btn" style="background-image:url('1.png')" onclick="setZoom(1)"></button>
+                    <button class="zoom_btn" style="background-image:url('2.png')" onclick="setZoom(2)"></button>
                     <!-- <button class="zoom_btn" onclick="setZoom(3)"></button> -->
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <button class="top_menu_btn active" onclick="filterSelection(event, 'body')">외형</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'accessory')">악세</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'cloth')">장비</button>
-                <button class="top_menu_btn setting_btn" onclick="filterSelection(event, '')">설정</button>
+                <button class="top_menu_btn setting_btn" style="float:right" onclick="filterSelection(event, '')">설정</button>
             </div>
             <div id="sub_menu_wrapper" class="sub_menu_wrapper">
                 <div id="sub_menu" class="sub_menu">
@@ -111,7 +111,7 @@
             </div>
             
         </div>
-        <div id="footer" class="footer">@copyright MEPURI V 0.52</div>
+        <div id="footer" class="footer">@copyright MEPURI 2022 V 0.53</div>
         
     </body>
     

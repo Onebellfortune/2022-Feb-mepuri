@@ -3,7 +3,7 @@ import { apiUrl, version, locale } from "../common/apiInfo.js";
 export function generateAvatarLink(character, linkType) {
     let itemEntries = getCharacterItemEntries(character);
 
-    let backgroundColor = JSON.parse(localStorage["backgroundColor"] || false) || {
+    let backgroundColor = {
         hsl: { h: 0, s: 0, l: 0, a: 0 },
         hex: "transparent",
         rgb: { r: 248, g: 242, b: 255, a: 255 },
