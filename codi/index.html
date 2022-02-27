@@ -1,19 +1,21 @@
 <html>
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./style.css">
         <link rel="stylesheet" href="../common/spin.css">
 
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="../common/spin.js"></script>
         <script type="module" src="./main.js"></script>
         <!-- <script type="module" src="./menuManager.js"></script> -->
 
     </head>
+
     <body>
         <div id="top_area" class="top_area"> M E P U R I</div>
-        <div id="canvas_wraper" class="canvas_wrapper" >
+        <div id="canvas_wraper" class="canvas_wrapper">
             <div id="character_area_wrapper_wrapper" class="character_area_wrapper_wrapper">
                 <div id="character_area_wrapper" class="character_area_wrapper">
                     <div id="character_area" class="character_area" importance="high"></div>
@@ -42,18 +44,19 @@
                 <div id="character_weapon">-</div>
             </div>
         </div>
-        <div id="menu_wrapper" class="menu_wrapper" >
+        <div id="menu_wrapper" class="menu_wrapper">
             <div id="top_menu" class="top_menu">
                 <button class="top_menu_btn active" onclick="filterSelection(event, 'body')">외형</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'accessory')">악세</button>
                 <button class="top_menu_btn" onclick="filterSelection(event, 'cloth')">장비</button>
-                <button class="top_menu_btn setting_btn" style="float:right" onclick="filterSelection(event, '')">설정</button>
+                <button class="top_menu_btn setting_btn" style="float:right"
+                    onclick="filterSelection(event, '')">설정</button>
             </div>
             <div id="sub_menu_wrapper" class="sub_menu_wrapper">
                 <div id="sub_menu" class="sub_menu">
                     <button class="sub_menu_btn show active body" onclick="showList(event, 'Hair')">헤어</button>
                     <button class="sub_menu_btn show body" onclick="showList(event, 'Skin')">피부</button>
-                    <button class="sub_menu_btn show body"  onclick="showList(event, 'Face')">성형</button>
+                    <button class="sub_menu_btn show body" onclick="showList(event, 'Face')">성형</button>
                     <button class="sub_menu_btn show body" onclick="showList(event, 'Ear')">귀</button>
                     <button class="sub_menu_btn accessory" onclick="showList(event, 'FaceAccessory')">얼장</button>
                     <button class="sub_menu_btn accessory" onclick="showList(event, 'EyeDecoration')">눈장</button>
@@ -64,55 +67,76 @@
                     <button class="sub_menu_btn cloth" onclick="showList(event, 'Bottom')">하의</button>
                     <button class="sub_menu_btn cloth" onclick="showList(event, 'Glove')">장갑</button>
                     <button class="sub_menu_btn cloth" onclick="showList(event, 'Shoes')">신발</button>
-                    <button class="sub_menu_btn cloth"  onclick="showList(event, 'Cape')">망토</button>
+                    <button class="sub_menu_btn cloth" onclick="showList(event, 'Cape')">망토</button>
                     <button class="sub_menu_btn cloth" onclick="showList(event, 'Cash')">무기</button>
-                </div>    
-                <div id="item_list_wrapper" class="item_list_wrapper" >
-                    <div id="filter_menu" class="filter_menu" >
+                </div>
+                <div id="item_list_wrapper" class="item_list_wrapper">
+                    <div id="filter_menu" class="filter_menu">
                         <input class="input_search" type="text" id="myInput" onkeyup="myfilter()" placeholder="검색">
-                        <button id="btn_transparent" class="general_btn additional_btn" onclick="scrollToTop()" >맨위로</button>
-                        <button id="btn_transparent" class="general_btn additional_btn" onclick="setTransparent()">투명</button>
+                        <button id="btn_transparent" class="general_btn additional_btn"
+                            onclick="scrollToTop()">맨위로</button>
+                        <button id="btn_transparent" class="general_btn additional_btn"
+                            onclick="setTransparent()">투명</button>
                     </div>
                     <div id="scroll_area" class="scroll_area">
                         <ul id="item_list" class="item_list"></ul>
                     </div>
                 </div>
-                <div id="setting" class="item_list_wrapper round_border setting_panel"  style="display:none">
-                    <button class="general_btn additional_btn" style="height:50px;width:100px" onclick="initializeCharacter()">캐릭터 초기화</button>
+                <div id="setting" class="item_list_wrapper round_border setting_panel" style="display:none">
+                    <button class="general_btn additional_btn" style="height:50px;width:100px"
+                        onclick="initializeCharacter()">캐릭터 초기화</button>
                     <div id="hair_color_chips" class="setting_option_wrapper">
                         <label class="radio_label_style">헤어</label>
-                        <button id="H0" class="color_chip active" style="background-color:black" onclick="setHairColor(event, 0)"></button>
-                        <button id="H1" class="color_chip" style="background-color:rgb(206, 2, 2)" onclick="setHairColor(event, 1)"></button>
-                        <button id="H2" class="color_chip" style="background-color:orangered" onclick="setHairColor(event, 2)"></button>
-                        <button id="H3" class="color_chip" style="background-color:rgb(255, 196, 0)" onclick="setHairColor(event, 3)"></button>
-                        <button id="H4" class="color_chip" style="background-color:green" onclick="setHairColor(event, 4)"></button>
-                        <button id="H5" class="color_chip" style="background-color:rgb(0, 47, 255)" onclick="setHairColor(event, 5)"></button>
-                        <button id="H6" class="color_chip" style="background-color:rgb(77, 0, 128)" onclick="setHairColor(event, 6)"></button>
-                        <button id="H7" class="color_chip" style="background-color:rgb(126, 52, 0)" onclick="setHairColor(event, 7)"></button>
+                        <button id="H0" class="color_chip active" style="background-color:black"
+                            onclick="setHairColor(event, 0)"></button>
+                        <button id="H1" class="color_chip" style="background-color:rgb(206, 2, 2)"
+                            onclick="setHairColor(event, 1)"></button>
+                        <button id="H2" class="color_chip" style="background-color:orangered"
+                            onclick="setHairColor(event, 2)"></button>
+                        <button id="H3" class="color_chip" style="background-color:rgb(255, 196, 0)"
+                            onclick="setHairColor(event, 3)"></button>
+                        <button id="H4" class="color_chip" style="background-color:green"
+                            onclick="setHairColor(event, 4)"></button>
+                        <button id="H5" class="color_chip" style="background-color:rgb(0, 47, 255)"
+                            onclick="setHairColor(event, 5)"></button>
+                        <button id="H6" class="color_chip" style="background-color:rgb(77, 0, 128)"
+                            onclick="setHairColor(event, 6)"></button>
+                        <button id="H7" class="color_chip" style="background-color:rgb(126, 52, 0)"
+                            onclick="setHairColor(event, 7)"></button>
                     </div>
                     <div id="face_color_chips" class="setting_option_wrapper">
                         <label class="radio_label_style">렌즈</label>
-                        <button id="F0" class="color_chip active" style="background-color:black" onclick="setLensColor(0)"></button>
-                        <button id="F1" class="color_chip" style="background-color:blue" onclick="setLensColor(1)"></button>
-                        <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)" onclick="setLensColor(2)"></button>
-                        <button id="F3" class="color_chip" style="background-color:green" onclick="setLensColor(3)"></button>
-                        <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)" onclick="setLensColor(4)"></button>
-                        <button id="F5" class="color_chip" style="background-color:lightseagreen" onclick="setLensColor(5)"></button>
-                        <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)" onclick="setLensColor(6)"></button>
-                        <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)" onclick="setLensColor(7)"></button>
+                        <button id="F0" class="color_chip active" style="background-color:black"
+                            onclick="setLensColor(0)"></button>
+                        <button id="F1" class="color_chip" style="background-color:blue"
+                            onclick="setLensColor(1)"></button>
+                        <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)"
+                            onclick="setLensColor(2)"></button>
+                        <button id="F3" class="color_chip" style="background-color:green"
+                            onclick="setLensColor(3)"></button>
+                        <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)"
+                            onclick="setLensColor(4)"></button>
+                        <button id="F5" class="color_chip" style="background-color:lightseagreen"
+                            onclick="setLensColor(5)"></button>
+                        <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)"
+                            onclick="setLensColor(6)"></button>
+                        <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)"
+                            onclick="setLensColor(7)"></button>
                     </div>
-                   <div class="setting_option_wrapper">
-                        <input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true" onclick="setAPIVersion('KMS')">
-                        <label for="KMS" class="radio_label_style" >본섭</label></input>
-                        <input id="KMST" class="radio_style" type="radio" name="server" value="KMST" onclick="setAPIVersion('KMST')">
-                        <label for="KMS" class="radio_label_style" >테섭</label></input>
+                    <div class="setting_option_wrapper">
+                        <input id="KMS" class="radio_style" type="radio" name="server" value="KMS" checked="true"
+                            onclick="setAPIVersion('KMS')">
+                        <label for="KMS" class="radio_label_style">본섭</label></input>
+                        <input id="KMST" class="radio_style" type="radio" name="server" value="KMST"
+                            onclick="setAPIVersion('KMST')">
+                        <label for="KMS" class="radio_label_style">테섭</label></input>
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <div id="footer" class="footer">@copyright MEPURI 2022 V 0.53</div>
-        
+
     </body>
-    
+
 </html>
