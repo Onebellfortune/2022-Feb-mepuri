@@ -1,0 +1,35 @@
+.setting_panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: scroll;
+}
+.radio_style {
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+}
+.radio_label_style {
+    color: rgb(194, 194, 194);
+    font-size: var(--basic-btn-font-size);
+    width: 70px;
+}
+.color_chip {
+    border-radius: 5px;
+    box-shadow: inset 0px 0px 0px 1px var(--canvas-color);
+    margin-left: 3px;
+}
+.color_chip.active {
+    box-shadow: inset 0px 0px 0px 3px var(--canvas-color);
+}
+.setting_option_wrapper {
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.295);
+
+    height: 40px;
+    display: flex;
+    align-items: center;
+}

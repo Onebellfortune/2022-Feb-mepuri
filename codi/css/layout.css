@@ -1,0 +1,26 @@
+/* out-line */
+.top_area {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--font-color);
+}
+.canvas_wrapper {
+    height: 30%;
+    display: flex;
+    width: 100%;
+    background-color: var(--canvas-color);
+    border-radius: 10px;
+    margin: 0 0 20px 0;
+    overflow: hidden;
+}
+.menu_wrapper {
+    height: 60%;
+    width: 100%;
+}
+.footer {
+    font-size: var(--basic-font-size);
+    color: var(--font-color);
+}

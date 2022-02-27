@@ -3,18 +3,22 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./style.css">
+
+        <link rel="stylesheet" href="./css/style.css">
+        <link rel="stylesheet" href="./css/layout.css">
+        <link rel="stylesheet" href="./css/top.css">
+        <link rel="stylesheet" href="./css/canvas.css">
+        <link rel="stylesheet" href="./css/menu.css">
+        <link rel="stylesheet" href="./css/menu_settings.css">
         <link rel="stylesheet" href="../common/spin.css">
 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="../common/spin.js"></script>
         <script type="module" src="./main.js"></script>
-        <!-- <script type="module" src="./menuManager.js"></script> -->
-
     </head>
 
     <body>
-        <div id="top_area" class="top_area"> M E P U R I</div>
+        <div id="top_area" class="top_area">M E P U R I</div>
         <div id="canvas_wraper" class="canvas_wrapper">
             <div id="character_area_wrapper_wrapper" class="character_area_wrapper_wrapper">
                 <div id="character_area_wrapper" class="character_area_wrapper">
@@ -22,8 +26,8 @@
                     <!-- <img id="character_area" alt="Loading..." class="character_area"/> -->
                 </div>
                 <div id="character_area_bottom" class="character_area_bottom">
-                    <button class="zoom_btn" style="background-image:url('1.png')" onclick="setZoom(1)"></button>
-                    <button class="zoom_btn" style="background-image:url('2.png')" onclick="setZoom(2)"></button>
+                    <button class="zoom_btn" style="background-image:url('./assets/1.png')" onclick="setZoom(1)"></button>
+                    <button class="zoom_btn" style="background-image:url('./assets/2.png')" onclick="setZoom(2)"></button>
                     <!-- <button class="zoom_btn" onclick="setZoom(3)"></button> -->
                 </div>
             </div>

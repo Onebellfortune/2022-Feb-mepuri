@@ -1,0 +1,101 @@
+.top_menu {
+    width: 100%;
+    height: var(--menu-height);
+}
+.top_menu_btn {
+    width: var(--menu-btn-width);
+    font-size: var(--basic-btn-font-size);
+    float: left;
+    height: 100%;
+    border-radius: 10px 10px 0 0;
+}
+.setting_btn {
+    color: white;
+}
+.top_menu_btn.active {
+    background-color: var(--selected-panel-1);
+}
+.sub_menu_wrapper {
+    padding: 5px 5px 5px 5px;
+    background-color: var(--selected-panel-1);
+    border-radius: 0 10px 10px 10px;
+}
+.sub_menu_wrapper.right {
+    border-radius: 10px 0px 10px 10px;
+}
+.sub_menu {
+    height: var(--menu-height);
+    background-color: var(--selected-panel-1);
+    margin-left: 0;
+    overflow-x: auto;
+    display: -webkit-box;
+}
+.filter_menu {
+    height: 45px;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-evenly;
+    padding-bottom: 5px;
+}
+.sub_menu_btn {
+    width: var(--menu-btn-width);
+    font-size: var(--basic-btn-font-size);
+    float: left;
+    display: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.sub_menu_btn.active {
+    background-color: var(--selected-panel-2);
+    color: white;
+}
+.show {
+    display: block;
+}
+.input_search {
+    font-size: var(--basic-btn-font-size);
+    width: 60%;
+    border-radius: 10px;
+    padding: 10px;
+}
+.additional_btn {
+    font-size: var(--basic-btn-font-size);
+    border: 0px;
+}
+.general_list_btn {
+    font-size: var(--basic-btn-font-size);
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 10px;
+    background-size: 35px;
+}
+.height_fit {
+    background-size: 30px;
+}
+.general_list_btn:hover {
+    background-color: var(--selected-btn-color);
+}
+.item_list_wrapper {
+    padding: 5px 5px 0 5px;
+    background-color: var(--selected-panel-2);
+    height: calc(100% - var(--menu-height) * 2 - 16px);
+    border-radius: 0px 0px 10px 10px;
+}
+.scroll_area {
+    overflow: auto;
+    height: calc(100% - var(--menu-height) - 10px);
+}
+.item_list {
+    padding-left: 0px;
+}
+.general_btn {
+    width: 80px;
+    padding: 1px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.round_border {
+    border-radius: 10px;
+}

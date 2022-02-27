@@ -1,0 +1,34 @@
+:root {
+    --basic-font-size: 13px;
+    --basic-btn-font-size: 14px;
+    --menu-height: 45px;
+    --btn-height: 70px;
+    --menu-btn-width: 70px;
+    --main-color: rgb(176, 165, 238);
+    --unselected-btn-color: rgba(211, 206, 214, 0.568);
+    --selected-btn-color: rgb(191, 185, 226);
+    --font-color: rgb(68, 59, 116);
+    --selected-panel-1: rgba(136, 122, 218, 0.925);
+    --selected-panel-2: rgb(86, 77, 138);
+    --canvas-color: rgba(248, 242, 255, 1);
+}
+body {
+    margin: 10px 10px 50px 10px;
+    background-color: var(--main-color);
+}
+input {
+    margin: 0;
+    border: 0;
+}
+ul {
+    margin: 0;
+}
+button {
+    border: 0px;
+    padding: 14px;
+    background-color: var(--unselected-btn-color);
+    color: var(--font-color);
+}
+button:hover {
+    background-color: var(--selected-btn-color);
+}
