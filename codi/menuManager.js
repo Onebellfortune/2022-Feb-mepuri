@@ -116,21 +116,6 @@ export function createItemListButton(item, setSelectedItem) {
     }
     listBtn.value = item.id;
     listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
-
-    // const iconUrl = `${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon`;
-    // // errorURLList404.push(e);
-    // if (errorURLList404.indexOf(iconUrl) < 0) {
-    //     fetch(iconUrl, { method: "head" })
-    //         .then((res) => {
-    //             if (res.status === 404) {
-    //                 errorURLList404.push(iconUrl);
-    //             }
-    //             listBtn.style.backgroundImage = `url(${iconUrl})`;
-    //         })
-    //         .catch((e) => {
-    //             console.log(e);
-    //         });
-    // }
     listBtn.addEventListener("click", (event) => {
         setSelectedItem(event.target);
     });

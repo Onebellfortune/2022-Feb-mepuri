@@ -87,6 +87,9 @@ window.setZoom = (value) => {
 };
 
 window.setTransparent = () => {
+    if (selectedCategoryFlag === "FaceAccessory" && _character.selectedItems.Face) {
+        _character.selectedItems.Face.visible = true;
+    }
     delete _character.selectedItems[selectedCategoryFlag];
     refresh();
 };
