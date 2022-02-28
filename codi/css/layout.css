@@ -17,10 +17,11 @@
     overflow: hidden;
 }
 .menu_wrapper {
-    height: 60%;
+    height: 57%;
     width: 100%;
 }
 .footer {
     font-size: var(--basic-font-size);
     color: var(--font-color);
+    text-align: right;
 }

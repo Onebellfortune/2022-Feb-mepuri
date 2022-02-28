@@ -21,9 +21,7 @@ export function generateAvatarLink(character, linkType) {
     const avatarLink =
         `${apiUrl}/character/${itemEntriesPayload}/${
             linkType ? linkType : `${action}/${animating ? "animated" : frame}`
-        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&name=${encodeURI(
-            name || ""
-        )}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
+        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
 
     return avatarLink;
 }

@@ -13,7 +13,7 @@
     --canvas-color: rgba(248, 242, 255, 1);
 }
 body {
-    margin: 10px 10px 50px 10px;
+    margin: 0px 10px 10px 10px;
     background-color: var(--main-color);
 }
 input {

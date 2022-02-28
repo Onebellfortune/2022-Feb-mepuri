@@ -1,4 +1,4 @@
-import { character } from "./default_character.js";
+import { character } from "./data/default_character.js";
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
 import { generateAvatarLink } from "./avatarManager.js";
 import { apiUrl, version, locale, KMS, KMST } from "../common/apiInfo.js";
@@ -83,6 +83,7 @@ window.scrollToTop = () => {
 };
 window.setZoom = (value) => {
     _character.zoom = value;
+    _character.animating = value === 1 ? true : false;
     refresh();
 };
 
@@ -152,7 +153,7 @@ window.setAPIVersion = (value) => {
     }
     clearAllItemList();
     getAllItemList();
-    initializeCharacter();
+    // initializeCharacter();
 };
 
 window.showList = (event, category) => {
@@ -167,9 +168,6 @@ window.showList = (event, category) => {
         menuBtns[i].className = menuBtns[i].className.replace(" active", "");
     }
     event.currentTarget.className += " active";
-    document.body.addEventListener("onload", (event) => {
-        console.log(`${event}`);
-    });
 
     switch (category) {
         case "FaceAccessory":
@@ -372,13 +370,32 @@ function getCharacterSkinName(id) {
 function refresh() {
     // document.getElementById("character_area").setAttribute("src", generateAvatarLink(_character));
     // fetch(generateAvatarLink(_character));
-    const _characterNotanimated = JSON.parse(JSON.stringify(_character));
-    _characterNotanimated.animating = false;
-    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(
-        _character
-    )}'), url('${generateAvatarLink(_characterNotanimated)}')`;
+    // const _characterNotanimated = JSON.parse(JSON.stringify(_character));
+    // _characterNotanimated.animating = false;
+    // document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(
+    //     _character
+    // )}'), url('${generateAvatarLink(_characterNotanimated)}')`;
+    setSelectedItemToCanvas(_character);
     setSelectedItemInfo(_character);
 }
+function setSelectedItemToCanvas(character) {
+    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(character)}')`;
+
+    // const httpRequest = new XMLHttpRequest();
+    // httpRequest.onreadystatechange = () => {
+    //     switch (httpRequest.readyState) {
+    //         case 1: // loading ...
+    //             break;
+    //         case 4:
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // };
+    // httpRequest.open("GET", generateAvatarLink(character), true);
+    // httpRequest.send(null);
+}
+
 function setSelectedItemInfo(character) {
     document.getElementById("character_FaceAccessory").innerText = character.selectedItems.FaceAccessory
         ? character.selectedItems.FaceAccessory.name
@@ -422,9 +439,9 @@ function setSelectedItemInfo(character) {
     document.getElementById("character_Skin").innerText = getCharacterSkinName(character.selectedItems.Body.id);
 }
 function getAllItemList() {
-    let FaceName = [];
     let CashName = [];
     let FaceAccName = [];
+
     return callAPI(`${apiUrl}/${_locale}/${_version}/item/category/Equip`).then((res) => {
         const allList = res;
         allList.forEach((element) => {
@@ -435,8 +452,6 @@ function getAllItemList() {
                     if (FaceAccName.indexOf(element.name) < 0) {
                         FaceAccessory.push(element);
                         FaceAccName.push(element.name);
-                    } else {
-                        console.log(element.name);
                     }
                     break;
                 case "Eye Decoration":
@@ -497,7 +512,6 @@ function getAllItemList() {
 }
 
 function main() {
-    const overallCategory = ["Equip"];
     spinner.spin();
     getAllItemList().then(() => {
         initializeCharacter();
@@ -514,8 +528,9 @@ function main() {
         신발: ${Shoes.length}
         망토: ${Cape.length}
         무기: ${Cash.length}
-        ${etc.length}`);
+        etc: ${etc.length}`);
         triggerClickEvent(document.getElementsByClassName("sub_menu_btn")[0]);
+
         // cha tete
         // character.selectedItems.FaceAccessory.id = "1011006";
         // character.selectedItems.EyeDecoration.id = "1022285";
