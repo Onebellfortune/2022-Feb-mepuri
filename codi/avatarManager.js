@@ -1,6 +1,35 @@
 import { apiUrl, version, locale } from "../common/apiInfo.js";
 
-export function generateAvatarLink(character, linkType) {
+export function generateAvatarLink(character, linkType, isTransparent) {
+    let itemEntries = getCharacterItemEntries(character);
+
+    let backgroundColor = {
+        hsl: { h: 0, s: 0, l: 0, a: 0 },
+        hex: "transparent",
+        rgb: { r: 248, g: 242, b: 255, a: 255 },
+        hsv: { h: 0, s: 0, v: 0, a: 0 },
+        oldHue: 0,
+        source: "rgb",
+    };
+    let bgColorText = `${backgroundColor.rgb.r},${backgroundColor.rgb.g},${backgroundColor.rgb.b},${backgroundColor.rgb.a}`;
+    if (isTransparent !== undefined) {
+        bgColorText = `${0},${0},${0},${0}`;
+
+    }
+    let itemEntriesPayload = JSON.stringify(itemEntries);
+    itemEntriesPayload = encodeURIComponent(itemEntriesPayload.substr(1, itemEntriesPayload.length - 2));
+
+    let { animating, action, frame, mercEars, illiumEars, highFloraEars, zoom, name, flipX, includeBackground } = character;
+
+    const avatarLink =
+        `${apiUrl}/character/${itemEntriesPayload}/${
+            linkType ? linkType : `${action}/${animating ? "animated" : frame}`
+        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
+
+    return avatarLink;
+}
+
+export function downloadAvatar(character) {
     let itemEntries = getCharacterItemEntries(character);
 
     let backgroundColor = {
@@ -22,7 +51,6 @@ export function generateAvatarLink(character, linkType) {
         `${apiUrl}/character/${itemEntriesPayload}/${
             linkType ? linkType : `${action}/${animating ? "animated" : frame}`
         }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
-
     return avatarLink;
 }
 

@@ -29,7 +29,9 @@
     margin: 10px;
     box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.295);
 
-    height: 40px;
+    height: 60px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end
 }

@@ -2,13 +2,17 @@ export const character = {
     animating: true,
     action: "stand1",
     frame: 0,
+    emotion: "default",
     mercEars: false,
     illiumEars: false,
     highFloraEars: false,
     zoom: 1,
+    skin: 2000,
     name: "",
     flipX: false,
+    fhSnap: true,
     includeBackground: true,
+    visible: true,
     selectedItems: {
         Body: {
             name: "Body",

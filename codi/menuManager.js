@@ -106,8 +106,8 @@ export function createItemListButton(item, setSelectedItem) {
     const listBtn = document.createElement("button");
 
     if (item.typeInfo.subCategory === "Hair" || item.typeInfo.subCategory === "Face")
-        listBtn.setAttribute("class", "general_list_btn");
-    else listBtn.setAttribute("class", "general_list_btn height_fit");
+        listBtn.setAttribute("class", "general_list_btn lazy");
+    else listBtn.setAttribute("class", "general_list_btn height_fit lazy");
 
     if (item.typeInfo.subCategory === "Hair") {
         listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
@@ -115,7 +115,7 @@ export function createItemListButton(item, setSelectedItem) {
         listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
     }
     listBtn.value = item.id;
-    listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
+    // listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
     listBtn.addEventListener("click", (event) => {
         setSelectedItem(event.target);
     });

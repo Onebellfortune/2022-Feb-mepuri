@@ -1,0 +1,6 @@
+.info_wrapper {
+    background-color: var(--unselected-btn-color);
+    border-radius: 5px;
+    margin-bottom: 2px;
+    letter-spacing: -2px;
+}

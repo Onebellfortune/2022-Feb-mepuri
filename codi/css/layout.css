@@ -7,6 +7,11 @@
     justify-content: center;
     color: var(--font-color);
 }
+.info_area {
+    height: 15px;
+    width: 100%;
+    font-size: var(--basic-font-size);
+}
 .canvas_wrapper {
     height: 30%;
     display: flex;
@@ -17,11 +22,12 @@
     overflow: hidden;
 }
 .menu_wrapper {
-    height: 57%;
+    height: calc(60% - 25px);
     width: 100%;
 }
 .footer {
-    font-size: var(--basic-font-size);
+    height: 10px;
+    font-size: var(--small-font-size);
     color: var(--font-color);
     text-align: right;
 }

@@ -16,14 +16,19 @@ let _version = version;
 let _locale = locale;
 let characterString = JSON.stringify(character);
 let _character = JSON.parse(characterString); // to deep copy
-let frontCharacter = {
-    hairID: _character.selectedItems.Hair.id,
-    lensID: _character.selectedItems.Face.id,
-};
 
 let selectedCategoryFlag = "Hair";
-let selectedHairColor = 0;
-let selectedLensColor = 0;
+let selectedColor = {
+  hair:{
+    front: 0,
+    back: 0
+  },
+  lens:{
+    front:0,
+    back:0
+  }
+};
+
 let spinner;
 let FaceAccessory = [];
 let EyeDecoration = [];
@@ -119,7 +124,8 @@ const lazyloading = () => {
     };
     document.getElementById("scroll_area").addEventListener("scroll", lazyload);
     // window.addEventListener("resize", lazyload);
-    // window.addEventListener("orientationChange", lazyload);
+    // window.addEventListener("orientationChange", lazyload)
+    lazyload();
 };
 
 window.setTransparent = () => {
@@ -130,8 +136,8 @@ window.setTransparent = () => {
     refresh();
 };
 window.initializeCharacter = () => {
-    _character = JSON.parse(characterString);
-    setCharacterAPIVersion(_locale, _version);
+    _character = JSON.parse(JSON.stringify(character));
+    // setCharacterAPIVersion(_locale, _version);
     refresh();
 };
 window.setHairColor = function (event, num) {
@@ -141,8 +147,7 @@ window.setHairColor = function (event, num) {
     }
     event.currentTarget.className += " active";
 
-    selectedHairColor = num;
-    _character.selectedItems.Hair.id = getHairIdAsColor(_character.selectedItems.Hair.id, num);
+    selectedColor.hair.back = num;
     refresh();
 };
 window.setHair2ndColor = function (event, num) {
@@ -152,8 +157,7 @@ window.setHair2ndColor = function (event, num) {
     }
     event.currentTarget.className += " active";
 
-    selectedHairColor = num;
-    frontCharacter.hairID = getHairIdAsColor(_character.selectedItems.Hair.id, num);
+    selectedColor.hair.front = num;
     refresh();
 };
 window.setLensColor = function (num) {
@@ -163,8 +167,7 @@ window.setLensColor = function (num) {
     }
     event.currentTarget.className += " active";
 
-    selectedLensColor = num;
-    _character.selectedItems.Face.id = getFaceIdAsColor(_character.selectedItems.Face.id.toString(), num);
+    selectedColor.lens.back = num;
     refresh();
 };
 window.set2ndLensColor = function (num) {
@@ -174,21 +177,25 @@ window.set2ndLensColor = function (num) {
     }
     event.currentTarget.className += " active";
 
-    selectedLensColor = num;
-    frontCharacter.lensID = getFaceIdAsColor(_character.selectedItems.Face.id.toString(), num);
+    selectedColor.lens.front = num;
     refresh();
 };
+function setColors(back, front) {
+  const hairId = _character.selectedItems.Hair.id;
+  const faceId = _character.selectedItems.Face.id;
+  back.selectedItems.Hair.id = getHairIdAsColor(hairId, selectedColor.hair.back);
+  back.selectedItems.Face.id = getFaceIdAsColor(faceId, selectedColor.lens.back);
+  front.selectedItems.Hair.id = getHairIdAsColor(hairId, selectedColor.hair.front);
+  front.selectedItems.Face.id = getFaceIdAsColor(faceId, selectedColor.lens.front);
+  
+}
 function getHairIdAsColor(id, num) {
     return `${parseInt(parseInt(id, 10) / 10, 10)}${num}`;
 }
 function getFaceIdAsColor(id, num) {
-    return `${id.slice(0, 2)}${num}${id.slice(3)}`;
+    return `${id.toString().slice(0, 2)}${num}${id.toString().slice(3)}`;
 }
 function setCharacterAPIVersion(_locale, _version) {
-    if (_locale === "KMS") {
-        delete _character.selectedItems.Hat;
-        delete _character.selectedItems["One-Handed Blunt Weapon"];
-    }
     _character.selectedItems.Body.region = _locale;
     _character.selectedItems.Body.version = _version;
     _character.selectedItems.Head.region = _locale;
@@ -397,7 +404,7 @@ function setSelectedItem(target) {
             _character.selectedItems.Bottom.name = "👖 " + target.textContent;
             break;
         case "Face":
-            _character.selectedItems.Face.id = getFaceIdAsColor(target.value.toString(), selectedLensColor);
+            _character.selectedItems.Face.id = getFaceIdAsColor(target.value.toString(), selectedColor.lens.back);
             _character.selectedItems.Face.name = "👀 " + target.textContent;
             break;
         case "Glove":
@@ -405,7 +412,7 @@ function setSelectedItem(target) {
             _character.selectedItems.Glove.name = "🧤 " + target.textContent;
             break;
         case "Hair":
-            _character.selectedItems.Hair.id = getHairIdAsColor(target.value, selectedHairColor);
+            _character.selectedItems.Hair.id = getHairIdAsColor(target.value, selectedColor.hair.back);
             _character.selectedItems.Hair.name = "💇🏻‍♀ " + target.textContent;
             break;
         case "Overall":
@@ -491,17 +498,16 @@ function refresh() {
     //     _character
     // )}'), url('${generateAvatarLink(_characterNotanimated)}')`;
     let _characterFront = JSON.parse(JSON.stringify(_character));
-    _characterFront.selectedItems.Hair.id = frontCharacter.hairID;
-    _characterFront.selectedItems.Face.id = frontCharacter.lensID;
-
-    setSelectedItemToCanvas(_character, _characterFront);
+    setColors(_character, _characterFront);
+    
+    setSelectedItemToCanvas( _characterFront);
     setSelectedItemInfo(_character);
 }
-function setSelectedItemToCanvas(character, _characterFront) {
+function setSelectedItemToCanvas( _characterFront) {
     // document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(
     //     second, undefined, true
     // )}'), url('${generateAvatarLink(character)}')`;
-    document.getElementById("character_area").src = `${generateAvatarLink(character)}`;
+    document.getElementById("character_area").src = `${generateAvatarLink(_character)}`;
     document.getElementById("character_area_front").src = `${generateAvatarLink(_characterFront)}`;
 
     // const httpRequest = new XMLHttpRequest();
@@ -638,5 +644,6 @@ function main() {
         // character.selectedItems.Face.id = 26079;
         // character.selectedItems.Hair.id = "61370";
         refresh();
+        lazyloading();
     });
 }
