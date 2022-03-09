@@ -1,23 +1,28 @@
 import { character as characterInitialValue, characterFace, characterHair } from "./data/default_character.js";
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
-import { generateAvatarLink } from "./avatarManager.js";
-import { apiUrl, version, locale, KMS, KMST } from "../common/apiInfo.js";
+import { generateAvatarLink, drawFrontCharacter, drawCharacter } from "./avatarManager.js";
+import { version, locale } from "../common/apiInfo.js";
 import {
     clearFilterInput,
     triggerClickEvent,
     createItemListButton,
     createEarListButton,
     createSkinListButton,
+    lazyloading,
 } from "./menuManager.js";
-import { callAPI } from "../common/apiCall.js";
 import { FaceAccessoryVisibleData } from "./data/face_accessory.js";
+import {
+    getAllItemList,
+    setSelectedItemInfo,
+    getHairIdAsColor,
+    getFaceIdAsColor,
+    setColors,
+    setCharacterAPIVersion,
+} from "./itemManager.js";
 
-let _version = version;
-let _locale = locale;
-let characterString = JSON.stringify(characterInitialValue);
-let _character = JSON.parse(characterString); // to deep copy
-
+let _character = JSON.parse(JSON.stringify(characterInitialValue)); // to deep copy
 let selectedCategoryFlag = "Hair";
+let spinner;
 let selectedColor = {
     hair: {
         front: {
@@ -41,52 +46,22 @@ let selectedColor = {
     },
 };
 
-let spinner;
-let FaceAccessory = [];
-let EyeDecoration = [];
-let Earrings = [];
-let Hat = [];
-let Top = [];
-let Bottom = [];
-let Face = [];
-let Glove = [];
-let Hair = [];
-let Overall = [];
-let Shoes = [];
-let Cape = [];
-let Cash = [];
-let etc = [];
-const categories = [
-    "FaceAccessory",
-    "EyeDecoration",
-    "Earrings",
-    "Hat",
-    "Top",
-    "Bottom",
-    "Face",
-    "Glove",
-    "Hair",
-    "Overall",
-    "Shoes",
-    "Cape",
-    "Cash",
-];
-function clearAllItemList() {
-    FaceAccessory = [];
-    EyeDecoration = [];
-    Earrings = [];
-    Hat = [];
-    Top = [];
-    Bottom = [];
-    Face = [];
-    Glove = [];
-    Hair = [];
-    Overall = [];
-    Shoes = [];
-    Cape = [];
-    Cash = [];
-    etc = [];
-}
+let data = {
+    FaceAccessory: [],
+    EyeDecoration: [],
+    Earrings: [],
+    Hat: [],
+    Top: [],
+    Bottom: [],
+    Face: [],
+    Glove: [],
+    Hair: [],
+    Overall: [],
+    Shoes: [],
+    Cape: [],
+    Cash: [],
+    etc: [],
+};
 window.addEventListener("DOMContentLoaded", (event) => {
     var opts = {
         lines: 13, // The number of lines to draw
@@ -124,37 +99,6 @@ window.setZoom = (value, action) => {
     refresh();
 };
 
-const lazyloading = () => {
-    const lazyloadImages = Array.prototype.slice.call(document.getElementsByClassName("lazy"));
-
-    let lazyloadThrottleTimeout;
-    const lazyload = () => {
-        if (lazyloadThrottleTimeout) {
-            clearTimeout(lazyloadThrottleTimeout);
-        }
-        lazyloadThrottleTimeout = setTimeout(() => {
-            const scrollTop = document.getElementById("scroll_area").scrollTop;
-            lazyloadImages.forEach((img) => {
-                if (img.offsetTop < window.innerHeight + scrollTop) {
-                    img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
-                    // img.offsetTop: 실질적으로 img가 위치한 높이
-                    // img.src = img.dataset.src;
-                    img.classList.remove("lazy");
-                }
-            });
-            if (lazyloadImages.length == 0) {
-                document.getElementById("item_list").removeEventListener("scroll", lazyload);
-                // window.removeEventListener("resize", lazyload);
-                // window.removeEventListener("orientationChange", lazyload);
-            }
-        }, 20);
-    };
-    document.getElementById("scroll_area").addEventListener("scroll", lazyload);
-    // window.addEventListener("resize", lazyload);
-    // window.addEventListener("orientationChange", lazyload)
-    lazyload();
-};
-
 window.setTransparent = () => {
     if (selectedCategoryFlag === "FaceAccessory" && _character.selectedItems.Face) {
         _character.selectedItems.Face.visible = true;
@@ -165,7 +109,7 @@ window.setTransparent = () => {
 window.initializeCharacter = () => {
     _character = JSON.parse(JSON.stringify(characterInitialValue));
     setSelectedColorToInitialize();
-    setCharacterAPIVersion(_locale, _version);
+    setCharacterAPIVersion(_character, locale, version);
     refresh();
 };
 window.setHairColor = function (event, num) {
@@ -177,20 +121,6 @@ window.setHairColor = function (event, num) {
     setSelectedColor("hair", "back", num);
     refresh();
 };
-function setSelectedColor(type, position, value) {
-    selectedColor[type][position].value = value;
-}
-function setSelectedOpacity(id, value) {
-    const type = id === "hairSlider" ? "hair" : "lens";
-    const position = "front";
-    selectedColor[type][position].opacity = (100 - value) / 100;
-}
-function setSelectedColorToInitialize() {
-    setSelectedColor("hair", "back", 0);
-    setSelectedColor("hair", "front", 0);
-    setSelectedColor("lens", "back", 0);
-    setSelectedColor("lens", "front", 0);
-}
 window.set2ndHairColor = function (event, num) {
     let colorBtns = document.getElementById("hair_color_chips_second").children;
     for (let i = 0; i < colorBtns.length; i++) {
@@ -221,32 +151,7 @@ window.set2ndLensColor = function (num) {
     setSelectedColor("lens", "front", num);
     refresh();
 };
-function setColors(back, front) {
-    const hairId = _character.selectedItems.Hair.id;
-    const faceId = _character.selectedItems.Face.id;
-    back.selectedItems.Hair.id = getHairIdAsColor(hairId, selectedColor.hair.back.value);
-    back.selectedItems.Face.id = getFaceIdAsColor(faceId, selectedColor.lens.back.value);
-    front.selectedItems.Hair.id = getHairIdAsColor(hairId, selectedColor.hair.front.value);
-    front.selectedItems.Face.id = getFaceIdAsColor(faceId, selectedColor.lens.front.value);
-}
-function getHairIdAsColor(id, num) {
-    return `${parseInt(parseInt(id, 10) / 10, 10)}${num}`;
-}
-function getFaceIdAsColor(id, num) {
-    return `${id.toString().slice(0, 2)}${num}${id.toString().slice(3)}`;
-}
-function setCharacterAPIVersion(_locale, _version) {
-    _character.selectedItems.Body.region = _locale;
-    _character.selectedItems.Body.version = _version;
-    _character.selectedItems.Head.region = _locale;
-    _character.selectedItems.Head.version = _version;
-    _character.selectedItems.Hair.region = _locale;
-    _character.selectedItems.Hair.version = _version;
-    _character.selectedItems.Face.region = _locale;
-    _character.selectedItems.Face.version = _version;
-    _character.selectedItems.Overall.region = _locale;
-    _character.selectedItems.Overall.version = _version;
-}
+
 window.getDownloadCharacterUrl = () => {
     var x = new XMLHttpRequest();
     x.open("GET", generateAvatarLink(_character), true);
@@ -255,26 +160,6 @@ window.getDownloadCharacterUrl = () => {
         download(e.target.response, "awesomesauce.png", "image/png");
     };
     x.send();
-
-    // const imgSrc = generateAvatarLink(_character);
-    // var image = new Image();
-    // image.crossOrigin = "anonymous";
-    // image.src = imgSrc;
-    // var fileName = image.src.split("/").pop();
-    // image.onload = function () {
-    //     var canvas = document.createElement("canvas");
-    //     canvas.width = this.width;
-    //     canvas.height = this.height;
-    //     canvas.getContext("2d").drawImage(this, 0, 0);
-    //     if (typeof window.navigator.msSaveBlob !== "undefined") {
-    //         window.navigator.msSaveBlob(dataURLtoBlob(canvas.toDataURL()), fileName);
-    //     } else {
-    //         var link = document.createElement("a");
-    //         link.href = canvas.toDataURL();
-    //         link.download = fileName;
-    //         link.click();
-    //     }
-    // };
 };
 window.setHandMotion = (value) => {
     switch (value) {
@@ -305,67 +190,19 @@ window.showList = (event, category) => {
 
     switch (category) {
         case "FaceAccessory":
-            FaceAccessory.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "EyeDecoration":
-            EyeDecoration.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Earrings":
-            Earrings.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Hat":
-            Hat.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Top":
-            Top.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Bottom":
-            Bottom.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Face":
-            Face.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Glove":
-            Glove.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Hair":
-            Hair.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Overall":
-            Overall.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Shoes":
-            Shoes.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Cape":
-            Cape.forEach((item) => {
-                list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
-            });
-            break;
         case "Cash":
-            Cash.forEach((item) => {
+            data[category].forEach((item) => {
                 list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
@@ -385,13 +222,34 @@ window.showList = (event, category) => {
     lazyloading();
 };
 
+window.rangeSlide = (id, value) => {
+    document.getElementById(id + "Value").innerHTML = `${value}:${100 - value}`;
+    setSelectedOpacity(id, value);
+    document.getElementById("character_area_front").style.opacity = `${selectedColor.hair.front.opacity}`;
+};
+
+function setSelectedColor(type, position, value) {
+    selectedColor[type][position].value = value;
+}
+function setSelectedOpacity(id, value) {
+    const type = id === "hairSlider" ? "hair" : "lens";
+    const position = "front";
+    selectedColor[type][position].opacity = (100 - value) / 100;
+}
+function setSelectedColorToInitialize() {
+    setSelectedColor("hair", "back", 0);
+    setSelectedColor("hair", "front", 0);
+    setSelectedColor("lens", "back", 0);
+    setSelectedColor("lens", "front", 0);
+}
+
 function setSelectedItem(target) {
     //     const subCategoryTrim = element.typeInfo.subCategory.replace(/ /gi, "");
     //     if (!character.selectedItems[subCategoryTrim]) {
     //         character.selectedItems[subCategoryTrim] = eval(subCategoryTrim)[0];
     //     }
     if (!_character.selectedItems[selectedCategoryFlag]) {
-        _character.selectedItems[selectedCategoryFlag] = eval(selectedCategoryFlag)[0];
+        _character.selectedItems[selectedCategoryFlag] = data[selectedCategoryFlag][0];
     }
 
     function findVisibleData(id) {
@@ -493,226 +351,22 @@ function setCharacterSkin(id) {
     _character.selectedItems.Head.id = parseInt(id, 10) + 10000;
     refresh();
 }
-function getCharacterSkinName(id) {
-    let skinName = "-";
-    skinList.forEach((skin) => {
-        if (skin.id === id) {
-            skinName = skin.name;
-        }
-    });
-    return skinName;
-}
-function getCharacterEarName() {
-    let earName = "-";
-    const id = _character.highFloraEars
-        ? EAR_TYPE.HIGHLEAF
-        : _character.illiumEars
-        ? EAR_TYPE.ILLIUM
-        : _character.mercEars
-        ? EAR_TYPE.MERCEDES
-        : EAR_TYPE.GENERAL;
-    earList.forEach((ear) => {
-        if (ear.id === id) {
-            earName = ear.name;
-        }
-    });
-    return earName;
-}
+
 function refresh() {
-    // document.getElementById("character_area").setAttribute("src", generateAvatarLink(_character));
-    // fetch(generateAvatarLink(_character));
-    // const _characterNotanimated = JSON.parse(JSON.stringify(_character));
-    // _characterNotanimated.animating = false;
-    // document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(
-    //     _character
-    // )}'), url('${generateAvatarLink(_characterNotanimated)}')`;
     let _characterFront = JSON.parse(JSON.stringify(_character));
-    setColors(_character, _characterFront);
-    drawFrontCharacter(_characterFront);
-    drawCharacter(_characterFront);
-    setSelectedItemInfo(_character);
+    setColors(_character, _characterFront, selectedColor);
+    drawFrontCharacter(_characterFront, selectedColor.hair.front.opacity);
+    drawCharacter(_character);
+    setSelectedItemInfo(_character, selectedCategoryFlag);
 }
-function setTransparentOnly(char, type) {
-    char.includeBackground = false;
-    Object.keys(char.selectedItems).forEach((key) => {
-        if (key === type) {
-            char.selectedItems[key].alpha = 0;
-            char.selectedItems[key].visible = false;
-        }
-    });
-}
-function setSolidColorOnly(char, type) {
-    char.includeBackground = false;
-    Object.keys(char.selectedItems).forEach((key) => {
-        if (key === type) {
-            char.selectedItems[key].alpha = 1;
-        }
-    });
-}
-function setTransparentExcept(char, type) {
-    char.includeBackground = false;
-    Object.keys(char.selectedItems).forEach((key) => {
-        if (key !== type) {
-            char.selectedItems[key].alpha = 0;
-        }
-    });
-}
-function drawFrontCharacter(_characterFront) {
-    let _characterFrontHair = JSON.parse(JSON.stringify(_characterFront));
-    let _characterFrontFace = JSON.parse(JSON.stringify(_characterFront));
 
-    // setTransparentExcept(_characterFrontHair, "Hair");
-    // setSolidColorOnly(_characterFrontHair, "Head");
-    // setSolidColorOnly(_characterFrontHair, "Face");
-    document.getElementById("character_area_front").style.backgroundImage = `url('${generateAvatarLink(_characterFront)}')`;
-    // document.getElementById("character_area_front").src =
-    // = `${generateAvatarLink(_characterFrontHair)}`;
-    // `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAmCAYAAAC76qlaAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALtSURBVFhHxZSBkeIwDEXp6VqgBVqgBVrYFmiBFq6FbYEWtgVOz/Y3sqNkSYg5zfyRLdtfL04mh53isUH/LSrE435r9X1t9HP7msifN30kMuzP36wOOIJE39dLI2rs55w8MR8RMbBuVvNS68GXJI/SY9eIgTvYRkEtgvZiD71yy/dj+YY19/W+FigC5xNijZ659fZ4+5Z/0wj4YdAA9nMP/g58+03TwENHkFFtQSPgp9BI4x2gJQ8fgd8u+bcJU0Zbjie4zD30IHDNpbXgGfhxT6rGHtw1qtoIjmqPMpYEfj2f0xy2jBhHhUbJ1EOVt5A0V1+p1KObC/zVW49vm5rAtoIvvJEG3PZF4Nw6YxgzahtPcMvJsDxEEsasC2INeL/O2VJLfZgXbQf3hj14/xAC0jjS3Dp1UwUvtbXg+WAxqNBqUkxTjh5C40g6J9GjANastTKPwOfgn6blddW5ZTXRPI09mAdF7JFY7+cmIMi1VxlLHnzp1p+mS+D9utbYN6N+XV4NeMleAgf4ZfBkqnln3uc0Bqrs7ZW8BFwySnWtW6Z2v7bgAp77XPJhNRe4g8GITN03VRPV/FyimfYqs1d1f24fcMalEWKsJmSNJcz9HLFHzfwZgVih1pDAtfdXcAwkHfRjpwO5N4+kRl75zDx45M0+70d9FpwNzgDYRrZWx2YayjwiVQBEP/MIwc3jffA9wjwnD0E/wb4Kztjs5sEFjfYO8w/hfX4ZnAMyuZxOaAi0YjdwNisXsTYsdgHXZv0Kz8cjYm1YAG4QaAIv8B76+OfYgBNp8yfBCXrQ68tgABL0JnCe+lPgBpM+F2AMIGUUgUfQRPO5CHw0vMAFCjyi1msOnKjg5E/cugElcGC5ON1uPxc42Y5Nwf2tk01laUwYSAOOBIoEvgStELBe29DPxWAm8Iz7m34FnKjw+lxG3vzJ/E0V2MOvgVakg3oAwEfBF/AKL2iN10Ar0gEOCn5UePjylh+MuW1bDqAPh386zC2KoaajygAAAABJRU5ErkJggg==`;
-    // document.getElementById("character_area_front_face").src = `${generateAvatarLink(_characterFrontFace)}`;
-}
-function drawCharacter(_characterFront) {
-    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(_character)}')`;
-    document.getElementById("character_area_front").style.opacity = selectedColor.hair.front.opacity;
-    // document.getElementById("character_area").src = `${generateAvatarLink(_character)}`;
-
-    // const httpRequest = new XMLHttpRequest();
-    // httpRequest.onreadystatechange = () => {
-    //     switch (httpRequest.readyState) {
-    //         case 1: // loading ...
-    //             break;
-    //         case 4:
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // };
-    // httpRequest.open("GET", generateAvatarLink(character), true);
-    // httpRequest.send(null);
-}
-window.rangeSlide = (id, value) => {
-    document.getElementById(id + "Value").innerHTML = `${value}:${100 - value}`;
-    setSelectedOpacity(id, value);
-    document.getElementById("character_area_front").style.opacity = `${selectedColor.hair.front.opacity}`;
-    // document.getElementById("character_area_front_face").style.filter = `opacity(${selectedColor.lens.front.opacity})`;
-};
-function setSelectedItemInfo(character) {
-    if (selectedCategoryFlag.toLowerCase() === "skin" || selectedCategoryFlag.toLowerCase() === "ear") {
-        document.getElementById("character_Skin").innerText = `${getCharacterSkinName(
-            character.selectedItems.Body.id
-        )} / ${getCharacterEarName()}`;
-        document.getElementById("character_Skin").style.display = "block";
-        return;
-    }
-    const selectedItemTextArea = document.getElementById(`character_${selectedCategoryFlag}`);
-    if (selectedItemTextArea) {
-        if (character.selectedItems[selectedCategoryFlag]) {
-            selectedItemTextArea.style.display = "block";
-            selectedItemTextArea.innerText = character.selectedItems[selectedCategoryFlag].name;
-        } else {
-            selectedItemTextArea.style.display = "none";
-            selectedItemTextArea.innerText = "-";
-        }
-    }
-}
-function getAllItemList() {
-    let CashName = [];
-    let FaceAccName = [];
-
-    return callAPI(`${apiUrl}/${_locale}/${_version}/item/category/Equip`).then((res) => {
-        const allList = res;
-        allList.forEach((element) => {
-            element.region = _locale;
-            element.version = _version;
-            switch (element.typeInfo.subCategory) {
-                case "Face Accessory":
-                    if (FaceAccName.indexOf(element.name) < 0) {
-                        FaceAccessory.push(element);
-                        FaceAccName.push(element.name);
-                    }
-                    break;
-                case "Eye Decoration":
-                    EyeDecoration.push(element);
-                    break;
-                case "Earrings":
-                    Earrings.push(element);
-                    break;
-                case "Hat":
-                    Hat.push(element);
-                    break;
-                case "Top":
-                    Top.push(element);
-                    break;
-                case "Bottom":
-                    Bottom.push(element);
-                    break;
-                case "Face":
-                    const numOfId = parseInt(element.id, 10);
-                    const thirdNum = parseInt((numOfId / 100) % 10, 10);
-                    if (thirdNum === 0) {
-                        Face.push(element);
-                    }
-                    break;
-                case "Glove":
-                    if (element.isCash) Glove.push(element);
-                    break;
-                case "Hair":
-                    if (element.name.indexOf("검은색 ") === 0) {
-                        element.name = element.name.slice(4);
-                        Hair.push(element);
-                    }
-                    break;
-                case "Overall":
-                    if (element.isCash) Overall.push(element);
-                    break;
-                case "Shoes":
-                    if (element.isCash) Shoes.push(element);
-                    break;
-                case "Cape":
-                    if (element.isCash) Cape.push(element);
-                    break;
-                case "Cash":
-                default:
-                    if (
-                        element.typeInfo.category === "Two-Handed Weapon" ||
-                        element.typeInfo.category === "One-Handed Weapon"
-                    ) {
-                        if (CashName.indexOf(element.name) < 0) {
-                            if (element.isCash) Cash.push(element);
-                            CashName.push(element.name);
-                        }
-                    } else etc.push(element);
-                    break;
-            }
-        });
-    });
-}
 const information = [""];
 function main() {
     spinner.spin();
     document.getElementById("info_area").innerText = "📢 [알림] !개발중! 테스트 버전입니다.";
-    getAllItemList().then(() => {
+    getAllItemList(data).then(() => {
         initializeCharacter();
-        console.log(`얼장: ${FaceAccessory.length}
-        눈장: ${EyeDecoration.length}
-        귀장: ${Earrings.length}
-        모자: ${Hat.length}
-        탑: ${Top.length}
-        하의: ${Bottom.length}
-        얼굴: ${Face.length}
-        장갑: ${Glove.length}
-        머리: ${Hair.length}
-        한벌: ${Overall.length}
-        신발: ${Shoes.length}
-        망토: ${Cape.length}
-        무기: ${Cash.length}
-        etc: ${etc.length}`);
         triggerClickEvent(document.getElementsByClassName("sub_menu_btn")[0]);
-
-        // cha tete
-        // character.selectedItems.FaceAccessory.id = "1011006";
-        // character.selectedItems.EyeDecoration.id = "1022285";
-        // character.selectedItems.Face.id = 26079;
-        // character.selectedItems.Hair.id = "61370";
         refresh();
         lazyloading();
     });

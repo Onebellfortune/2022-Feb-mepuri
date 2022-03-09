@@ -53,7 +53,13 @@ export function downloadAvatar(character) {
         }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
     return avatarLink;
 }
-
+export function drawFrontCharacter(_characterFront, opacity) {
+    document.getElementById("character_area_front").style.backgroundImage = `url('${generateAvatarLink(_characterFront)}')`;
+    document.getElementById("character_area_front").style.opacity = opacity;
+}
+export function drawCharacter(_character) {
+    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(_character)}')`;
+}
 function getCharacterItemEntries(character) {
     return Object.values(character.selectedItems)
         .filter((item) => {

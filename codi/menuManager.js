@@ -1,6 +1,5 @@
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
-import { apiUrl } from "../common/apiInfo.js";
-
+import { apiUrl, version, locale } from "../common/apiInfo.js";
 let errorURLList404 = [];
 
 window.myfilter = function () {
@@ -146,3 +145,33 @@ export function createSkinListButton(item, setCharacterSkin) {
     list.appendChild(listBtn);
     return list;
 }
+export const lazyloading = () => {
+    const lazyloadImages = Array.prototype.slice.call(document.getElementsByClassName("lazy"));
+
+    let lazyloadThrottleTimeout;
+    const lazyload = () => {
+        if (lazyloadThrottleTimeout) {
+            clearTimeout(lazyloadThrottleTimeout);
+        }
+        lazyloadThrottleTimeout = setTimeout(() => {
+            const scrollTop = document.getElementById("scroll_area").scrollTop;
+            lazyloadImages.forEach((img) => {
+                if (img.offsetTop < window.innerHeight + scrollTop) {
+                    img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
+                    // img.offsetTop: 실질적으로 img가 위치한 높이
+                    // img.src = img.dataset.src;
+                    img.classList.remove("lazy");
+                }
+            });
+            if (lazyloadImages.length == 0) {
+                document.getElementById("item_list").removeEventListener("scroll", lazyload);
+                // window.removeEventListener("resize", lazyload);
+                // window.removeEventListener("orientationChange", lazyload);
+            }
+        }, 20);
+    };
+    document.getElementById("scroll_area").addEventListener("scroll", lazyload);
+    // window.addEventListener("resize", lazyload);
+    // window.addEventListener("orientationChange", lazyload)
+    lazyload();
+};
