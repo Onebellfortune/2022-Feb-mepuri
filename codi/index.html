@@ -26,9 +26,11 @@
         <div id="canvas_wraper" class="canvas_wrapper">
             <div id="character_area_wrapper_wrapper" class="character_area_wrapper_wrapper">
                 <div id="character_area_wrapper" class="character_area_wrapper">
-                    <!-- <div id="character_area" class="character_area" importance="high"></div> -->
-                    <img id="character_area_front" alt="Loading..." class="character_area_front"/>
-                    <img id="character_area" alt="Loading..." class="character_area"/>
+                    <div id="character_area" class="character_area" importance="high"></div>
+                    <div id="character_area_front" class="character_area" importance="high"></div>
+                    <!-- <img id="character_area_front" loading="lazy" class="character_area_front" />
+                    <img id="character_area_front_face" loading="lazy" class="character_area_front" />
+                    <img id="character_area" loading="lazy" class=" character_area_img" /> -->
 
                 </div>
                 <div id="character_area_bottom" class="character_area_bottom">
@@ -94,87 +96,106 @@
                     </div>
                 </div>
                 <div id="setting" class="item_list_wrapper round_border setting_panel" style="display:none">
-                    <button class="general_btn additional_btn" style="height:50px;width:100px"
-                        onclick="initializeCharacter()">캐릭터 초기화</button>
-
-                    <button class="general_btn additional_btn" style="height:50px"
-                        onclick="getDownloadCharacterUrl()">다운</button>
-                    <div id="hair_color_chips" class="setting_option_wrapper">
+                    <div>
+                        <button class="general_btn additional_btn" style="height:50px;width:100px"
+                            onclick="initializeCharacter()">캐릭터 초기화</button>
+                        <button class="general_btn additional_btn" style="height:50px"
+                            onclick="getDownloadCharacterUrl()">다운</button>
+                    </div>
+                    <div id="hair_color_chips" class="setting_option_wrapper" style="height:90px">
                         <label class="radio_label_style">헤어</label>
-                        <div id="hair_color_chips_first" style="display:inherit">
-                            <button id="H0" class="color_chip active" style="background-color:black"
-                                onclick="setHairColor(event, 0)"></button>
-                            <button id="H1" class="color_chip" style="background-color:rgb(206, 2, 2)"
-                                onclick="setHairColor(event, 1)"></button>
-                            <button id="H2" class="color_chip" style="background-color:orangered"
-                                onclick="setHairColor(event, 2)"></button>
-                            <button id="H3" class="color_chip" style="background-color:rgb(255, 196, 0)"
-                                onclick="setHairColor(event, 3)"></button>
-                            <button id="H4" class="color_chip" style="background-color:green"
-                                onclick="setHairColor(event, 4)"></button>
-                            <button id="H5" class="color_chip" style="background-color:rgb(0, 47, 255)"
-                                onclick="setHairColor(event, 5)"></button>
-                            <button id="H6" class="color_chip" style="background-color:rgb(77, 0, 128)"
-                                onclick="setHairColor(event, 6)"></button>
-                            <button id="H7" class="color_chip" style="background-color:rgb(126, 52, 0)"
-                                onclick="setHairColor(event, 7)"></button>
-                        </div>
-                        <div id="hair_color_chips_second" style="display:inherit">
-                            <button id="H2_0" class="color_chip active" style="background-color:black"
-                                onclick="setHair2ndColor(event, 0)"></button>
-                            <button id="H2_1" class="color_chip" style="background-color:rgb(206, 2, 2)"
-                                onclick="setHair2ndColor(event, 1)"></button>
-                            <button id="H2_2" class="color_chip" style="background-color:orangered"
-                                onclick="setHair2ndColor(event, 2)"></button>
-                            <button id="H2_3" class="color_chip" style="background-color:rgb(255, 196, 0)"
-                                onclick="setHair2ndColor(event, 3)"></button>
-                            <button id="H2_4" class="color_chip" style="background-color:green"
-                                onclick="setHair2ndColor(event, 4)"></button>
-                            <button id="H2_5" class="color_chip" style="background-color:rgb(0, 47, 255)"
-                                onclick="setHair2ndColor(event, 5)"></button>
-                            <button id="H2_6" class="color_chip" style="background-color:rgb(77, 0, 128)"
-                                onclick="setHair2ndColor(event, 6)"></button>
-                            <button id="H2_7" class="color_chip" style="background-color:rgb(126, 52, 0)"
-                                onclick="setHair2ndColor(event, 7)"></button>
+                        <div style="display: flex;flex-direction: column;align-items: center;">
+                            <div id="hair_color_chips_first" style="display:inherit">
+                                <button id="H0" class="color_chip active" style="background-color:black"
+                                    onclick="setHairColor(event, 0)"></button>
+                                <button id="H1" class="color_chip" style="background-color:rgb(206, 2, 2)"
+                                    onclick="setHairColor(event, 1)"></button>
+                                <button id="H2" class="color_chip" style="background-color:orangered"
+                                    onclick="setHairColor(event, 2)"></button>
+                                <button id="H3" class="color_chip" style="background-color:rgb(255, 196, 0)"
+                                    onclick="setHairColor(event, 3)"></button>
+                                <button id="H4" class="color_chip" style="background-color:green"
+                                    onclick="setHairColor(event, 4)"></button>
+                                <button id="H5" class="color_chip" style="background-color:rgb(0, 47, 255)"
+                                    onclick="setHairColor(event, 5)"></button>
+                                <button id="H6" class="color_chip" style="background-color:rgb(77, 0, 128)"
+                                    onclick="setHairColor(event, 6)"></button>
+                                <button id="H7" class="color_chip" style="background-color:rgb(126, 52, 0)"
+                                    onclick="setHairColor(event, 7)"></button>
+                            </div>
+                            <div class="slidecontainer">
+                                <div id="hairSliderValue" class="rangeValue">50:50</div>
+                                <input id="hairSlider" type="range" min="1" max="99" value="50" class="range"
+                                    oninput="rangeSlide(this.id, this.value)"
+                                    onmousemove="rangeSlide(this.id, this.value)" />
+                            </div>
+                            <div id="hair_color_chips_second" style="display:inherit">
+                                <button id="H2_0" class="color_chip active" style="background-color:black"
+                                    onclick="set2ndHairColor(event, 0)"></button>
+                                <button id="H2_1" class="color_chip" style="background-color:rgb(206, 2, 2)"
+                                    onclick="set2ndHairColor(event, 1)"></button>
+                                <button id="H2_2" class="color_chip" style="background-color:orangered"
+                                    onclick="set2ndHairColor(event, 2)"></button>
+                                <button id="H2_3" class="color_chip" style="background-color:rgb(255, 196, 0)"
+                                    onclick="set2ndHairColor(event, 3)"></button>
+                                <button id="H2_4" class="color_chip" style="background-color:green"
+                                    onclick="set2ndHairColor(event, 4)"></button>
+                                <button id="H2_5" class="color_chip" style="background-color:rgb(0, 47, 255)"
+                                    onclick="set2ndHairColor(event, 5)"></button>
+                                <button id="H2_6" class="color_chip" style="background-color:rgb(77, 0, 128)"
+                                    onclick="set2ndHairColor(event, 6)"></button>
+                                <button id="H2_7" class="color_chip" style="background-color:rgb(126, 52, 0)"
+                                    onclick="set2ndHairColor(event, 7)"></button>
+                            </div>
                         </div>
                     </div>
                     <div id="face_color_chips" class="setting_option_wrapper">
                         <label class="radio_label_style">렌즈</label>
-                        <div id="face_color_chips_first" style="display:inherit">
-                            <button id="F0" class="color_chip active" style="background-color:black"
-                            onclick="setLensColor(0)"></button>
-                        <button id="F1" class="color_chip" style="background-color:blue"
-                            onclick="setLensColor(1)"></button>
-                        <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)"
-                            onclick="setLensColor(2)"></button>
-                        <button id="F3" class="color_chip" style="background-color:green"
-                            onclick="setLensColor(3)"></button>
-                        <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)"
-                            onclick="setLensColor(4)"></button>
-                        <button id="F5" class="color_chip" style="background-color:lightseagreen"
-                            onclick="setLensColor(5)"></button>
-                        <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)"
-                            onclick="setLensColor(6)"></button>
-                        <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)"
-                            onclick="setLensColor(7)"></button></div>
-                        <div id="face_color_chips_second" style="display:inherit">
+                        <div style="display: flex;flex-direction: column;align-items: center;">
+                            <div id="face_color_chips_first" style="display:inherit">
+                                <button id="F0" class="color_chip active" style="background-color:black"
+                                    onclick="setLensColor(0)"></button>
+                                <button id="F1" class="color_chip" style="background-color:blue"
+                                    onclick="setLensColor(1)"></button>
+                                <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)"
+                                    onclick="setLensColor(2)"></button>
+                                <button id="F3" class="color_chip" style="background-color:green"
+                                    onclick="setLensColor(3)"></button>
+                                <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)"
+                                    onclick="setLensColor(4)"></button>
+                                <button id="F5" class="color_chip" style="background-color:lightseagreen"
+                                    onclick="setLensColor(5)"></button>
+                                <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)"
+                                    onclick="setLensColor(6)"></button>
+                                <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)"
+                                    onclick="setLensColor(7)"></button>
+                            </div>
+                            <!-- <div class="slidecontainer">
+                            <div id="lensSliderValue" class="rangeValue"></div>
+                            <input id="lensSlider" type="range" min="1" max="99" value="50" class="range"
+                                onChange="rangeSlide(this.id, this.value)"
+                                onmousemove="rangeSlide(this.id, this.value)" />
+                        </div> -->
+                            <div id="face_color_chips_second" style="display:inherit">
 
-                        <button id="F0" class="color_chip active" style="background-color:black"
-                            onclick="set2ndLensColor(0)"></button>
-                        <button id="F1" class="color_chip" style="background-color:blue"
-                            onclick="set2ndLensColor(1)"></button>
-                        <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)"
-                            onclick="set2ndLensColor(2)"></button>
-                        <button id="F3" class="color_chip" style="background-color:green"
-                            onclick="set2ndLensColor(3)"></button>
-                        <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)"
-                            onclick="set2ndLensColor(4)"></button>
-                        <button id="F5" class="color_chip" style="background-color:lightseagreen"
-                            onclick="set2ndLensColor(5)"></button>
-                        <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)"
-                            onclick="set2ndLensColor(6)"></button>
-                        <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)"
-                            onclick="set2ndLensColor(7)"></button></div>
+                                <button id="F0" class="color_chip active" style="background-color:black"
+                                    onclick="set2ndLensColor(0)"></button>
+                                <button id="F1" class="color_chip" style="background-color:blue"
+                                    onclick="set2ndLensColor(1)"></button>
+                                <button id="F2" class="color_chip" style="background-color:rgb(206, 2, 2)"
+                                    onclick="set2ndLensColor(2)"></button>
+                                <button id="F3" class="color_chip" style="background-color:green"
+                                    onclick="set2ndLensColor(3)"></button>
+                                <button id="F4" class="color_chip" style="background-color:rgb(126, 52, 0)"
+                                    onclick="set2ndLensColor(4)"></button>
+                                <button id="F5" class="color_chip" style="background-color:lightseagreen"
+                                    onclick="set2ndLensColor(5)"></button>
+                                <button id="F6" class="color_chip" style="background-color:rgb(77, 0, 128)"
+                                    onclick="set2ndLensColor(6)"></button>
+                                <button id="F7" class="color_chip" style="background-color:rgb(175, 0, 131)"
+                                    onclick="set2ndLensColor(7)"></button>
+                            </div>
+                        </div>
                     </div>
                     <div class="setting_option_wrapper">
                         <input id="actionOneWeapon" class="radio_style" type="radio" checked="true" name="action"

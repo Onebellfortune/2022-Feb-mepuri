@@ -1,4 +1,4 @@
-import { character } from "./data/default_character.js";
+import { character as characterInitialValue, characterFace, characterHair } from "./data/default_character.js";
 import { EAR_TYPE, SKIN_TYPE, earList, skinList } from "./constants.js";
 import { generateAvatarLink } from "./avatarManager.js";
 import { apiUrl, version, locale, KMS, KMST } from "../common/apiInfo.js";
@@ -14,16 +14,33 @@ import { FaceAccessoryVisibleData } from "./data/face_accessory.js";
 
 let _version = version;
 let _locale = locale;
-let characterString = JSON.stringify(character);
+let characterString = JSON.stringify(characterInitialValue);
 let _character = JSON.parse(characterString); // to deep copy
-let frontCharacter = {
-    hairID: _character.selectedItems.Hair.id,
-    lensID: _character.selectedItems.Face.id,
-};
 
 let selectedCategoryFlag = "Hair";
-let selectedHairColor = 0;
-let selectedLensColor = 0;
+let selectedColor = {
+    hair: {
+        front: {
+            value: 0,
+            opacity: 0.5,
+        },
+        back: {
+            value: 0,
+            opacity: 1,
+        },
+    },
+    lens: {
+        front: {
+            value: 0,
+            opacity: 1,
+        },
+        back: {
+            value: 0,
+            opacity: 1,
+        },
+    },
+};
+
 let spinner;
 let FaceAccessory = [];
 let EyeDecoration = [];
@@ -39,6 +56,21 @@ let Shoes = [];
 let Cape = [];
 let Cash = [];
 let etc = [];
+const categories = [
+    "FaceAccessory",
+    "EyeDecoration",
+    "Earrings",
+    "Hat",
+    "Top",
+    "Bottom",
+    "Face",
+    "Glove",
+    "Hair",
+    "Overall",
+    "Shoes",
+    "Cape",
+    "Cash",
+];
 function clearAllItemList() {
     FaceAccessory = [];
     EyeDecoration = [];
@@ -119,7 +151,8 @@ const lazyloading = () => {
     };
     document.getElementById("scroll_area").addEventListener("scroll", lazyload);
     // window.addEventListener("resize", lazyload);
-    // window.addEventListener("orientationChange", lazyload);
+    // window.addEventListener("orientationChange", lazyload)
+    lazyload();
 };
 
 window.setTransparent = () => {
@@ -130,7 +163,8 @@ window.setTransparent = () => {
     refresh();
 };
 window.initializeCharacter = () => {
-    _character = JSON.parse(characterString);
+    _character = JSON.parse(JSON.stringify(characterInitialValue));
+    setSelectedColorToInitialize();
     setCharacterAPIVersion(_locale, _version);
     refresh();
 };
@@ -140,20 +174,31 @@ window.setHairColor = function (event, num) {
         colorBtns[i].className = colorBtns[i].className.replace(" active", "");
     }
     event.currentTarget.className += " active";
-
-    selectedHairColor = num;
-    _character.selectedItems.Hair.id = getHairIdAsColor(_character.selectedItems.Hair.id, num);
+    setSelectedColor("hair", "back", num);
     refresh();
 };
-window.setHair2ndColor = function (event, num) {
+function setSelectedColor(type, position, value) {
+    selectedColor[type][position].value = value;
+}
+function setSelectedOpacity(id, value) {
+    const type = id === "hairSlider" ? "hair" : "lens";
+    const position = "front";
+    selectedColor[type][position].opacity = (100 - value) / 100;
+}
+function setSelectedColorToInitialize() {
+    setSelectedColor("hair", "back", 0);
+    setSelectedColor("hair", "front", 0);
+    setSelectedColor("lens", "back", 0);
+    setSelectedColor("lens", "front", 0);
+}
+window.set2ndHairColor = function (event, num) {
     let colorBtns = document.getElementById("hair_color_chips_second").children;
     for (let i = 0; i < colorBtns.length; i++) {
         colorBtns[i].className = colorBtns[i].className.replace(" active", "");
     }
     event.currentTarget.className += " active";
 
-    selectedHairColor = num;
-    frontCharacter.hairID = getHairIdAsColor(_character.selectedItems.Hair.id, num);
+    setSelectedColor("hair", "front", num);
     refresh();
 };
 window.setLensColor = function (num) {
@@ -163,8 +208,7 @@ window.setLensColor = function (num) {
     }
     event.currentTarget.className += " active";
 
-    selectedLensColor = num;
-    _character.selectedItems.Face.id = getFaceIdAsColor(_character.selectedItems.Face.id.toString(), num);
+    setSelectedColor("lens", "back", num);
     refresh();
 };
 window.set2ndLensColor = function (num) {
@@ -174,21 +218,24 @@ window.set2ndLensColor = function (num) {
     }
     event.currentTarget.className += " active";
 
-    selectedLensColor = num;
-    frontCharacter.lensID = getFaceIdAsColor(_character.selectedItems.Face.id.toString(), num);
+    setSelectedColor("lens", "front", num);
     refresh();
 };
+function setColors(back, front) {
+    const hairId = _character.selectedItems.Hair.id;
+    const faceId = _character.selectedItems.Face.id;
+    back.selectedItems.Hair.id = getHairIdAsColor(hairId, selectedColor.hair.back.value);
+    back.selectedItems.Face.id = getFaceIdAsColor(faceId, selectedColor.lens.back.value);
+    front.selectedItems.Hair.id = getHairIdAsColor(hairId, selectedColor.hair.front.value);
+    front.selectedItems.Face.id = getFaceIdAsColor(faceId, selectedColor.lens.front.value);
+}
 function getHairIdAsColor(id, num) {
     return `${parseInt(parseInt(id, 10) / 10, 10)}${num}`;
 }
 function getFaceIdAsColor(id, num) {
-    return `${id.slice(0, 2)}${num}${id.slice(3)}`;
+    return `${id.toString().slice(0, 2)}${num}${id.toString().slice(3)}`;
 }
 function setCharacterAPIVersion(_locale, _version) {
-    if (_locale === "KMS") {
-        delete _character.selectedItems.Hat;
-        delete _character.selectedItems["One-Handed Blunt Weapon"];
-    }
     _character.selectedItems.Body.region = _locale;
     _character.selectedItems.Body.version = _version;
     _character.selectedItems.Head.region = _locale;
@@ -241,18 +288,6 @@ window.setHandMotion = (value) => {
             break;
     }
     refresh();
-};
-window.setAPIVersion = (value) => {
-    if (value === "KMS") {
-        _locale = "KMS";
-        _version = KMS;
-    } else {
-        _locale = "KMST";
-        _version = KMST;
-    }
-    clearAllItemList();
-    getAllItemList();
-    // initializeCharacter();
 };
 
 window.showList = (event, category) => {
@@ -397,7 +432,7 @@ function setSelectedItem(target) {
             _character.selectedItems.Bottom.name = "👖 " + target.textContent;
             break;
         case "Face":
-            _character.selectedItems.Face.id = getFaceIdAsColor(target.value.toString(), selectedLensColor);
+            _character.selectedItems.Face.id = getFaceIdAsColor(target.value.toString(), selectedColor.lens.back.value);
             _character.selectedItems.Face.name = "👀 " + target.textContent;
             break;
         case "Glove":
@@ -405,7 +440,7 @@ function setSelectedItem(target) {
             _character.selectedItems.Glove.name = "🧤 " + target.textContent;
             break;
         case "Hair":
-            _character.selectedItems.Hair.id = getHairIdAsColor(target.value, selectedHairColor);
+            _character.selectedItems.Hair.id = getHairIdAsColor(target.value, selectedColor.hair.back.value);
             _character.selectedItems.Hair.name = "💇🏻‍♀ " + target.textContent;
             break;
         case "Overall":
@@ -432,6 +467,7 @@ function setSelectedItem(target) {
     refresh();
     // });
 }
+/** set character item */
 function setCharacterEar(id) {
     _character.highFloraEars = false;
     _character.illiumEars = false;
@@ -491,18 +527,53 @@ function refresh() {
     //     _character
     // )}'), url('${generateAvatarLink(_characterNotanimated)}')`;
     let _characterFront = JSON.parse(JSON.stringify(_character));
-    _characterFront.selectedItems.Hair.id = frontCharacter.hairID;
-    _characterFront.selectedItems.Face.id = frontCharacter.lensID;
-
-    setSelectedItemToCanvas(_character, _characterFront);
+    setColors(_character, _characterFront);
+    drawFrontCharacter(_characterFront);
+    drawCharacter(_characterFront);
     setSelectedItemInfo(_character);
 }
-function setSelectedItemToCanvas(character, _characterFront) {
-    // document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(
-    //     second, undefined, true
-    // )}'), url('${generateAvatarLink(character)}')`;
-    document.getElementById("character_area").src = `${generateAvatarLink(character)}`;
-    document.getElementById("character_area_front").src = `${generateAvatarLink(_characterFront)}`;
+function setTransparentOnly(char, type) {
+    char.includeBackground = false;
+    Object.keys(char.selectedItems).forEach((key) => {
+        if (key === type) {
+            char.selectedItems[key].alpha = 0;
+            char.selectedItems[key].visible = false;
+        }
+    });
+}
+function setSolidColorOnly(char, type) {
+    char.includeBackground = false;
+    Object.keys(char.selectedItems).forEach((key) => {
+        if (key === type) {
+            char.selectedItems[key].alpha = 1;
+        }
+    });
+}
+function setTransparentExcept(char, type) {
+    char.includeBackground = false;
+    Object.keys(char.selectedItems).forEach((key) => {
+        if (key !== type) {
+            char.selectedItems[key].alpha = 0;
+        }
+    });
+}
+function drawFrontCharacter(_characterFront) {
+    let _characterFrontHair = JSON.parse(JSON.stringify(_characterFront));
+    let _characterFrontFace = JSON.parse(JSON.stringify(_characterFront));
+
+    // setTransparentExcept(_characterFrontHair, "Hair");
+    // setSolidColorOnly(_characterFrontHair, "Head");
+    // setSolidColorOnly(_characterFrontHair, "Face");
+    document.getElementById("character_area_front").style.backgroundImage = `url('${generateAvatarLink(_characterFront)}')`;
+    // document.getElementById("character_area_front").src =
+    // = `${generateAvatarLink(_characterFrontHair)}`;
+    // `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAmCAYAAAC76qlaAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALtSURBVFhHxZSBkeIwDEXp6VqgBVqgBVrYFmiBFq6FbYEWtgVOz/Y3sqNkSYg5zfyRLdtfL04mh53isUH/LSrE435r9X1t9HP7msifN30kMuzP36wOOIJE39dLI2rs55w8MR8RMbBuVvNS68GXJI/SY9eIgTvYRkEtgvZiD71yy/dj+YY19/W+FigC5xNijZ659fZ4+5Z/0wj4YdAA9nMP/g58+03TwENHkFFtQSPgp9BI4x2gJQ8fgd8u+bcJU0Zbjie4zD30IHDNpbXgGfhxT6rGHtw1qtoIjmqPMpYEfj2f0xy2jBhHhUbJ1EOVt5A0V1+p1KObC/zVW49vm5rAtoIvvJEG3PZF4Nw6YxgzahtPcMvJsDxEEsasC2INeL/O2VJLfZgXbQf3hj14/xAC0jjS3Dp1UwUvtbXg+WAxqNBqUkxTjh5C40g6J9GjANastTKPwOfgn6blddW5ZTXRPI09mAdF7JFY7+cmIMi1VxlLHnzp1p+mS+D9utbYN6N+XV4NeMleAgf4ZfBkqnln3uc0Bqrs7ZW8BFwySnWtW6Z2v7bgAp77XPJhNRe4g8GITN03VRPV/FyimfYqs1d1f24fcMalEWKsJmSNJcz9HLFHzfwZgVih1pDAtfdXcAwkHfRjpwO5N4+kRl75zDx45M0+70d9FpwNzgDYRrZWx2YayjwiVQBEP/MIwc3jffA9wjwnD0E/wb4Kztjs5sEFjfYO8w/hfX4ZnAMyuZxOaAi0YjdwNisXsTYsdgHXZv0Kz8cjYm1YAG4QaAIv8B76+OfYgBNp8yfBCXrQ68tgABL0JnCe+lPgBpM+F2AMIGUUgUfQRPO5CHw0vMAFCjyi1msOnKjg5E/cugElcGC5ON1uPxc42Y5Nwf2tk01laUwYSAOOBIoEvgStELBe29DPxWAm8Iz7m34FnKjw+lxG3vzJ/E0V2MOvgVakg3oAwEfBF/AKL2iN10Ar0gEOCn5UePjylh+MuW1bDqAPh386zC2KoaajygAAAABJRU5ErkJggg==`;
+    // document.getElementById("character_area_front_face").src = `${generateAvatarLink(_characterFrontFace)}`;
+}
+function drawCharacter(_characterFront) {
+    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(_character)}')`;
+    document.getElementById("character_area_front").style.opacity = selectedColor.hair.front.opacity;
+    // document.getElementById("character_area").src = `${generateAvatarLink(_character)}`;
 
     // const httpRequest = new XMLHttpRequest();
     // httpRequest.onreadystatechange = () => {
@@ -518,7 +589,12 @@ function setSelectedItemToCanvas(character, _characterFront) {
     // httpRequest.open("GET", generateAvatarLink(character), true);
     // httpRequest.send(null);
 }
-
+window.rangeSlide = (id, value) => {
+    document.getElementById(id + "Value").innerHTML = `${value}:${100 - value}`;
+    setSelectedOpacity(id, value);
+    document.getElementById("character_area_front").style.opacity = `${selectedColor.hair.front.opacity}`;
+    // document.getElementById("character_area_front_face").style.filter = `opacity(${selectedColor.lens.front.opacity})`;
+};
 function setSelectedItemInfo(character) {
     if (selectedCategoryFlag.toLowerCase() === "skin" || selectedCategoryFlag.toLowerCase() === "ear") {
         document.getElementById("character_Skin").innerText = `${getCharacterSkinName(
@@ -638,5 +714,6 @@ function main() {
         // character.selectedItems.Face.id = 26079;
         // character.selectedItems.Hair.id = "61370";
         refresh();
+        lazyloading();
     });
 }
