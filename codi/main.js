@@ -19,10 +19,10 @@ import {
     setColors,
     setCharacterAPIVersion,
 } from "./itemManager.js";
+import "../lib/download.js";
 
 let _character = JSON.parse(JSON.stringify(characterInitialValue)); // to deep copy
 let selectedCategoryFlag = "Hair";
-let spinner;
 let selectedColor = {
     hair: {
         front: {
@@ -63,30 +63,6 @@ let data = {
     etc: [],
 };
 window.addEventListener("DOMContentLoaded", (event) => {
-    var opts = {
-        lines: 13, // The number of lines to draw
-        length: 38, // The length of each line
-        width: 17, // The line thickness
-        radius: 45, // The radius of the inner circle
-        scale: 0.3, // Scales overall size of the spinner
-        corners: 1, // Corner roundness (0..1)
-        speed: 1, // Rounds per second
-        rotate: 0, // The rotation offset
-        animation: "spinner-line-fade-quick", // The CSS animation name for the lines
-        direction: 1, // 1: clockwise, -1: counterclockwise
-        color: "#0f0f0f", // CSS color or array of colors
-        fadeColor: "transparent", // CSS color or array of colors
-        top: "10%", // Top position relative to parent
-        left: "-50%", // Left position relative to parent
-        shadow: "1 1 2px transparent", // Box-shadow for the lines
-        zIndex: 2000000000, // The z-index (defaults to 2e9)
-        className: "spinner", // The CSS class to assign to the spinner
-        position: "relative", // Element positioning
-    };
-    var target = document.getElementById("character_area_wrapper_wrapper");
-    spinner = new Spinner(opts).spin();
-    target.appendChild(spinner.el);
-    // spinner.stop();
     main();
 });
 window.scrollToTop = () => {
@@ -362,7 +338,6 @@ function refresh() {
 
 const information = [""];
 function main() {
-    spinner.spin();
     document.getElementById("info_area").innerText = "📢 [알림] !개발중! 테스트 버전입니다.";
     getAllItemList(data).then(() => {
         initializeCharacter();

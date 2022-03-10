@@ -113,10 +113,11 @@ export function createItemListButton(item, setSelectedItem) {
     } else {
         listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
     }
+    listBtn.id = `${item.typeInfo.subCategory}_${item.id}`;
     listBtn.value = item.id;
     // listBtn.style.backgroundImage = `url("${apiUrl}/${item.region}/${item.version}/item/${item.id}/icon")`;
     listBtn.addEventListener("click", (event) => {
-        setSelectedItem(event.target);
+        setSelectedItem(event.target, item);
     });
     list.appendChild(listBtn);
     return list;
