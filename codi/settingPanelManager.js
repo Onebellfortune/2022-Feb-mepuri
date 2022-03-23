@@ -21,8 +21,10 @@ export function buttonInitialSetting() {
         });
         document.getElementById(id).children[0].className += " active";
     });
-    document.getElementById("hairSlider").value = "50";
-    triggerClickEvent(document.getElementById("hairSlider"));
+    if (document.getElementById("hairSlider")) {
+        document.getElementById("hairSlider").value = "50";
+        triggerClickEvent(document.getElementById("hairSlider"));
+    }
 }
 
 function createHairSelectionDom(wrapper) {
@@ -76,8 +78,8 @@ function createHairSelectionDom(wrapper) {
     slidecontainerForHair.append(rangeSlider);
 
     wrapper.appendChild(firstColor);
-    wrapper.appendChild(slidecontainerForHair);
-    wrapper.appendChild(secondColor);
+    // wrapper.appendChild(slidecontainerForHair);
+    // wrapper.appendChild(secondColor);
 }
 
 function createLensSelectionDom(wrapper) {
@@ -110,5 +112,5 @@ function createLensSelectionDom(wrapper) {
     }
 
     wrapper.appendChild(firstColor);
-    wrapper.appendChild(secondColor);
+    // wrapper.appendChild(secondColor);
 }

@@ -56,6 +56,7 @@ export function downloadAvatar(character) {
 }
 
 export function drawFrontCharacter(_characterFront, opacity) {
+    if (!document.getElementById("character_area_front")) return;
     if (opacity === 0) {
         document.getElementById("character_area_front").style.backgroundImage =
             document.getElementById("character_area").style.backgroundImage;

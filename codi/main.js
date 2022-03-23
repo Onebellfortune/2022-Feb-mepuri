@@ -218,7 +218,8 @@ window.showList = (event, category) => {
 window.rangeSlide = (id, value) => {
     document.getElementById(id + "Value").innerHTML = `${value}:${100 - value}`;
     setSelectedOpacity(id, value);
-    document.getElementById("character_area_front").style.opacity = `${selectedColor.hair.front.opacity}`;
+    if (document.getElementById("character_area_front"))
+        document.getElementById("character_area_front").style.opacity = `${selectedColor.hair.front.opacity}`;
 };
 
 window.setEffect = () => {
@@ -352,7 +353,7 @@ function refresh() {
 
 const information = [""];
 function main() {
-    document.getElementById("info_area").innerText = "📢 [알림] !개발중! 테스트 버전입니다.";
+    document.getElementById("info_area").innerText = "📢 [알림] !메푸리 코디 개발중! 테스트 버전입니다.";
     getAllItemList(data).then(() => {
         createSettingPanelDom();
         initializeCharacter();
