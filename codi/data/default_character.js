@@ -1,7 +1,7 @@
 export const character = {
     animating: true,
     action: "stand1",
-    frame: 0,
+    frame: 2,
     emotion: "default",
     mercEars: false,
     illiumEars: false,
@@ -103,7 +103,7 @@ export const character = {
 export const characterFace = {
     animating: true,
     action: "stand1",
-    frame: 0,
+    frame: 2,
     emotion: "default",
     mercEars: false,
     illiumEars: false,
@@ -168,7 +168,7 @@ export const characterFace = {
 export const characterHair = {
     animating: true,
     action: "stand1",
-    frame: 0,
+    frame: 2,
     emotion: "default",
     mercEars: false,
     illiumEars: false,

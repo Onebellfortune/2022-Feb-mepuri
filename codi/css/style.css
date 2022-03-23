@@ -12,6 +12,8 @@
     --selected-panel-1: rgba(136, 122, 218, 0.925);
     --selected-panel-2: rgb(86, 77, 138);
     --canvas-color: rgba(248, 242, 255, 1);
+    --color-chip-1: rgba(179, 146, 240, 0.925);
+
 }
 body {
     margin: 0px 10px 10px 10px;

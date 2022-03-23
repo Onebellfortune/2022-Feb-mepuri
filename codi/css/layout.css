@@ -1,6 +1,6 @@
 /* out-line */
 .top_area {
-    height: 10%;
+    height: 5%;
     width: 100%;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@
     font-size: var(--basic-font-size);
 }
 .canvas_wrapper {
-    height: 30%;
+    height: 37%;
     display: flex;
     width: 100%;
     background-color: var(--canvas-color);

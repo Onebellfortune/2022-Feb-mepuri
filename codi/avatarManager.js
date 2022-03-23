@@ -14,7 +14,6 @@ export function generateAvatarLink(character, linkType, isTransparent) {
     let bgColorText = `${backgroundColor.rgb.r},${backgroundColor.rgb.g},${backgroundColor.rgb.b},${backgroundColor.rgb.a}`;
     if (isTransparent !== undefined) {
         bgColorText = `${0},${0},${0},${0}`;
-
     }
     let itemEntriesPayload = JSON.stringify(itemEntries);
     itemEntriesPayload = encodeURIComponent(itemEntriesPayload.substr(1, itemEntriesPayload.length - 2));
@@ -24,7 +23,8 @@ export function generateAvatarLink(character, linkType, isTransparent) {
     const avatarLink =
         `${apiUrl}/character/${itemEntriesPayload}/${
             linkType ? linkType : `${action}/${animating ? "animated" : frame}`
-        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
+        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` +
+        (includeBackground ? `&bgColor=${bgColorText}` : "");
 
     return avatarLink;
 }
@@ -50,15 +50,33 @@ export function downloadAvatar(character) {
     const avatarLink =
         `${apiUrl}/character/${itemEntriesPayload}/${
             linkType ? linkType : `${action}/${animating ? "animated" : frame}`
-        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` + (includeBackground ? `&bgColor=${bgColorText}` : "");
+        }?showears=${mercEars}&showLefEars=${illiumEars}&showHighLefEars=${highFloraEars}&resize=${zoom}&flipX=${flipX}` +
+        (includeBackground ? `&bgColor=${bgColorText}` : "");
     return avatarLink;
 }
+
 export function drawFrontCharacter(_characterFront, opacity) {
-    document.getElementById("character_area_front").style.backgroundImage = `url('${generateAvatarLink(_characterFront)}')`;
-    document.getElementById("character_area_front").style.opacity = opacity;
+    if (opacity === 0) {
+        document.getElementById("character_area_front").style.backgroundImage =
+            document.getElementById("character_area").style.backgroundImage;
+        document.getElementById("character_area_front").style.opacity = opacity;
+    } else {
+        document.getElementById("character_area_front").style.backgroundImage = `url('${generateAvatarLink(
+            _characterFront
+        )}')`;
+        document.getElementById("character_area_front").style.opacity = opacity;
+    }
 }
+
 export function drawCharacter(_character) {
-    document.getElementById("character_area").style.backgroundImage = `url('${generateAvatarLink(_character)}')`;
+    const link = generateAvatarLink(_character);
+    fetch(link).then((res) => {
+        if (!res.ok) {
+            throw new Error("Response from API is not OK, something went wrong");
+        } else {
+            document.getElementById("character_area").style.backgroundImage = `url('${link}')`;
+        }
+    });
 }
 function getCharacterItemEntries(character) {
     return Object.values(character.selectedItems)
@@ -70,8 +88,9 @@ function getCharacterItemEntries(character) {
                 itemId: Number(item.id),
             };
 
-            if ((item.id >= 20000 && item.id < 30000) || (item.id >= 1010000 && item.id < 1020000))
+            if ((item.id >= 20000 && item.id < 30000) || (item.id >= 1010000 && item.id < 1020000)) {
                 itemEntry.animationName = character.emotion;
+            }
             if (item.region && item.region.toLowerCase() !== "gms") itemEntry.region = item.region;
             if (item.version && item.version.toLowerCase() !== "latest") itemEntry.version = item.version;
             if (item.hue) itemEntry.hue = item.hue;

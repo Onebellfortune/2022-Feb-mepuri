@@ -62,6 +62,20 @@
     font-size: var(--basic-btn-font-size);
     border: 0px;
 }
+.cash_shop_item {
+    background-color: rgba(255, 255, 255, 0.555);
+}
+.cash_shop_item::after {
+    font-size: 7px;
+    content: " #캐시샵";
+}
+.event_shop_item {
+    background-color: rgba(255, 255, 255, 0.582);
+}
+.event_shop_item::after {
+    font-size: 7px;
+    content: " #이벤샵";
+}
 .general_list_btn {
     font-size: var(--basic-btn-font-size);
     width: 100%;

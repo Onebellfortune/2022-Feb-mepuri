@@ -109,9 +109,21 @@ export function createItemListButton(item, setSelectedItem) {
     else listBtn.setAttribute("class", "general_list_btn height_fit lazy");
 
     if (item.typeInfo.subCategory === "Hair") {
-        listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
+        listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`; // item.name; //
+    } else if (item.typeInfo.subCategory === "Face") {
+        listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "" : item.requiredGender === 1 ? "(여)" : ``}`;
     } else {
         listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
+    }
+
+    if (
+        ["specialLabel", "royalHair", "royalFace", "choiceHair", "choiceFace", "basicFaceFemale", "basicFaceMale"].includes(
+            item.isCashShopItem
+        )
+    ) {
+        listBtn.className += " cash_shop_item";
+    } else if (item.isCashShopItem === "eventShop") {
+        listBtn.className += " event_shop_item";
     }
     listBtn.id = `${item.typeInfo.subCategory}_${item.id}`;
     listBtn.value = item.id;
@@ -119,6 +131,7 @@ export function createItemListButton(item, setSelectedItem) {
     listBtn.addEventListener("click", (event) => {
         setSelectedItem(event.target, item);
     });
+    // if (item.name.indexOf('undefined')) console.error(item);
     list.appendChild(listBtn);
     return list;
 }
@@ -158,9 +171,21 @@ export const lazyloading = () => {
             const scrollTop = document.getElementById("scroll_area").scrollTop;
             lazyloadImages.forEach((img) => {
                 if (img.offsetTop < window.innerHeight + scrollTop) {
-                    img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
-                    // img.offsetTop: 실질적으로 img가 위치한 높이
-                    // img.src = img.dataset.src;
+                    // img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
+                    if (img.id.indexOf("Face") >= 0) {
+                        const imgUrl = `${apiUrl}/${locale}/${version}/item/${img.value}`;
+                        fetch(imgUrl)
+                            .then((res) => {
+                                return res.json();
+                            })
+                            .then((res) => {
+                                img.style.backgroundImage = `url("data:image/png;base64, ${res.frameBooks.default.frames[0].effects.face.image}")`;
+                            });
+                        // img.offsetTop: 실질적으로 img가 위치한 높이
+                        // img.src = img.dataset.src;
+                    } else {
+                        img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
+                    }
                     img.classList.remove("lazy");
                 }
             });
@@ -169,7 +194,7 @@ export const lazyloading = () => {
                 // window.removeEventListener("resize", lazyload);
                 // window.removeEventListener("orientationChange", lazyload);
             }
-        }, 20);
+        }, 50);
     };
     document.getElementById("scroll_area").addEventListener("scroll", lazyload);
     // window.addEventListener("resize", lazyload);
