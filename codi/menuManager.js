@@ -161,6 +161,7 @@ export function createSkinListButton(item, setCharacterSkin) {
 }
 export const lazyloading = () => {
     const lazyloadImages = Array.prototype.slice.call(document.getElementsByClassName("lazy"));
+    const itemHeight = 46;
 
     let lazyloadThrottleTimeout;
     const lazyload = () => {
@@ -169,7 +170,11 @@ export const lazyloading = () => {
         }
         lazyloadThrottleTimeout = setTimeout(() => {
             const scrollTop = document.getElementById("scroll_area").scrollTop;
-            lazyloadImages.forEach((img) => {
+            const index = Math.floor(scrollTop / itemHeight);
+            const sliceLazyLoadImages = lazyloadImages.slice(index, index + 12);
+            // lazyloadImages.forEach((img) => {
+            sliceLazyLoadImages.forEach((img) => {
+                // console.log(`${img.offsetTop}, ${window.innerHeight}, ${scrollTop}`);
                 if (img.offsetTop < window.innerHeight + scrollTop) {
                     // img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
                     if (img.id.indexOf("Face") >= 0) {

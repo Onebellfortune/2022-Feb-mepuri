@@ -234,7 +234,7 @@ window.showList = (event, category) => {
         default:
             break;
     }
-    // lazyloading();
+    lazyloading();
 };
 
 window.rangeSlide = (id, value) => {
