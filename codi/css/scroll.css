@@ -1,0 +1,30 @@
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+/* ::-webkit-scrollbar-track:vertical {
+    background: #ffffffe0;
+    border-radius: 10px;
+} */
+
+/* Handle */
+::-webkit-scrollbar-thumb:vertical {
+    background: rgb(95, 79, 105);
+    border-radius: 10px;
+    width: 15px;
+    border: solid 2px var(--selected-btn-color);
+    height: 40px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover:vertical {
+    background: #555;
+}
+::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+}
+::-webkit-scrollbar-track-piece:end {
+    background: transparent;
+}

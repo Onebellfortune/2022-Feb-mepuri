@@ -23,6 +23,7 @@ export function getAllItemList(data) {
         .then((allList) => {
             allList.forEach((element) => {
                 const subCategoryTrim = element.typeInfo.subCategory.replace(/ /gi, "");
+
                 element.region = locale;
                 element.version = version;
 
@@ -32,22 +33,57 @@ export function getAllItemList(data) {
                     case "Hat":
                     case "Top":
                     case "Bottom":
-                        data[subCategoryTrim].push(element);
+                        if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                        else data[subCategoryTrim].unshift(element);
                         break;
                     case "Glove":
                     case "Shoes":
                     case "Cape":
-                        if (element.isCash) data[subCategoryTrim].push(element);
+                        if (element.isCash) {
+                            if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                            else data[subCategoryTrim].unshift(element);
+                        }
                         break;
                     case "Overall":
-                        if (duplicateNameCheckCloths.indexOf(element.name) < 0) {
-                            data[subCategoryTrim].push(element);
-                            duplicateNameCheckCloths.push(element.name);
+                        // 중복체크시 이름으로만 판단하면 남/녀 이름 같은경우 추가안되는 문제발생.
+                        const duplicationItem = duplicateNameCheckCloths.find((item) => item.name === element.name);
+                        if (!duplicationItem) {
+                            if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                            else data[subCategoryTrim].unshift(element);
+                            duplicateNameCheckCloths.push(element);
+                        } else {
+                            switch (element.requiredGender) {
+                                case 0:
+                                    if (
+                                        element.requiredGender === 0 &&
+                                        duplicationItem.requiredGender === element.requiredGender
+                                    ) {
+                                    }
+                                    break;
+                                case 3:
+                                    break;
+                                case 1:
+                                case 2:
+                                    if (!element.isCash) break;
+                                    if (element.requiredGender + duplicationItem.requiredGender === 1) {
+                                        // 남.녀 페어
+                                        if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                                        else data[subCategoryTrim].unshift(element);
+                                        duplicateNameCheckCloths.push(element);
+                                    } else if (element.requiredGender === duplicationItem.requiredGender) {
+                                        // 중복임
+                                    } else {
+                                        // 중복으로보임
+                                    }
+
+                                    break;
+                            }
                         }
                         break;
                     case "FaceAccessory":
                         if (FaceAccName.indexOf(element.name) < 0) {
-                            data[subCategoryTrim].push(element);
+                            if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                            else data[subCategoryTrim].unshift(element);
                             FaceAccName.push(element.name);
                         }
                         break;
@@ -55,13 +91,15 @@ export function getAllItemList(data) {
                         const numOfId = parseInt(element.id, 10);
                         const thirdNum = parseInt((numOfId / 100) % 10, 10);
                         if (thirdNum === 0) {
-                            data[subCategoryTrim].push(element);
+                            if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                            else data[subCategoryTrim].unshift(element);
                         }
                         break;
                     case "Hair":
                         if (element.name.indexOf("검은색 ") === 0) {
                             element.name = element.name.slice(4);
-                            data[subCategoryTrim].push(element);
+                            if (isAddedFront(element)) data[subCategoryTrim].push(element);
+                            else data[subCategoryTrim].unshift(element);
                         }
                         break;
                     case "Cash":
@@ -71,7 +109,10 @@ export function getAllItemList(data) {
                             element.typeInfo.category === "One-Handed Weapon"
                         ) {
                             if (CashName.indexOf(element.name) < 0) {
-                                if (element.isCash) data.Cash.push(element);
+                                if (element.isCash) {
+                                    if (isAddedFront(element)) data.Cash.push(element);
+                                    else data.Cash.unshift(element);
+                                }
                                 CashName.push(element.name);
                             }
                         } else data.etc.push(element);
@@ -81,7 +122,7 @@ export function getAllItemList(data) {
             });
         })
         .then(() => {
-            rearrageData(data);
+            // rearrageData(data);
         });
 }
 function setCategoryIfCashShop(item) {
@@ -116,6 +157,19 @@ function rearrageData(data) {
     data["Overall"] = data["Overall"]
         .filter((item) => !isCashShopItem(specialLabel, item))
         .concat(data["Overall"].filter((item) => isCashShopItem(specialLabel, item, "specialLabel")));
+}
+function isAddedFront(item) {
+    return (
+        isCashShopItem(royalHair, item) ||
+        isCashShopItem(royalFace, item) ||
+        isCashShopItem(choiceHair, item) ||
+        isCashShopItem(choiceFace, item) ||
+        isCashShopItem(royalFace, item) ||
+        isCashShopItem(basicFaceFemale, item) ||
+        isCashShopItem(basicFaceMale, item) ||
+        isCashShopItem(specialLabel, item) ||
+        isCashShopItem(eventShop, item)
+    );
 }
 function isCashShopItem(cashShopList, item, cashCategory) {
     return cashShopList.includes(item.name);

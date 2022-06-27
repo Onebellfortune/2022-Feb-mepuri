@@ -112,16 +112,16 @@ export function createItemListButton(item, setSelectedItem) {
         listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`; // item.name; //
     } else if (item.typeInfo.subCategory === "Face") {
         listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "" : item.requiredGender === 1 ? "(여)" : ``}`;
+    } else if (item.typeInfo.subCategory === "Overall") {
+        listBtn.innerText = `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
     } else {
         listBtn.innerText = item.name; // `${item.name} ${item.requiredGender === 0 ? "(남)" : item.requiredGender === 1 ? "(여)" : ``}`;
     }
 
-    if (
-        ["specialLabel", "royalHair", "royalFace", "choiceHair", "choiceFace", "basicFaceFemale", "basicFaceMale"].includes(
-            item.isCashShopItem
-        )
-    ) {
+    if (["specialLabel", "choiceHair", "choiceFace", "basicFaceFemale", "basicFaceMale"].includes(item.isCashShopItem)) {
         listBtn.className += " cash_shop_item";
+    } else if (["royalHair", "royalFace"].includes(item.isCashShopItem)) {
+        listBtn.className += " royal_item";
     } else if (item.isCashShopItem === "eventShop") {
         listBtn.className += " event_shop_item";
     }

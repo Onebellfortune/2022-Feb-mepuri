@@ -1,4 +1,6 @@
 import { apiUrl, version, locale } from "../common/apiInfo.js";
+import { toast } from "../common/toast.js";
+import { setSelectedItemInfo } from "./itemManager.js";
 
 export function generateAvatarLink(character, linkType, isTransparent) {
     let itemEntries = getCharacterItemEntries(character);
@@ -68,15 +70,27 @@ export function drawFrontCharacter(_characterFront, opacity) {
     }
 }
 
-export function drawCharacter(_character) {
+export function drawCharacter(_character, selectedCategoryFlag) {
     const link = generateAvatarLink(_character);
-    fetch(link).then((res) => {
-        if (!res.ok) {
-            throw new Error("Response from API is not OK, something went wrong");
-        } else {
-            document.getElementById("character_area").style.backgroundImage = `url('${link}')`;
-        }
-    });
+    const abortController = new AbortController();
+    const timeoutId = setTimeout(() => {
+        return abortController.abort();
+    }, 5000);
+
+    fetch(link, { signal: abortController.signal })
+        .then((res) => {
+            if (!res.ok) {
+                clearTimeout(timeoutId);
+                throw new Error("Response from API is not OK, something went wrong");
+            } else {
+                document.getElementById("character_area").style.backgroundImage = `url('${link}')`;
+                setSelectedItemInfo(_character, selectedCategoryFlag);
+            }
+        })
+        .catch((e) => {
+            console.log(e);
+            toast(`Can't update ${selectedCategoryFlag} now`);
+        });
 }
 function getCharacterItemEntries(character) {
     return Object.values(character.selectedItems)

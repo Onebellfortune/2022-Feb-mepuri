@@ -13,15 +13,15 @@ export const SKIN_TYPE = {
 
 export const earList = [
     { category: "Ear", name: "일반", id: EAR_TYPE.GENERAL },
-    { category: "Ear", name: "메르세데스", id: EAR_TYPE.MERCEDES },
-    { category: "Ear", name: "하이레프", id: EAR_TYPE.HIGHLEAF },
-    { category: "Ear", name: "일리움", id: EAR_TYPE.ILLIUM },
+    { category: "Ear", name: "엘프 귀", id: EAR_TYPE.MERCEDES },
+    { category: "Ear", name: "하이레프 귀", id: EAR_TYPE.HIGHLEAF },
+    { category: "Ear", name: "우든레프 귀", id: EAR_TYPE.ILLIUM },
 ];
 
 export const skinList = [
     { category: "Skin", sub_category: "general", name: "기본", id: 2000, head_id: 12000 },
     { category: "Skin", sub_category: "general", name: "태닝", id: 2001, head_id: 12001 },
-    { category: "Skin", sub_category: "general", name: "태닝2", id: 2002, head_id: 12002 },
+    { category: "Skin", sub_category: "general", name: "헬시", id: 2002, head_id: 12002 },
     { category: "Skin", sub_category: "general", name: "밀키", id: 2003, head_id: 12003 },
     { category: "Skin", sub_category: "general", name: "스산", id: 2004, head_id: 12004 },
     { category: "Skin", sub_category: "general", name: "창백", id: 2009, head_id: 12009 },
@@ -64,9 +64,9 @@ export const CATEGORIES = [
     "etc",
 ];
 export const EMOTION = [
-    // "angry",
+    "angry",
     "bewildered",
-    "blaze",
+    // "blaze",
     // "blink",
     // "bowing",
     "cheers",

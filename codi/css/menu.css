@@ -28,7 +28,12 @@
     background-color: var(--selected-panel-1);
     margin-left: 0;
     overflow-x: auto;
+    overflow-y: hidden;
     display: -webkit-box;
+}
+.sub_menu::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
 }
 .filter_menu {
     height: 45px;
@@ -69,6 +74,13 @@
     font-size: 7px;
     content: " #캐시샵";
 }
+.royal_item {
+    background-color: rgba(255, 255, 255, 0.555);
+}
+.royal_item::after {
+    font-size: 7px;
+    content: " #로얄";
+}
 .event_shop_item {
     background-color: rgba(255, 255, 255, 0.582);
 }
@@ -97,7 +109,7 @@
     border-radius: 0px 0px 10px 10px;
 }
 .scroll_area {
-    overflow: auto;
+    overflow: overlay;
     height: calc(100% - var(--menu-height) - 10px);
 }
 .item_list {

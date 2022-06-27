@@ -367,4 +367,6 @@ export const FaceAccessoryVisibleData = [
     { id: "1012756", name: "New 요상한 슬라임 얼굴장식", isVisibleFace: false },
     { id: "1012757", name: "트와일라이트 마크", isVisibleFace: true },
     { id: "1012758", name: "볼빵빵 눈다람", isVisibleFace: false },
+    { id: "1012760", name: "병아리 부리", isVisibleFace: true },
+    { id: "1012762", name: "몽환의 장미", isVisibleFace: false },
 ];

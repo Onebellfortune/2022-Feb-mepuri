@@ -2,7 +2,7 @@
 
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="initial-scale=0.8, width=device-width">
         <link rel="stylesheet" href="./css/style.css">
         <link rel="stylesheet" href="./css/layout.css">
         <link rel="stylesheet" href="./css/top.css">
@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="./css/menu.css">
         <link rel="stylesheet" href="./css/menu_settings.css">
         <link rel="stylesheet" href="./css/info.css">
+        <link rel="stylesheet" href="./css/toast.css">
+        <link rel="stylesheet" href="./css/scroll.css">
         <link rel="stylesheet" href="../common/spin.css">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="../lib/download.js"></script>
@@ -93,8 +95,15 @@
                     </div>
                 </div>
                 <div id="setting" class="item_list_wrapper round_border setting_panel" style="display:none">
-                    <div>
-                        <button class="general_btn additional_btn" style="height:50px;width:100px"
+                    <div style="display:flex;align-items: center;">
+                        <div class="setting_option_wrapper" style="display:flex;align-items: center;">
+                            <label class="radio_label_style">실험실</label>
+                            <label class="switch">
+                                <input type="checkbox" id="labModeCheck">
+                                <span class="sliderToggle round"></span>
+                            </label>
+                        </div>
+                        <button class=" general_btn additional_btn" style="height:50px;width:100px"
                             onclick="initializeCharacter()">캐릭터 초기화</button>
                         <button class="general_btn additional_btn" style="height:50px"
                             onclick="getDownloadCharacterUrl()">다운</button>
@@ -127,7 +136,8 @@
             </div>
 
         </div>
-        <div id="footer" class="footer">@copyright MEPURI 2022 V 0.8</div>
+        <div id="toast"></div>
+        <div id="footer" class="footer">@copyright MEPURI 2022 V 0.81</div>
 
     </body>
 

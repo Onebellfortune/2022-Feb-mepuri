@@ -20,6 +20,7 @@ import {
     setCharacterAPIVersion,
 } from "./itemManager.js";
 import { createSettingPanelDom, buttonInitialSetting } from "./settingPanelManager.js";
+import { toast } from "../common/toast.js";
 
 let _character = JSON.parse(JSON.stringify(characterInitialValue)); // to deep copy
 let selectedCategoryFlag = "Hair";
@@ -90,6 +91,12 @@ window.setZoom = (value, action) => {
     _character.action = _character.action.indexOf("1") >= 0 ? `${action}1` : `${action}2`;
     refresh();
 };
+window.setAction = (action) => {
+    _character.action = action;
+    _character.frame = 1;
+    _character.animating = false;
+    refresh();
+};
 
 window.setTransparent = () => {
     if (selectedCategoryFlag === "FaceAccessory" && _character.selectedItems.Face) {
@@ -144,16 +151,30 @@ window.set2ndLensColor = function (num) {
     setSelectedColor("lens", "front", num);
     refresh();
 };
+window.getLink = () => {
+    return generateAvatarLink(_character);
+};
 
 window.getDownloadCharacterUrl = () => {
-    var x = new XMLHttpRequest();
-    x.open("GET", generateAvatarLink(_character), true);
-    x.responseType = "blob";
-    x.onload = function (e) {
-        download(e.target.response, "mepuri", "image/png");
-    };
-    x.send();
+    const blob = new Blob([generateAvatarLink(_character)], { type: "image/png" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `mepuri.png`;
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+
+    // var x = new XMLHttpRequest();
+    // x.open("GET", generateAvatarLink(_character), true);
+    // x.responseType = "blob";
+    // x.onload = function (e) {
+    //     console.log(e.target.response);
+    //     download(e.target.response, "mepuri", "image/png");
+    // };
+    // x.send();
 };
+
 window.setHandMotion = (value) => {
     switch (value) {
         case 0:
@@ -183,6 +204,7 @@ window.showList = (event, category) => {
 
     switch (category) {
         case "FaceAccessory":
+        // console.log(data[category]);
         case "EyeDecoration":
         case "Earrings":
         case "Hat":
@@ -224,6 +246,7 @@ window.rangeSlide = (id, value) => {
 window.setEffect = () => {
     const random = Math.floor(Math.random() * (EMOTION.length - 0)) + 0;
     _character.emotion = EMOTION[random];
+    toast(_character.emotion);
     refresh();
     setTimeout(() => {
         _character.emotion = "default";
@@ -332,30 +355,58 @@ function throttle(callback, limit = 100) {
         }, limit);
     }
 }
+function checkHumanRights(character) {
+    if (
+        (!character.selectedItems.Top && !character.selectedItems.Bottom && !character.selectedItems.Overall) ||
+        (character.selectedItems.Top && !character.selectedItems.Bottom)
+    ) {
+        character.selectedItems.Bottom = data.Bottom[0];
+        character.selectedItems.Bottom.id = "1062112";
+    }
+}
+
 function refresh() {
     let _characterFront = JSON.parse(JSON.stringify(_character));
     setColors(_character, _characterFront, selectedColor);
+    checkHumanRights(_character);
     throttle(() => {
         if (
             selectedColor.hair.front.value === selectedColor.hair.back.value &&
             selectedColor.lens.front.value === selectedColor.lens.back.value
         ) {
             drawFrontCharacter(_characterFront, 0);
-            drawCharacter(_character);
+            drawCharacter(_character, selectedCategoryFlag);
         } else {
             drawFrontCharacter(_characterFront, selectedColor.hair.front.opacity);
-            drawCharacter(_character);
+            drawCharacter(_character, selectedCategoryFlag);
         }
-        setSelectedItemInfo(_character, selectedCategoryFlag);
     }, 100);
 }
 
 const information = [""];
 function main() {
-    document.getElementById("info_area").innerText = "📢 [알림] !개발중! 테스트 버전입니다.";
+    let notiNum = 0;
+    setInterval(() => {
+        const notifications = [
+            "📢[알림] 2022.06.26 업데이트",
+            "📢[알림] 110기 스라벨 추가",
+            "📢[알림] 설정>다운: 이미지 저장 기능 추가",
+            "📢[알림] 설정>실험실: 커믹염 기능",
+            "📢[알림] 믹염/믹렌 적용시 느려질 수 있음",
+            "📢[알림] 캐릭터 아래 버튼을 이용해 크기와 자세를 바꿀 수 있어요.",
+        ];
+        const notiLength = notifications.length;
+        if (notiNum >= notiLength) {
+            notiNum = 0;
+        }
+        document.getElementById("info_area").innerText = notifications[notiNum];
+        notiNum++;
+        // document.getElementById("info_area").innerText = "📢 [알림] 2022.05.29 업데이트 파일저장";
+    }, 8000);
     getAllItemList(data).then(() => {
         createSettingPanelDom();
         initializeCharacter();
+        // triggerClickEvent(document.getElementsByClassName("setting_btn")[0]);
         triggerClickEvent(document.getElementsByClassName("sub_menu_btn")[0]);
         refresh();
         // lazyloading();

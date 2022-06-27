@@ -5,6 +5,8 @@ export function createSettingPanelDom() {
     const faceWrapper = document.getElementById("face_color_chips_wrapper");
     createHairSelectionDom(hairWrapper);
     createLensSelectionDom(faceWrapper);
+
+    document.getElementById("labModeCheck").onclick = onLabMode;
 }
 
 export function buttonInitialSetting() {
@@ -23,6 +25,16 @@ export function buttonInitialSetting() {
     });
     document.getElementById("hairSlider").value = "50";
     triggerClickEvent(document.getElementById("hairSlider"));
+}
+
+function onLabMode() {
+    var checkBox = document.getElementById("labModeCheck");
+    console.log(checkBox.checked);
+    if (checkBox.checked) {
+        document.getElementById("slidecontainer").style.display = "flex";
+    } else {
+        document.getElementById("slidecontainer").style.display = "none";
+    }
 }
 
 function createHairSelectionDom(wrapper) {
@@ -56,6 +68,8 @@ function createHairSelectionDom(wrapper) {
 
     const slidecontainerForHair = document.createElement("div");
     slidecontainerForHair.setAttribute("class", "slidecontainer");
+    slidecontainerForHair.setAttribute("id", "slidecontainer");
+    // slidecontainerForHair.style.display = 'none'; // App 올릴때
 
     const valueLabel = document.createElement("div");
     valueLabel.setAttribute("id", "hairSliderValue");
