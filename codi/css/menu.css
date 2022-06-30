@@ -68,21 +68,29 @@
     border: 0px;
 }
 .cash_shop_item {
-    background-color: rgba(255, 255, 255, 0.555);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 .cash_shop_item::after {
     font-size: 7px;
     content: " #캐시샵";
 }
 .royal_item {
-    background-color: rgba(255, 255, 255, 0.555);
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.65);
 }
 .royal_item::after {
     font-size: 7px;
     content: " #로얄";
 }
+.awards_item {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+.awards_item::after {
+    font-size: 7px;
+    content: " #금손은손";
+}
 .event_shop_item {
-    background-color: rgba(255, 255, 255, 0.582);
+    background-color: rgba(255, 255, 255, 0.55);
 }
 .event_shop_item::after {
     font-size: 7px;

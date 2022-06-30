@@ -124,6 +124,8 @@ export function createItemListButton(item, setSelectedItem) {
         listBtn.className += " royal_item";
     } else if (item.isCashShopItem === "eventShop") {
         listBtn.className += " event_shop_item";
+    } else if (["awardsHair", "awardsFace"].includes(item.isCashShopItem)) {
+        listBtn.className += " awards_item";
     }
     listBtn.id = `${item.typeInfo.subCategory}_${item.id}`;
     listBtn.value = item.id;
@@ -177,20 +179,20 @@ export const lazyloading = () => {
                 // console.log(`${img.offsetTop}, ${window.innerHeight}, ${scrollTop}`);
                 if (img.offsetTop < window.innerHeight + scrollTop) {
                     // img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
-                    if (img.id.indexOf("Face") >= 0) {
-                        const imgUrl = `${apiUrl}/${locale}/${version}/item/${img.value}`;
-                        fetch(imgUrl)
-                            .then((res) => {
-                                return res.json();
-                            })
-                            .then((res) => {
-                                img.style.backgroundImage = `url("data:image/png;base64, ${res.frameBooks.default.frames[0].effects.face.image}")`;
-                            });
-                        // img.offsetTop: 실질적으로 img가 위치한 높이
-                        // img.src = img.dataset.src;
-                    } else {
-                        img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
-                    }
+                    // if (img.id.indexOf("Face") >= 0) {
+                    //     const imgUrl = `${apiUrl}/${locale}/${version}/item/${img.value}`;
+                    //     fetch(imgUrl)
+                    //         .then((res) => {
+                    //             return res.json();
+                    //         })
+                    //         .then((res) => {
+                    //             img.style.backgroundImage = `url("data:image/png;base64, ${res.frameBooks.default.frames[0].effects.face.image}")`;
+                    //         });
+                    //     // img.offsetTop: 실질적으로 img가 위치한 높이
+                    //     // img.src = img.dataset.src;
+                    // } else {
+                    img.style.backgroundImage = `url("${apiUrl}/${locale}/${version}/item/${img.value}/icon")`;
+                    // }
                     img.classList.remove("lazy");
                 }
             });

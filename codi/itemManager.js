@@ -10,6 +10,8 @@ import {
     basicFaceMale,
     specialLabel,
     eventShop,
+    awardsFace,
+    awardsHair,
 } from "./data/current-cash-shop-items.js";
 
 export let dataIncludingUri = [];
@@ -168,6 +170,10 @@ function setCategoryIfCashShop(item) {
         item.isCashShopItem = "specialLabel";
     } else if (eventShop.includes(item.name)) {
         item.isCashShopItem = "eventShop";
+    } else if (awardsFace.includes(item.name)) {
+        item.isCashShopItem = "awardsFace";
+    } else if (awardsHair.includes(item.name)) {
+        item.isCashShopItem = "awardsHair";
     }
 }
 
@@ -192,7 +198,9 @@ function isAddedFront(item) {
         isCashShopItem(basicFaceFemale, item) ||
         isCashShopItem(basicFaceMale, item) ||
         isCashShopItem(specialLabel, item) ||
-        isCashShopItem(eventShop, item)
+        isCashShopItem(eventShop, item) ||
+        isCashShopItem(awardsFace, item) ||
+        isCashShopItem(awardsHair, item)
     );
 }
 function isCashShopItem(cashShopList, item, cashCategory) {
