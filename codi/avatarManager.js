@@ -76,7 +76,7 @@ export function drawCharacter(_character, selectedCategoryFlag) {
     const timeoutId = setTimeout(() => {
         return abortController.abort();
     }, 5000);
-
+    console.log(_character);
     fetch(link, { signal: abortController.signal })
         .then((res) => {
             if (!res.ok) {

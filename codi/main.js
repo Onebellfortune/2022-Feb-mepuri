@@ -46,7 +46,22 @@ let selectedColor = {
         },
     },
 };
-
+let recommandData = {
+    FaceAccessory: [],
+    EyeDecoration: [],
+    Earrings: [],
+    Hat: [],
+    Top: [],
+    Bottom: [],
+    Face: [],
+    Glove: [],
+    Hair: [],
+    Overall: [],
+    Shoes: [],
+    Cape: [],
+    Cash: [],
+    etc: [],
+};
 let data = {
     FaceAccessory: [],
     EyeDecoration: [],
@@ -217,8 +232,11 @@ window.showList = (event, category) => {
         case "Shoes":
         case "Cape":
         case "Cash":
-            data[category].forEach((item) => {
+            recommandData[category].forEach((item) => {
                 list_wrapper.insertBefore(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
+            });
+            data[category].forEach((item) => {
+                list_wrapper.appendChild(createItemListButton(item, setSelectedItem), list_wrapper.children[0]);
             });
             break;
         case "Ear":
@@ -382,19 +400,23 @@ function refresh() {
         }
     }, 100);
 }
+window.toggleCollapsed = (event) => {
+    document.getElementById("character_info").style.visibility =
+        document.getElementById("character_info").style.visibility === "hidden" ? "visible" : "hidden";
+};
 
 const information = [""];
 function main() {
     let notiNum = 0;
     setInterval(() => {
         const notifications = [
-            "📢[알림] 2022.06.30 업데이트",
-            "📢[알림] 아이템 리스트에 이미지 표시 기능 추가",
+            "📢[알림] 2022.10.04 대충 업데이트",
+            "📢[알림] 왜요얼굴/몽실이헤어 추가",
             "📢[알림] 설정>다운: 이미지 저장 기능 추가",
             "📢[알림] 설정>실험실: 커믹염 기능",
             "📢[알림] 믹염/믹렌 적용시 느려질 수 있음(겹쳐보이면 초기화 한번 해주세요)",
             "📢[알림] 캐릭터 아래 버튼을 이용해 크기와 자세를 바꿀 수 있어요.",
-            "📢[알림] 현재 구매가능한 아이템 상단에 표시",
+            "📢[알림] 아무화면도 안나오는 문제 왜그런지 모름",
         ];
         const notiLength = notifications.length;
         if (notiNum >= notiLength) {
@@ -404,7 +426,7 @@ function main() {
         notiNum++;
         // document.getElementById("info_area").innerText = "📢 [알림] 2022.05.29 업데이트 파일저장";
     }, 8000);
-    getAllItemList(data).then(() => {
+    getAllItemList(data, recommandData).then(() => {
         createSettingPanelDom();
         initializeCharacter();
         // triggerClickEvent(document.getElementsByClassName("setting_btn")[0]);

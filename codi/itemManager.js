@@ -15,7 +15,7 @@ import {
 } from "./data/current-cash-shop-items.js";
 
 export let dataIncludingUri = [];
-export function getAllItemList(data) {
+export function getAllItemList(data, recommandData) {
     let CashName = [];
     let FaceAccName = [];
     let duplicateNameCheckCloths = [];
@@ -36,7 +36,8 @@ export function getAllItemList(data) {
                     case "Top":
                     case "Bottom":
                         if (isAddedFront(element)) {
-                            data[subCategoryTrim].push(element);
+                            recommandData[subCategoryTrim].push(element);
+                            // data[subCategoryTrim].push(element);
                         } else {
                             data[subCategoryTrim].unshift(element);
                         }
@@ -46,7 +47,7 @@ export function getAllItemList(data) {
                     case "Cape":
                         if (element.isCash) {
                             if (isAddedFront(element)) {
-                                data[subCategoryTrim].push(element);
+                                recommandData[subCategoryTrim].push(element);
                             } else {
                                 data[subCategoryTrim].unshift(element);
                             }
@@ -57,7 +58,7 @@ export function getAllItemList(data) {
                         const duplicationItem = duplicateNameCheckCloths.find((item) => item.name === element.name);
                         if (!duplicationItem) {
                             if (isAddedFront(element)) {
-                                data[subCategoryTrim].push(element);
+                                recommandData[subCategoryTrim].push(element);
                             } else {
                                 data[subCategoryTrim].unshift(element);
                             }
@@ -79,7 +80,7 @@ export function getAllItemList(data) {
                                     if (element.requiredGender + duplicationItem.requiredGender === 1) {
                                         // 남.녀 페어
                                         if (isAddedFront(element)) {
-                                            data[subCategoryTrim].push(element);
+                                            recommandData[subCategoryTrim].push(element);
                                         } else {
                                             data[subCategoryTrim].unshift(element);
                                         }
@@ -97,7 +98,7 @@ export function getAllItemList(data) {
                     case "FaceAccessory":
                         if (FaceAccName.indexOf(element.name) < 0) {
                             if (isAddedFront(element)) {
-                                data[subCategoryTrim].push(element);
+                                recommandData[subCategoryTrim].push(element);
                             } else {
                                 data[subCategoryTrim].unshift(element);
                             }
@@ -109,17 +110,17 @@ export function getAllItemList(data) {
                         const thirdNum = parseInt((numOfId / 100) % 10, 10);
                         if (thirdNum === 0) {
                             if (isAddedFront(element)) {
-                                data[subCategoryTrim].push(element);
+                                recommandData[subCategoryTrim].push(element);
                             } else {
                                 data[subCategoryTrim].unshift(element);
                             }
                         }
                         break;
                     case "Hair":
-                        if (element.name.indexOf("검은색 ") === 0) {
+                        if (element.name.indexOf("검은색 ") === 0 || element.name.indexOf("흰색") === 0) {
                             element.name = element.name.slice(4);
                             if (isAddedFront(element)) {
-                                data[subCategoryTrim].push(element);
+                                recommandData[subCategoryTrim].push(element);
                             } else {
                                 data[subCategoryTrim].unshift(element);
                             }
@@ -134,7 +135,7 @@ export function getAllItemList(data) {
                             if (CashName.indexOf(element.name) < 0) {
                                 if (element.isCash) {
                                     if (isAddedFront(element)) {
-                                        data.Cash.push(element);
+                                        recommandData.Cash.push(element);
                                     } else {
                                         data.Cash.unshift(element);
                                     }
@@ -170,11 +171,12 @@ function setCategoryIfCashShop(item) {
         item.isCashShopItem = "specialLabel";
     } else if (eventShop.includes(item.name)) {
         item.isCashShopItem = "eventShop";
-    } else if (awardsFace.includes(item.name)) {
-        item.isCashShopItem = "awardsFace";
-    } else if (awardsHair.includes(item.name)) {
-        item.isCashShopItem = "awardsHair";
     }
+    // else if (awardsFace.includes(item.name)) {
+    //     item.isCashShopItem = "awardsFace";
+    // } else if (awardsHair.includes(item.name)) {
+    //     item.isCashShopItem = "awardsHair";
+    // }
 }
 
 function rearrageData(data) {
@@ -198,9 +200,9 @@ function isAddedFront(item) {
         isCashShopItem(basicFaceFemale, item) ||
         isCashShopItem(basicFaceMale, item) ||
         isCashShopItem(specialLabel, item) ||
-        isCashShopItem(eventShop, item) ||
-        isCashShopItem(awardsFace, item) ||
-        isCashShopItem(awardsHair, item)
+        isCashShopItem(eventShop, item)
+        // isCashShopItem(awardsFace, item) ||
+        // isCashShopItem(awardsHair, item)
     );
 }
 function isCashShopItem(cashShopList, item, cashCategory) {

@@ -69,6 +69,10 @@
     overflow: auto;
     letter-spacing: -2px;
     white-space: nowrap;
+    BORDER: solid 1px;
+    border-radius: 15px;
+    background-color: #b3a2d8;
+    margin: 5px;
 }
 .item_name {
     background-color: rgba(152, 27, 255, 0.048);
@@ -88,3 +92,26 @@
     line-height: 4px;
     text-indent: -6px;
 }
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+  
+  .active, .collapsible:hover {
+    background-color: #555;
+  }
+  
+  .content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+  }
